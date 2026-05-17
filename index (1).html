@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>اشتراك الوجبات الصحية | Lite Kitchen</title>
+
+    <!-- SEO Meta -->
+    <meta name="description" content="اشترك في باقات الوجبات الصحية لمدة 26 يوماً - Lite, Athlete, Elite">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <!-- Supabase Client v2 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            color: #1a1a2e;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%);
+            color: white;
+            padding: 45px 30px 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 15px;
+            position: relative;
+        }
+
+        .form-body {
+            padding: 30px;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .step-num {
+            background: #00d4aa;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .field-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #2a2a3e;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-right: 3px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+            background: #fff;
+            color: #1a1a2e;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #00d4aa;
+            box-shadow: 0 0 0 4px rgba(0,212,170,0.1);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #aaa;
+        }
+
+        .phone-input-wrapper {
+            display: flex;
+            gap: 8px;
+            direction: ltr;
+        }
+
+        .phone-prefix {
+            background: #f5f5f5;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #555;
+            display: flex;
+            align-items: center;
+            font-family: inherit;
+        }
+
+        .phone-input-wrapper input {
+            flex: 1;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .plans-grid {
+            display: grid;
+            gap: 14px;
+        }
+
+        .plan-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            background: #fafafa;
+        }
+
+        .plan-card:hover {
+            border-color: #00d4aa;
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,212,170,0.15);
+        }
+
+        .plan-card.selected {
+            border-color: #00d4aa;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
+            box-shadow: 0 8px 30px rgba(0,212,170,0.2);
+        }
+
+        .plan-card.selected::before {
+            content: "✓";
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            width: 30px;
+            height: 30px;
+            background: #00d4aa;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(0,212,170,0.4);
+        }
+
+        .plan-badge {
+            display: inline-block;
+            background: #00d4aa;
+            color: white;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .plan-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+
+        .plan-desc {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .plan-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .plan-tag {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .plan-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00a87a;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .plan-price span {
+            font-size: 13px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border: 2px solid #e0e0e0;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .summary-row strong {
+            color: #1a1a2e;
+        }
+
+        .summary-row span {
+            color: #555;
+        }
+
+        .summary-divider {
+            border: none;
+            border-top: 1px dashed #ccc;
+            margin: 15px 0;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 2px solid #00d4aa;
+        }
+
+        .summary-total-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .summary-total-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00a87a;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(0,212,170,0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+
+        .progress {
+            background: #f0f0f0;
+            height: 6px;
+            margin-bottom: 25px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00d4aa, #00a87a);
+            transition: width 0.5s ease;
+            border-radius: 3px;
+        }
+
+        .success-screen {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 45px;
+            color: white;
+            box-shadow: 0 15px 40px rgba(0,212,170,0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .success-screen h2 {
+            font-size: 24px;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+        }
+
+        .success-screen p {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .customer-id-box {
+            background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
+            border: 2px dashed #00d4aa;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 25px 0;
+        }
+
+        .customer-id-label {
+            font-size: 12px;
+            color: #00a87a;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .customer-id-value {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            color: #00a87a;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #25D366;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-btn:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+        }
+
+        .error-msg {
+            background: #fee;
+            color: #c33;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-top: 12px;
+            font-size: 14px;
+            display: none;
+            border: 1px solid #fcc;
+        }
+
+        .error-msg.show {
+            display: block;
+            animation: shake 0.4s;
+        }
+
+        #diagBanner {
+            display: none;
+            background: #fff3cd;
+            color: #664d03;
+            border: 1px solid #ffecb5;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0 0 14px 0;
+            text-align: right;
+            direction: rtl;
+            word-break: break-word;
+        }
+
+        #diagBanner.error {
+            background: #fdecea;
+            color: #842029;
+            border-color: #f5c2c7;
+        }
+
+        #diagBanner code {
+            background: rgba(0,0,0,0.08);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 20px;
+            padding: 15px;
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 10px; }
+            .header { padding: 35px 20px 25px; }
+            .header h1 { font-size: 22px; }
+            .form-body { padding: 20px; }
+            .plan-name { font-size: 18px; }
+            .plan-price { font-size: 22px; }
+            .btn { padding: 14px 16px; font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="header-icon">🥗</span>
+            <h1>الوجبات الصحية</h1>
+            <p>اشترك الآن في باقات صحية لمدة 26 يوماً</p>
+        </div>
+
+        <div class="form-body">
+            <div id="diagBanner"></div>
+            <div class="progress">
+                <div class="progress-bar" id="progressBar" style="width: 33%"></div>
+            </div>
+
+            <!-- ====== STEP 1: البيانات الشخصية ====== -->
+            <div class="step active" id="step1">
+                <div class="step-title">
+                    <span class="step-num">1</span>
+                    بياناتك الشخصية
+                </div>
+
+                <div class="field-group">
+                    <label>الاسم الكامل <span class="required">*</span></label>
+                    <input type="text" id="fullName" placeholder="مثال: محمد العتيبي" required autocomplete="name">
+                </div>
+
+                <div class="field-group">
+                    <label>رقم الجوال <span class="required">*</span></label>
+                    <div class="phone-input-wrapper">
+                        <div class="phone-prefix">+966</div>
+                        <input type="tel" id="phone" placeholder="5xxxxxxxx" maxlength="9" autocomplete="tel">
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>البريد الإلكتروني</label>
+                    <input type="email" id="email" placeholder="example@email.com (اختياري)" autocomplete="email">
+                </div>
+
+                <div class="field-group">
+                    <label>الجنس</label>
+                    <select id="gender">
+                        <option value="">اختر</option>
+                        <option value="male">ذكر</option>
+                        <option value="female">أنثى</option>
+                    </select>
+                </div>
+
+                <div class="field-group">
+                    <label>المدينة</label>
+                    <input type="text" id="city" value="حائل" autocomplete="address-level2">
+                </div>
+
+                <div class="error-msg" id="error1"></div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="nextStep(1)">التالي ←</button>
+                </div>
+            </div>
+
+            <!-- ====== STEP 2: اختيار الباقة ====== -->
+            <div class="step" id="step2">
+                <div class="step-title">
+                    <span class="step-num">2</span>
+                    اختر الباقة المناسبة
+                </div>
+
+                <div class="plans-grid" id="plansGrid">
+                    <div style="text-align: center; padding: 40px; color: #999;">
+                        <div class="loading-spinner" style="border-color: #ccc; border-top-color: #00d4aa; margin: 0 auto 15px;"></div>
+                        جاري تحميل الباقات...
+                    </div>
+                </div>
+
+                <div class="error-msg" id="error2"></div>
+
+                <div class="buttons">
+                    <button class="btn btn-secondary" onclick="prevStep(2)">→ السابق</button>
+                    <button class="btn btn-primary" onclick="nextStep(2)">التالي ←</button>
+                </div>
+            </div>
+
+            <!-- ====== STEP 3: التأكيد ====== -->
+            <div class="step" id="step3">
+                <div class="step-title">
+                    <span class="step-num">3</span>
+                    تأكيد البيانات
+                </div>
+
+                <div class="summary-box" id="summary">
+                    <!-- يُعبأ تلقائياً -->
+                </div>
+
+                <div class="field-group">
+                    <label>تاريخ بدء الاشتراك المرغوب</label>
+                    <input type="date" id="startDate">
+                </div>
+
+                <div class="field-group">
+                    <label>ملاحظات / حساسيات (اختياري)</label>
+                    <textarea id="notes" rows="3" placeholder="أخبرنا إذا كان لديك أي حساسيات أو طلبات خاصة"></textarea>
+                </div>
+
+                <div class="error-msg" id="error3"></div>
+
+                <div class="buttons">
+                    <button class="btn btn-secondary" onclick="prevStep(3)">→ السابق</button>
+                    <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">
+                        تأكيد الاشتراك ✓
+                    </button>
+                </div>
+            </div>
+
+            <!-- ====== شاشة النجاح ====== -->
+            <div class="step" id="stepSuccess">
+                <div class="success-screen">
+                    <div class="success-icon">✓</div>
+                    <h2>تم تسجيل اشتراكك بنجاح!</h2>
+                    <p>سنتواصل معك قريباً عبر الواتساب لإكمال إجراءات الدفع وتأكيد بدء الاشتراك</p>
+
+                    <div class="customer-id-box">
+                        <div class="customer-id-label">رقم العميل</div>
+                        <div class="customer-id-value" id="newCustomerId">CUS-00000</div>
+                    </div>
+
+                    <p style="font-size: 13px; color: #888;">
+                        احفظ هذا الرقم للرجوع إليه عند الاستلام
+                    </p>
+
+                    <a href="https://wa.me/966558612908" class="whatsapp-btn" id="whatsappBtn">
+                        💬 تواصل عبر الواتساب
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            🔒 بياناتك محمية ولن تُشارك مع أي طرف ثالث
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 🔐 إعدادات Supabase
+        // ============================================================
+        const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+
+        // ============================================================
+        // 🩺 شريط التشخيص المرئي (يساعد في معرفة الخطأ بدون فتح console)
+        // ============================================================
+        function showDiag(msg, isError) {
+            const el = document.getElementById('diagBanner');
+            if (!el) return;
+            el.innerHTML = msg;
+            el.classList.toggle('error', !!isError);
+            el.style.display = 'block';
+        }
+        function hideDiag() {
+            const el = document.getElementById('diagBanner');
+            if (el) el.style.display = 'none';
+        }
+
+        // التقاط الأخطاء العامة وعرضها على الشاشة
+        window.addEventListener('error', function (e) {
+            showDiag('⚠️ خطأ JavaScript: <code>' + (e.message || e.error) + '</code>', true);
+            console.error('[window.error]', e);
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+            showDiag('⚠️ Promise مرفوض: <code>' + (e.reason && e.reason.message ? e.reason.message : e.reason) + '</code>', true);
+            console.error('[unhandledrejection]', e);
+        });
+
+        // ============================================================
+        // 📦 حالة الفورم
+        // ============================================================
+        const formData = {
+            customer: {},
+            selectedPlan: null,
+            plans: []
+        };
+
+        // ============================================================
+        // 🔌 تهيئة عميل Supabase (محمية لمنع فشل صامت)
+        // ============================================================
+        let supabase = null;
+        try {
+            if (!window.supabase || typeof window.supabase.createClient !== 'function') {
+                throw new Error('مكتبة Supabase JS لم تُحمَّل من CDN. تحقق من اتصال الإنترنت.');
+            }
+            console.log('[init] إنشاء عميل Supabase ...', { url: SUPABASE_URL });
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+            console.log('[init] ✅ تم إنشاء العميل بنجاح');
+        } catch (initErr) {
+            console.error('[init] ❌ فشل إنشاء عميل Supabase:', initErr);
+            showDiag('⚠️ فشل تهيئة Supabase: <code>' + initErr.message + '</code>', true);
+        }
+
+        // ============================================================
+        // 🚀 تحميل الباقات من Supabase
+        // ============================================================
+        async function loadPlans() {
+            console.log('[loadPlans] ▶️ بدء استعلام جدول plans ...');
+            if (!supabase) {
+                const msg = 'لم تتم تهيئة Supabase. تعذّر جلب الباقات.';
+                console.error('[loadPlans] ❌', msg);
+                document.getElementById('plansGrid').innerHTML =
+                    '<div style="color:#c33;text-align:center;padding:20px;">⚠️ ' + msg + '</div>';
+                showDiag('⚠️ ' + msg, true);
+                return;
+            }
+            try {
+                const response = await supabase
+                    .from('plans')
+                    .select('*')
+                    .eq('is_active', true)
+                    .order('sort_order');
+
+                console.log('[loadPlans] ◀️ استجابة Supabase:', response);
+
+                const { data, error, status, statusText } = response;
+                if (error) {
+                    console.error('[loadPlans] ❌ خطأ من Supabase:', error);
+                    throw new Error(
+                        'Supabase error ' + (error.code || status || '') +
+                        ': ' + (error.message || statusText || 'Unknown')
+                    );
+                }
+                if (!data || data.length === 0) {
+                    throw new Error('استعلام plans نجح لكنه أرجع 0 صف. تحقق من RLS أو is_active.');
+                }
+
+                console.log('[loadPlans] ✅ تم تحميل ' + data.length + ' باقة');
+                formData.plans = data;
+                renderPlans(data);
+                hideDiag();
+            } catch (err) {
+                console.error('[loadPlans] ❌ استثناء:', err);
+                const errMsg = err.message || JSON.stringify(err);
+                document.getElementById('plansGrid').innerHTML =
+                    '<div style="color:#c33;text-align:center;padding:20px;">⚠️ خطأ في تحميل الباقات:<br><code style="font-size:12px;">' +
+                    errMsg + '</code></div>';
+                showDiag('⚠️ فشل جلب الباقات: <code>' + errMsg + '</code>', true);
+            }
+        }
+
+        function renderPlans(plans) {
+            const grid = document.getElementById('plansGrid');
+            grid.innerHTML = plans.map((plan, idx) => `
+                <div class="plan-card" data-plan-id="${plan.id}" onclick="selectPlan('${plan.id}')">
+                    ${idx === 1 ? '<div class="plan-badge">⭐ الأكثر شعبية</div>' : ''}
+                    <div class="plan-name">${plan.name_ar} ${plan.name_en ? `<span style="color:#999;font-size:14px;font-weight:400">(${plan.name_en})</span>` : ''}</div>
+                    <div class="plan-desc">${plan.description_ar || ''}</div>
+                    <div class="plan-features">
+                        <span class="plan-tag">🍱 ${plan.meals_per_day} وجبة يومياً</span>
+                        <span class="plan-tag">⚖️ ${plan.meal_size_grams}جم</span>
+                        <span class="plan-tag">📅 ${plan.duration_days} يوم</span>
+                        ${plan.includes_carbs ? '<span class="plan-tag">🍚 كربوهيدرات</span>' : ''}
+                        ${plan.includes_snacks ? '<span class="plan-tag">🥜 سناك</span>' : ''}
+                    </div>
+                    <div class="plan-price">${plan.price_sar} <span>ريال</span></div>
+                </div>
+            `).join('');
+        }
+
+        function selectPlan(planId) {
+            formData.selectedPlan = planId;
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.toggle('selected', card.dataset.planId === planId);
+            });
+        }
+
+        // ============================================================
+        // 🔄 التنقل بين الخطوات
+        // ============================================================
+        function nextStep(currentStep) {
+            if (currentStep === 1) {
+                const fullName = document.getElementById('fullName').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+
+                if (!fullName || fullName.length < 3) {
+                    showError(1, 'الرجاء إدخال الاسم الكامل (3 أحرف على الأقل)');
+                    return;
+                }
+
+                if (!/^5[0-9]{8}$/.test(phone)) {
+                    showError(1, 'رقم الجوال يجب أن يبدأ بـ 5 ويتكون من 9 أرقام. مثال: 558612908');
+                    return;
+                }
+
+                formData.customer = {
+                    full_name: fullName,
+                    phone: '+966' + phone,
+                    email: document.getElementById('email').value.trim() || null,
+                    gender: document.getElementById('gender').value || null,
+                    city: document.getElementById('city').value.trim() || 'حائل'
+                };
+            }
+
+            if (currentStep === 2) {
+                if (!formData.selectedPlan) {
+                    showError(2, 'الرجاء اختيار باقة');
+                    return;
+                }
+                renderSummary();
+            }
+
+            switchStep('step' + (currentStep + 1));
+            document.getElementById('progressBar').style.width = ((currentStep + 1) * 33) + '%';
+        }
+
+        function prevStep(currentStep) {
+            switchStep('step' + (currentStep - 1));
+            document.getElementById('progressBar').style.width = ((currentStep - 1) * 33) + '%';
+        }
+
+        function switchStep(stepId) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(stepId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showError(stepNum, msg) {
+            const el = document.getElementById('error' + stepNum);
+            el.textContent = msg;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 5000);
+        }
+
+        function renderSummary() {
+            const plan = formData.plans.find(p => p.id === formData.selectedPlan);
+            const customer = formData.customer;
+
+            document.getElementById('summary').innerHTML = `
+                <div class="summary-row">
+                    <strong>الاسم:</strong>
+                    <span>${customer.full_name}</span>
+                </div>
+                <div class="summary-row">
+                    <strong>الجوال:</strong>
+                    <span>${customer.phone}</span>
+                </div>
+                <div class="summary-row">
+                    <strong>المدينة:</strong>
+                    <span>${customer.city}</span>
+                </div>
+                <hr class="summary-divider">
+                <div class="summary-row">
+                    <strong>الباقة:</strong>
+                    <span>${plan.name_ar}</span>
+                </div>
+                <div class="summary-row">
+                    <strong>عدد الوجبات:</strong>
+                    <span>${plan.meals_per_day * plan.duration_days} وجبة</span>
+                </div>
+                <div class="summary-row">
+                    <strong>مدة الاشتراك:</strong>
+                    <span>${plan.duration_days} يوم</span>
+                </div>
+                <div class="summary-total">
+                    <span class="summary-total-label">الإجمالي</span>
+                    <span class="summary-total-value">${plan.price_sar} ريال</span>
+                </div>
+            `;
+        }
+
+        // ============================================================
+        // 💾 الإرسال إلى Supabase
+        // ============================================================
+        async function submitForm() {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<div class="loading-spinner"></div> جاري الإرسال...';
+
+            try {
+                const plan = formData.plans.find(p => p.id === formData.selectedPlan);
+                const startDateInput = document.getElementById('startDate').value;
+                const startDate = startDateInput || new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+                const endDate = new Date(startDate);
+                endDate.setDate(endDate.getDate() + plan.duration_days);
+
+                // 1. إنشاء العميل
+                const { data: customer, error: customerError } = await supabase
+                    .from('customers')
+                    .insert([{
+                        ...formData.customer,
+                        notes: document.getElementById('notes').value.trim() || null,
+                        source: 'web_form'
+                    }])
+                    .select()
+                    .single();
+
+                if (customerError) {
+                    if (customerError.code === '23505') {
+                        throw new Error('رقم الجوال مسجل مسبقاً. تواصل معنا عبر الواتساب');
+                    }
+                    throw customerError;
+                }
+
+                // 2. إنشاء الاشتراك
+                const totalMeals = plan.meals_per_day * plan.duration_days;
+                const { error: subError } = await supabase
+                    .from('subscriptions')
+                    .insert([{
+                        customer_id: customer.id,
+                        plan_id: plan.id,
+                        start_date: startDate,
+                        end_date: endDate.toISOString().split('T')[0],
+                        total_meals: totalMeals,
+                        total_amount_sar: plan.price_sar,
+                        status: 'pending',
+                        payment_status: 'unpaid'
+                    }]);
+
+                if (subError) throw subError;
+
+                // ✅ نجاح
+                document.getElementById('newCustomerId').textContent = customer.id;
+
+                // تحديث رابط الواتساب
+                const waMsg = encodeURIComponent(`السلام عليكم، تم تسجيلي للاشتراك في باقة ${plan.name_ar}. رقم العميل: ${customer.id}`);
+                document.getElementById('whatsappBtn').href = `https://wa.me/966558612908?text=${waMsg}`;
+
+                switchStep('stepSuccess');
+                document.getElementById('progressBar').style.width = '100%';
+
+            } catch (err) {
+                console.error('خطأ:', err);
+                showError(3, err.message || 'حدث خطأ غير متوقع. حاول مرة أخرى');
+                btn.disabled = false;
+                btn.innerHTML = 'تأكيد الاشتراك ✓';
+            }
+        }
+
+        // ============================================================
+        // 🎬 التهيئة عند تحميل الصفحة
+        // ============================================================
+        loadPlans();
+
+        // تعيين التاريخ الافتراضي = غداً
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('startDate').value = tomorrow.toISOString().split('T')[0];
+        document.getElementById('startDate').min = tomorrow.toISOString().split('T')[0];
+
+        // منع إدخال أحرف غير الأرقام في الجوال
+        document.getElementById('phone').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    </script>
+</body>
+</html>
