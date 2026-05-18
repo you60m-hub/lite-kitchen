@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -222,9 +223,12 @@
         var SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
 
         var urlParams = new URLSearchParams(window.location.search);
-        var referringStaff = urlParams.get('staff');
-        if (referringStaff) {
-            console.log('[init] staff parameter:', referringStaff);
+        var refCode = (urlParams.get('ref') || '').trim().toUpperCase();
+        var staffIdParam = (urlParams.get('staff') || '').trim();
+        var referringStaff = staffIdParam || null;
+        var referringStaffName = null;
+        if (refCode || staffIdParam) {
+            console.log('[init] referral params:', { ref: refCode, staff: staffIdParam });
         }
 
         var PROGRESS = { step1: 25, step2: 50, step3: 75, stepSuccess: 100 };
@@ -577,6 +581,29 @@
             }
         }
 
+        async function resolveReferral() {
+            try {
+                if (!refCode && !staffIdParam) return;
+                var query = supabase.from('staff').select('id, full_name, referral_code').eq('is_active', true);
+                if (refCode) query = query.eq('referral_code', refCode);
+                else query = query.eq('id', staffIdParam);
+                var res = await query.maybeSingle();
+                if (res.error) { console.warn('[ref] lookup error', res.error); return; }
+                if (!res.data) { console.warn('[ref] not found'); return; }
+                referringStaff = res.data.id;
+                referringStaffName = res.data.full_name;
+                console.log('[ref] ✅ resolved', referringStaff, referringStaffName);
+
+                var banner = document.createElement('div');
+                banner.style.cssText = 'background:#e6fffa;color:#00a87a;padding:14px 16px;border-radius:12px;margin-bottom:16px;text-align:center;font-weight:600;border:2px dashed #00d4aa;font-size:14px;';
+                banner.innerHTML = '🤝 مُسجَّل عبر <strong>' + referringStaffName + '</strong>';
+                var body = document.querySelector('.form-body');
+                if (body) body.insertBefore(banner, body.firstChild);
+            } catch (e) {
+                console.warn('[ref] فشل تحديد الشريك', e);
+            }
+        }
+
         async function boot() {
             try {
                 console.log('[boot] ▶️ بدء التهيئة');
@@ -584,6 +611,7 @@
                 if (!initSupabase()) return;
                 var ok = await testConnection();
                 if (!ok) return;
+                await resolveReferral();
                 await loadPlans();
                 console.log('[boot] ✅ اكتملت التهيئة');
             } catch (e) {
