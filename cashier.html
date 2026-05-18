@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -29,6 +30,7 @@
         input, select { width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; font-family: inherit; background: #fff; color: #1a1a2e; transition: all 0.3s; }
         input:focus, select:focus { outline: none; border-color: #00d4aa; box-shadow: 0 0 0 4px rgba(0,212,170,0.1); }
         .pin-input { letter-spacing: 6px; text-align: center; font-size: 22px; font-family: 'Courier New', monospace; }
+
         .btn { padding: 14px 18px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-primary { background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%); color: white; width: 100%; }
         .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,212,170,0.4); }
@@ -36,13 +38,17 @@
         .btn-secondary { background: #f0f0f0; color: #333; }
         .btn-secondary:hover { background: #e8e8e8; }
         .btn-small { padding: 8px 14px; font-size: 13px; }
+        .btn-whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white; }
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(37,211,102,0.4); }
 
         .app-shell { display: none; max-width: 720px; margin: 0 auto; padding: 20px 16px; }
         .app-shell.active { display: block; }
-        .top-bar { background: #fff; border-radius: 18px; padding: 16px 18px; margin-bottom: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: space-between; }
-        .top-bar .who { display: flex; flex-direction: column; }
+        .top-bar { background: #fff; border-radius: 18px; padding: 16px 18px; margin-bottom: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .top-bar .who { display: flex; flex-direction: column; min-width: 0; }
         .top-bar .who-name { font-weight: 700; font-size: 15px; color: #1a1a2e; }
         .top-bar .who-role { font-size: 12px; color: #888; margin-top: 2px; }
+        .top-bar .who-badge { display: inline-block; background: #f0fdfa; color: #00a87a; font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 700; margin-top: 4px; width: fit-content; }
+        .top-bar .who-badge.partner { background: #fff3cd; color: #664d03; }
 
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
@@ -50,13 +56,39 @@
 
         .card { background: #fff; border-radius: 18px; padding: 18px; margin-bottom: 14px; box-shadow: 0 8px 25px rgba(0,0,0,0.18); }
         .card h2 { font-size: 16px; margin-bottom: 12px; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
+        .card h3 { font-size: 15px; margin-bottom: 12px; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
 
-        .commission-card { background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%); color: white; border-radius: 22px; padding: 22px; margin-bottom: 16px; box-shadow: 0 15px 40px rgba(0,212,170,0.25); }
-        .commission-card .label { font-size: 13px; opacity: 0.9; margin-bottom: 6px; }
-        .commission-card .amount { font-size: 38px; font-weight: 700; line-height: 1; }
-        .commission-card .amount span { font-size: 16px; font-weight: 400; opacity: 0.9; margin-right: 4px; }
-        .commission-card .meta { display: flex; justify-content: space-between; margin-top: 14px; font-size: 13px; opacity: 0.95; }
-        .commission-card .meta strong { display: block; font-size: 18px; font-weight: 700; margin-top: 2px; }
+        .commission-card {
+            background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 18px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 15px 40px rgba(0,212,170,0.25);
+        }
+        .commission-icon { font-size: 36px; margin-bottom: 6px; }
+        .commission-amount { font-size: 42px; font-weight: 900; margin: 6px 0; line-height: 1; }
+        .commission-amount .unit { font-size: 16px; font-weight: 400; opacity: 0.9; margin-right: 4px; }
+        .commission-label { font-size: 15px; opacity: 0.95; }
+        .commission-rate {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .stat-card { background: #fff; border-radius: 14px; padding: 16px; text-align: center; box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .stat-num { font-size: 24px; font-weight: 700; color: #00a87a; }
+        .stat-label { font-size: 12px; color: #666; margin-top: 4px; }
+
+        .stat-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+        .stat-item { background: #f8f9fa; border-radius: 12px; padding: 12px; text-align: center; }
+        .stat-item .stat-num { font-size: 22px; }
+        .stat-item .stat-label { font-size: 11px; }
 
         .goal-row { margin-bottom: 14px; }
         .goal-row:last-child { margin-bottom: 0; }
@@ -68,24 +100,73 @@
         .goal-bar .fill.done { background: linear-gradient(90deg, #00a87a, #007a59); }
         .goal-footer { font-size: 12px; color: #777; margin-top: 4px; }
 
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-        .stat-item { background: #f8f9fa; border-radius: 12px; padding: 12px; text-align: center; }
-        .stat-item .stat-num { font-size: 22px; font-weight: 700; color: #00a87a; }
-        .stat-item .stat-label { font-size: 11px; color: #666; margin-top: 4px; }
+        .target-card {
+            background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+            border: 2px solid #ffecb5;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+        .target-title { font-weight: 700; font-size: 15px; margin-bottom: 12px; color: #664d03; }
 
-        .customer-row { background: #fff; border-radius: 14px; padding: 14px; margin-bottom: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); border: 1px solid #f0f0f0; }
-        .customer-row .row-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-        .customer-row .row-top strong { font-size: 15px; color: #1a1a2e; }
-        .customer-row .row-top .price { color: #00a87a; font-weight: 700; font-size: 15px; white-space: nowrap; }
-        .customer-row .row-sub { color: #777; font-size: 12px; margin-top: 6px; direction: ltr; text-align: right; }
-        .customer-row .row-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-        .tag { background: #f0f0f0; color: #555; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 500; }
+        .referral-card, .referral-section {
+            background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
+            border: 2px dashed #00d4aa;
+            padding: 20px;
+            border-radius: 16px;
+            margin: 0 0 14px 0;
+        }
+        .referral-title { font-weight: 700; font-size: 15px; color: #00a87a; margin-bottom: 12px; }
+        .referral-link {
+            background: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            direction: ltr;
+            text-align: left;
+            margin: 10px 0;
+            border: 1px solid #d1f0e6;
+        }
+        .referral-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .referral-actions .btn { flex: 1; min-width: 130px; padding: 10px 14px; font-size: 13px; }
+        .referral-code-chip { display: inline-block; background: rgba(255,255,255,0.4); color: #00a87a; padding: 4px 10px; border-radius: 6px; font-weight: 700; font-family: 'Courier New', monospace; letter-spacing: 1px; }
+
+        .customer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            gap: 10px;
+        }
+        .customer-info { min-width: 0; flex: 1; }
+        .customer-info strong { display: block; font-size: 14px; color: #1a1a2e; }
+        .customer-info small { display: block; color: #777; font-size: 12px; margin-top: 4px; direction: ltr; text-align: right; }
+        .customer-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+        .customer-commission {
+            background: #f0fdfa;
+            color: #00a87a;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            white-space: nowrap;
+            text-align: center;
+        }
+        .customer-commission small { display: block; font-size: 10px; font-weight: 400; opacity: 0.85; margin-top: 2px; }
+        .tag { background: #f0f0f0; color: #555; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 500; display: inline-block; }
         .tag.green { background: #d1e7dd; color: #0a3622; }
         .tag.red { background: #fdecea; color: #842029; }
         .tag.amber { background: #fff3cd; color: #664d03; }
 
-        .empty { text-align: center; padding: 40px 16px; color: rgba(255,255,255,0.7); }
+        .empty { text-align: center; padding: 40px 16px; color: #888; background: #fff; border-radius: 14px; }
         .empty .ic { font-size: 48px; display: block; margin-bottom: 10px; }
+        .empty-light { color: rgba(255,255,255,0.7); background: transparent; }
 
         .search-box { display: flex; gap: 8px; }
         .search-box input { flex: 1; }
@@ -93,7 +174,7 @@
 
         .sub-card { border: 2px solid #e0e0e0; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
         .sub-card.active { border-color: #00d4aa; background: #f0fdfa; }
-        .sub-card-head { display: flex; justify-content: space-between; align-items: baseline; }
+        .sub-card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
         .sub-card-head strong { font-size: 15px; }
         .sub-card .meals-line { font-size: 13px; color: #555; margin: 10px 0; }
         .sub-card .meals-line b { color: #00a87a; font-size: 16px; }
@@ -135,13 +216,15 @@
         .nav-btn .nav-label { font-size: 12px; font-weight: 600; }
         .nav-btn.active { color: #00d4aa; }
         .nav-btn:active { background: rgba(0,212,170,0.05); }
+        .nav-btn[hidden] { display: none; }
 
-        .logout-btn { background: transparent; border: 1px solid #ddd; color: #c33; padding: 6px 12px; border-radius: 10px; font-size: 12px; cursor: pointer; font-family: inherit; }
+        .logout-btn { background: transparent; border: 1px solid #ddd; color: #c33; padding: 6px 12px; border-radius: 10px; font-size: 12px; cursor: pointer; font-family: inherit; white-space: nowrap; }
         .logout-btn:hover { background: #fff5f5; }
 
         @media (max-width: 480px) {
             .app-shell { padding: 14px 10px; }
-            .commission-card .amount { font-size: 32px; }
+            .commission-amount { font-size: 34px; }
+            .stat-num { font-size: 20px; }
             .stat-item .stat-num { font-size: 18px; }
         }
     </style>
@@ -155,7 +238,7 @@
             <h1>لوحة الكاشير</h1>
             <p>أدخل بياناتك للدخول</p>
             <div class="field-group">
-                <label>اختر الموظف</label>
+                <label>اختر الموظف / الشريك</label>
                 <select id="loginStaff">
                     <option value="">— اختر —</option>
                 </select>
@@ -173,11 +256,12 @@
             <div class="who">
                 <span class="who-name" id="whoName">—</span>
                 <span class="who-role" id="whoRole">—</span>
+                <span class="who-badge" id="whoBadge">—</span>
             </div>
             <button type="button" class="logout-btn" id="btnLogout">خروج</button>
         </div>
 
-        <div class="tab-panel active" id="tab-search">
+        <div class="tab-panel" id="tab-search">
             <div class="panel-title">🔍 بحث وخصم وجبة</div>
             <div class="card">
                 <h2>ابحث عن عميل</h2>
@@ -198,20 +282,29 @@
             <div class="panel-title">📋 عملائي هذا الشهر</div>
             <div id="myCustomersContent"><div class="loading-block"><div class="loading-spinner dark"></div></div></div>
         </div>
+
+        <div class="tab-panel" id="tab-partner">
+            <div class="panel-title">💼 أدائي وعملائي</div>
+            <div id="partnerContent"><div class="loading-block"><div class="loading-spinner dark"></div></div></div>
+        </div>
     </div>
 
     <nav class="bottom-nav" id="bottomNav">
-        <button type="button" class="nav-btn active" data-tab="search">
+        <button type="button" class="nav-btn active" data-tab="search" id="navSearch">
             <span class="nav-icon">🔍</span>
             <span class="nav-label">بحث وخصم</span>
         </button>
-        <button type="button" class="nav-btn" data-tab="performance">
+        <button type="button" class="nav-btn" data-tab="performance" id="navPerformance">
             <span class="nav-icon">📊</span>
             <span class="nav-label">أدائي</span>
         </button>
-        <button type="button" class="nav-btn" data-tab="my-customers">
+        <button type="button" class="nav-btn" data-tab="my-customers" id="navMyCustomers">
             <span class="nav-icon">📋</span>
             <span class="nav-label">عملائي</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="partner" id="navPartner" hidden>
+            <span class="nav-icon">💼</span>
+            <span class="nav-label">لوحتي</span>
         </button>
     </nav>
 
@@ -221,6 +314,7 @@
 
         var SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
         var SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+        var PUBLIC_BASE_URL = 'https://you60m-hub.github.io/lite-kitchen/';
 
         var supabase = null;
         var currentStaff = null;
@@ -270,8 +364,10 @@
         }
 
         function fmtMoney(n) {
-            var v = Number(n || 0);
-            return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+        function fmtMoneyShort(n) {
+            return Number(n || 0).toLocaleString('en-US', { maximumFractionDigits: 0 });
         }
         function fmtInt(n) { return Number(n || 0).toLocaleString('en-US'); }
         function escapeHtml(s) {
@@ -283,22 +379,30 @@
         function fmtDate(d) {
             if (!d) return '—';
             try {
-                var dt = new Date(d);
-                return dt.toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' });
+                return new Date(d).toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' });
             } catch (e) { return String(d); }
+        }
+        function isInternal(s) { return s && s.partner_type === 'internal'; }
+        function canDeduct(s) { return s && s.can_deduct_meals === true; }
+        function canViewAll(s) { return s && s.can_view_all === true; }
+
+        function buildReferralUrl(code) {
+            if (!code) return PUBLIC_BASE_URL;
+            return PUBLIC_BASE_URL + '?ref=' + encodeURIComponent(code);
         }
 
         async function loadStaffList() {
             try {
                 console.log('[loadStaffList] ▶️');
-                var res = await supabase.from('staff').select('id, full_name, role').eq('is_active', true).order('id');
+                var res = await supabase.from('staff').select('id, full_name, role, partner_type').eq('is_active', true).order('id');
                 if (res.error) throw res.error;
                 var sel = document.getElementById('loginStaff');
                 sel.innerHTML = '<option value="">— اختر —</option>';
                 (res.data || []).forEach(function (s) {
                     var opt = document.createElement('option');
                     opt.value = s.id;
-                    opt.textContent = s.full_name + ' (' + s.id + ')';
+                    var typeTag = s.partner_type && s.partner_type !== 'internal' ? ' [' + s.partner_type + ']' : '';
+                    opt.textContent = s.full_name + ' (' + s.id + ')' + typeTag;
                     sel.appendChild(opt);
                 });
                 console.log('[loadStaffList] ✅ ' + (res.data || []).length);
@@ -315,7 +419,7 @@
                 btn.innerHTML = '<div class="loading-spinner"></div> جاري التحقق...';
                 var id = document.getElementById('loginStaff').value;
                 var pin = document.getElementById('loginPin').value.trim();
-                if (!id) throw new Error('اختر الموظف');
+                if (!id) throw new Error('اختر الموظف / الشريك');
                 if (!pin) throw new Error('أدخل رمز الدخول');
 
                 console.log('[login] ▶️', id);
@@ -328,9 +432,8 @@
 
                 currentStaff = res.data;
                 try { sessionStorage.setItem('cashier_staff_id', id); } catch (e2) {}
-                console.log('[login] ✅', currentStaff.full_name);
+                console.log('[login] ✅', currentStaff.full_name, 'type=', currentStaff.partner_type);
                 showShell();
-                await Promise.all([loadPerformance(), loadMyCustomers()]);
             } catch (e) {
                 console.error('[login] ❌', e);
                 showDiag('فشل الدخول: <code>' + (e.message || e) + '</code>', true);
@@ -358,8 +461,23 @@
                 document.getElementById('appShell').classList.add('active');
                 document.getElementById('bottomNav').classList.add('active');
                 document.getElementById('whoName').textContent = currentStaff.full_name;
-                document.getElementById('whoRole').textContent = (currentStaff.role || '') + ' · ' + currentStaff.id;
-                switchTab('search');
+                document.getElementById('whoRole').textContent = (currentStaff.role || '—') + ' · ' + currentStaff.id;
+                var badge = document.getElementById('whoBadge');
+                var type = currentStaff.partner_type || 'internal';
+                badge.textContent = type === 'internal' ? '🏢 موظف داخلي' : '🤝 شريك (' + type + ')';
+                badge.classList.toggle('partner', !isInternal(currentStaff));
+
+                var internal = isInternal(currentStaff);
+                document.getElementById('navSearch').hidden = !internal;
+                document.getElementById('navPerformance').hidden = !internal;
+                document.getElementById('navMyCustomers').hidden = !internal;
+                document.getElementById('navPartner').hidden = internal;
+
+                if (internal) {
+                    switchTab('search');
+                } else {
+                    switchTab('partner');
+                }
             } catch (e) {
                 console.error('[showShell]', e);
                 showDiag('فشل عرض اللوحة: ' + e.message, true);
@@ -377,10 +495,85 @@
                 window.scrollTo(0, 0);
                 console.log('[tab] ▶️', tabName);
                 if (tabName === 'performance') loadPerformance();
-                if (tabName === 'my-customers') loadMyCustomers();
+                else if (tabName === 'my-customers') loadMyCustomers();
+                else if (tabName === 'partner') loadPartnerDashboard();
             } catch (e) {
                 console.error('[switchTab]', e);
                 showDiag('فشل تبديل التاب: ' + e.message, true);
+            }
+        }
+
+        function renderReferralBlock(targetEl, options) {
+            try {
+                var code = currentStaff.referral_code || '';
+                var link = buildReferralUrl(code);
+                var compact = options && options.compact;
+                var html =
+                    '<div class="' + (compact ? 'referral-section' : 'referral-card') + '">' +
+                        '<div class="referral-title">🔗 رابطك الخاص للإحالة ' +
+                            (code ? '<span class="referral-code-chip">' + escapeHtml(code) + '</span>' : '') +
+                        '</div>' +
+                        (code
+                            ? '<div class="referral-link">' + escapeHtml(link) + '</div>' +
+                              '<div class="referral-actions">' +
+                                  '<button type="button" class="btn btn-secondary btn-small" data-action="copy-ref">📋 نسخ الرابط</button>' +
+                                  '<button type="button" class="btn btn-whatsapp btn-small" data-action="share-ref">💬 مشاركة على واتساب</button>' +
+                              '</div>'
+                            : '<div style="color:#888;font-size:13px;">لم يُحدَّد كود إحالة لك بعد. تواصل مع الإدارة لإضافة <code>referral_code</code>.</div>'
+                        ) +
+                    '</div>';
+                targetEl.innerHTML = html + targetEl.innerHTML;
+
+                var copyBtn = targetEl.querySelector('[data-action="copy-ref"]');
+                var shareBtn = targetEl.querySelector('[data-action="share-ref"]');
+                if (copyBtn) copyBtn.addEventListener('click', function () { copyReferralLink(link); });
+                if (shareBtn) shareBtn.addEventListener('click', function () { shareOnWhatsApp(link, code); });
+            } catch (e) {
+                console.error('[renderReferralBlock]', e);
+            }
+        }
+
+        function copyReferralLink(link) {
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(link).then(function () {
+                        showDiag('✅ تم نسخ الرابط', false);
+                    }).catch(function (e) { fallbackCopy(link); });
+                } else {
+                    fallbackCopy(link);
+                }
+            } catch (e) {
+                console.error('[copy]', e);
+                showDiag('فشل النسخ: ' + e.message, true);
+            }
+        }
+
+        function fallbackCopy(text) {
+            try {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showDiag('✅ تم نسخ الرابط', false);
+            } catch (e) {
+                showDiag('انسخ يدوياً: <code>' + escapeHtml(text) + '</code>', true);
+            }
+        }
+
+        function shareOnWhatsApp(link, code) {
+            try {
+                var msg =
+                    '🥗 اشترك في باقات الوجبات الصحية معنا!\n\n' +
+                    'سجّل عبر الرابط الخاص بي:\n' + link + '\n\n' +
+                    (code ? 'أو استخدم الكود: ' + code : '');
+                window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+            } catch (e) {
+                console.error('[share]', e);
+                showDiag('فشل فتح واتساب: ' + e.message, true);
             }
         }
 
@@ -395,9 +588,8 @@
                     .eq('staff_id', currentStaff.id)
                     .maybeSingle();
                 if (res.error) throw res.error;
-                var p = res.data || {};
-                renderPerformance(p);
-                console.log('[perf] ✅', p);
+                renderPerformance(res.data || {});
+                console.log('[perf] ✅');
             } catch (e) {
                 console.error('[perf] ❌', e);
                 box.innerHTML = '<div class="card" style="color:#c33;">⚠️ تعذّر تحميل الأداء: <code>' + escapeHtml(e.message || '') + '</code></div>';
@@ -417,12 +609,10 @@
 
             var html =
                 '<div class="commission-card">' +
-                    '<div class="label">💰 عمولتك هذا الشهر</div>' +
-                    '<div class="amount">' + fmtMoney(commission) + ' <span>ريال</span></div>' +
-                    '<div class="meta">' +
-                        '<span>نسبة العمولة<strong>' + rate.toFixed(2) + '%</strong></span>' +
-                        '<span>الإيرادات<strong>' + fmtMoney(revenue) + ' ر.س</strong></span>' +
-                    '</div>' +
+                    '<div class="commission-icon">💰</div>' +
+                    '<div class="commission-amount">' + fmtMoney(commission) + ' <span class="unit">ريال</span></div>' +
+                    '<div class="commission-label">عمولتك هذا الشهر</div>' +
+                    '<div class="commission-rate">نسبة عمولتك: ' + rate.toFixed(2) + '%</div>' +
                 '</div>' +
 
                 '<div class="card">' +
@@ -441,14 +631,19 @@
 
                 '<div class="card">' +
                     '<h2>📈 ملخص الشهر</h2>' +
-                    '<div class="stat-grid">' +
+                    '<div class="stat-grid-3">' +
                         '<div class="stat-item"><div class="stat-num">' + fmtInt(custCount) + '</div><div class="stat-label">عميل جديد</div></div>' +
                         '<div class="stat-item"><div class="stat-num">' + fmtInt(subCount) + '</div><div class="stat-label">اشتراك</div></div>' +
-                        '<div class="stat-item"><div class="stat-num">' + fmtMoney(revenue) + '</div><div class="stat-label">إيراد ر.س</div></div>' +
+                        '<div class="stat-item"><div class="stat-num">' + fmtMoneyShort(revenue) + '</div><div class="stat-label">إيراد ر.س</div></div>' +
                     '</div>' +
                 '</div>';
 
-            document.getElementById('perfContent').innerHTML = html;
+            var box = document.getElementById('perfContent');
+            box.innerHTML = html;
+
+            var refHost = document.createElement('div');
+            box.appendChild(refHost);
+            renderReferralBlock(refHost, { compact: true });
         }
 
         async function loadMyCustomers() {
@@ -484,23 +679,132 @@
                 var payTag = r.payment_status === 'paid' ? '<span class="tag green">مدفوع</span>'
                     : '<span class="tag red">غير مدفوع</span>';
                 return '<div class="customer-row">' +
-                    '<div class="row-top">' +
+                    '<div class="customer-info">' +
                         '<strong>' + escapeHtml(r.customer_name || '—') + '</strong>' +
-                        '<span class="price">' + fmtMoney(r.total_amount_sar) + ' ر.س</span>' +
+                        '<small>' + escapeHtml(r.customer_phone || '') + ' · ' + escapeHtml(r.subscription_id || '') + '</small>' +
+                        '<div class="customer-tags">' +
+                            '<span class="tag">' + escapeHtml(r.plan_name || '') + '</span>' +
+                            statusTag + payTag +
+                            '<span class="tag">' + fmtDate(r.created_at) + '</span>' +
+                        '</div>' +
                     '</div>' +
-                    '<div class="row-sub">' + escapeHtml(r.customer_phone || '') + ' · ' + escapeHtml(r.subscription_id || '') + '</div>' +
-                    '<div class="row-tags">' +
-                        '<span class="tag">' + escapeHtml(r.plan_name || '') + '</span>' +
-                        statusTag + payTag +
-                        '<span class="tag green">عمولتك: ' + fmtMoney(r.commission) + ' ر.س</span>' +
-                        '<span class="tag">' + fmtDate(r.created_at) + '</span>' +
-                    '</div>' +
+                    '<div class="customer-commission">' + fmtMoney(r.commission) + '<small>ر.س عمولة</small></div>' +
                 '</div>';
             }).join('');
             document.getElementById('myCustomersContent').innerHTML = html;
         }
 
+        async function loadPartnerDashboard() {
+            var box = document.getElementById('partnerContent');
+            try {
+                box.innerHTML = '<div class="loading-block"><div class="loading-spinner dark"></div></div>';
+                console.log('[partner] ▶️', currentStaff.id);
+
+                var statsRes = await supabase
+                    .from('partner_monthly_stats')
+                    .select('*')
+                    .eq('partner_id', currentStaff.id)
+                    .maybeSingle();
+                if (statsRes.error) throw statsRes.error;
+                var stats = statsRes.data || {};
+
+                var custRes = await supabase
+                    .from('partner_customers')
+                    .select('*')
+                    .eq('partner_id', currentStaff.id)
+                    .order('registered_at', { ascending: false });
+                if (custRes.error) throw custRes.error;
+
+                renderPartnerDashboard(stats, custRes.data || []);
+                console.log('[partner] ✅ stats:', stats, 'customers:', (custRes.data || []).length);
+            } catch (e) {
+                console.error('[partner] ❌', e);
+                box.innerHTML = '<div class="card" style="color:#c33;">⚠️ تعذّر تحميل اللوحة: <code>' + escapeHtml(e.message || '') + '</code></div>';
+            }
+        }
+
+        function renderPartnerDashboard(s, customers) {
+            var commission = Number(s.this_month_commission || 0);
+            var rate = Number(s.commission_rate || currentStaff.commission_rate || 0);
+            var thisMonthCust = Number(s.this_month_customers || 0);
+            var thisMonthRev = Number(s.this_month_revenue || 0);
+            var totalCust = Number(s.total_customers || 0);
+            var totalCommission = Number(s.total_commission || 0);
+            var targetCust = Number(s.monthly_target_customers || currentStaff.monthly_target_customers || 0);
+            var pct = targetCust > 0 ? Math.min(100, (thisMonthCust / targetCust) * 100) : 0;
+
+            var html =
+                '<div class="commission-card">' +
+                    '<div class="commission-icon">💰</div>' +
+                    '<div class="commission-amount">' + fmtMoney(commission) + ' <span class="unit">ريال</span></div>' +
+                    '<div class="commission-label">عمولتك هذا الشهر</div>' +
+                    '<div class="commission-rate">نسبة عمولتك: ' + rate.toFixed(2) + '%</div>' +
+                '</div>' +
+
+                '<div class="stats-row">' +
+                    '<div class="stat-card">' +
+                        '<div class="stat-num">' + fmtInt(thisMonthCust) + '</div>' +
+                        '<div class="stat-label">عملاء هذا الشهر</div>' +
+                    '</div>' +
+                    '<div class="stat-card">' +
+                        '<div class="stat-num">' + fmtMoneyShort(thisMonthRev) + '</div>' +
+                        '<div class="stat-label">إيرادات (ر.س)</div>' +
+                    '</div>' +
+                '</div>' +
+
+                '<div class="target-card">' +
+                    '<div class="target-title">🎯 هدف الشهر: ' + targetCust + ' عميل</div>' +
+                    '<div class="goal-bar"><div class="fill ' + (pct >= 100 ? 'done' : '') + '" style="width: ' + pct + '%"></div></div>' +
+                    '<div class="goal-footer">' + Math.round(pct) + '% (' + thisMonthCust + '/' + targetCust + ')</div>' +
+                '</div>' +
+
+                '<div class="card">' +
+                    '<h3>📊 الإجمالي الكلي</h3>' +
+                    '<div class="stat-grid-3">' +
+                        '<div class="stat-item"><div class="stat-num">' + fmtInt(totalCust) + '</div><div class="stat-label">إجمالي العملاء</div></div>' +
+                        '<div class="stat-item"><div class="stat-num">' + fmtInt(s.total_subscriptions || 0) + '</div><div class="stat-label">إجمالي الاشتراكات</div></div>' +
+                        '<div class="stat-item"><div class="stat-num">' + fmtMoneyShort(totalCommission) + '</div><div class="stat-label">إجمالي العمولة</div></div>' +
+                    '</div>' +
+                '</div>';
+
+            var refHostHtml = '<div id="partnerRefHost"></div>';
+            var listHtml =
+                '<div class="card">' +
+                    '<h3>📋 عملاؤك</h3>' +
+                    '<div id="partnerCustomersList"></div>' +
+                '</div>';
+
+            document.getElementById('partnerContent').innerHTML = html + refHostHtml + listHtml;
+
+            renderReferralBlock(document.getElementById('partnerRefHost'), { compact: false });
+
+            var listBox = document.getElementById('partnerCustomersList');
+            if (!customers.length) {
+                listBox.innerHTML = '<div style="text-align:center;color:#999;padding:20px;font-size:13px;">لا عملاء بعد. شارك رابطك! 🤝</div>';
+            } else {
+                listBox.innerHTML = customers.map(function (c) {
+                    var statusTag = c.subscription_status === 'active' ? '<span class="tag green">فعّال</span>'
+                        : c.subscription_status === 'pending' ? '<span class="tag amber">قيد التفعيل</span>'
+                        : c.subscription_status === 'cancelled' ? '<span class="tag red">ملغي</span>'
+                        : '<span class="tag">' + escapeHtml(c.subscription_status || '') + '</span>';
+                    var payTag = c.payment_status === 'paid' ? '<span class="tag green">مدفوع</span>' : '<span class="tag red">غير مدفوع</span>';
+                    return '<div class="customer-row">' +
+                        '<div class="customer-info">' +
+                            '<strong>' + escapeHtml(c.customer_name || 'لم يُسجَّل بعد') + '</strong>' +
+                            '<small>' + escapeHtml(c.customer_phone || '') + ' · ' + escapeHtml(c.plan_name || '') + '</small>' +
+                            '<div class="customer-tags">' + statusTag + payTag + '<span class="tag">' + fmtDate(c.registered_at) + '</span></div>' +
+                        '</div>' +
+                        '<div class="customer-commission">' + fmtMoney(c.commission_amount) + '<small>ر.س</small></div>' +
+                    '</div>';
+                }).join('');
+            }
+        }
+
         async function doSearch() {
+            if (!canViewAll(currentStaff)) {
+                showDiag('غير مصرّح لك بالبحث في جميع العملاء', true);
+                return;
+            }
             var btn = document.getElementById('btnSearch');
             var out = document.getElementById('searchResult');
             try {
@@ -522,7 +826,7 @@
                 var cust = await query.maybeSingle();
                 if (cust.error) throw cust.error;
                 if (!cust.data) {
-                    out.innerHTML = '<div class="card" style="color:#777; text-align: center;">لم يُعثر على عميل بهذه القيمة</div>';
+                    out.innerHTML = '<div style="color:#777; text-align: center; padding: 20px;">لم يُعثر على عميل بهذه القيمة</div>';
                     return;
                 }
 
@@ -537,7 +841,7 @@
                 console.log('[search] ✅', cust.data.id);
             } catch (e) {
                 console.error('[search] ❌', e);
-                out.innerHTML = '<div class="card" style="color:#c33;">⚠️ ' + escapeHtml(e.message || 'خطأ غير متوقع') + '</div>';
+                out.innerHTML = '<div style="color:#c33;padding:14px;">⚠️ ' + escapeHtml(e.message || 'خطأ غير متوقع') + '</div>';
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = 'بحث';
@@ -545,13 +849,13 @@
         }
 
         function renderCustomerResult(cust, subs) {
-            var html = '<div class="card">' +
-                '<h2>👤 ' + escapeHtml(cust.full_name) + '</h2>' +
-                '<div style="font-size:13px;color:#666;">' + escapeHtml(cust.id) + ' · ' + escapeHtml(cust.phone) + (cust.city ? ' · ' + escapeHtml(cust.city) : '') + '</div>' +
+            var html = '<div style="background:#f8f9fa;padding:14px;border-radius:12px;margin-bottom:12px;">' +
+                '<strong style="font-size:15px;">👤 ' + escapeHtml(cust.full_name) + '</strong>' +
+                '<div style="font-size:13px;color:#666;margin-top:4px;direction:ltr;text-align:right;">' + escapeHtml(cust.id) + ' · ' + escapeHtml(cust.phone) + (cust.city ? ' · ' + escapeHtml(cust.city) : '') + '</div>' +
             '</div>';
 
             if (!subs.length) {
-                html += '<div class="card" style="color:#777; text-align:center;">لا توجد اشتراكات لهذا العميل</div>';
+                html += '<div style="color:#777; text-align:center;padding:18px;">لا توجد اشتراكات لهذا العميل</div>';
             } else {
                 html += subs.map(function (s) {
                     var planName = s.plans && s.plans.name_ar ? s.plans.name_ar : s.plan_id;
@@ -560,14 +864,19 @@
                         : s.status === 'cancelled' ? '<span class="tag red">ملغي</span>'
                         : '<span class="tag">' + escapeHtml(s.status || '') + '</span>';
                     var payTag = s.payment_status === 'paid' ? '<span class="tag green">مدفوع</span>' : '<span class="tag red">غير مدفوع</span>';
-                    var canDeduct = s.status === 'active' && (s.remaining_meals || 0) > 0;
-                    var btnHtml = canDeduct
-                        ? '<button type="button" class="btn btn-primary btn-small" data-sub="' + escapeHtml(s.id) + '" data-action="deduct">−1 وجبة</button>'
-                        : '<button type="button" class="btn btn-secondary btn-small" disabled>غير متاح</button>';
-                    return '<div class="sub-card ' + (canDeduct ? 'active' : '') + '">' +
+                    var deductOk = s.status === 'active' && (s.remaining_meals || 0) > 0 && canDeduct(currentStaff);
+                    var btnHtml;
+                    if (!canDeduct(currentStaff)) {
+                        btnHtml = '<button type="button" class="btn btn-secondary btn-small" disabled>غير مصرّح بالخصم</button>';
+                    } else if (deductOk) {
+                        btnHtml = '<button type="button" class="btn btn-primary btn-small" data-sub="' + escapeHtml(s.id) + '" data-action="deduct">−1 وجبة</button>';
+                    } else {
+                        btnHtml = '<button type="button" class="btn btn-secondary btn-small" disabled>غير متاح</button>';
+                    }
+                    return '<div class="sub-card ' + (deductOk ? 'active' : '') + '">' +
                         '<div class="sub-card-head"><strong>' + escapeHtml(s.id) + ' · ' + escapeHtml(planName) + '</strong>' + statusTag + '</div>' +
                         '<div class="meals-line">المتبقي: <b>' + fmtInt(s.remaining_meals) + '</b> / ' + fmtInt(s.total_meals) + ' وجبة · مُستهلَك: ' + fmtInt(s.consumed_meals) + '</div>' +
-                        '<div class="row-tags">' + payTag + '<span class="tag">' + fmtDate(s.start_date) + ' → ' + fmtDate(s.end_date) + '</span></div>' +
+                        '<div class="customer-tags">' + payTag + '<span class="tag">' + fmtDate(s.start_date) + ' → ' + fmtDate(s.end_date) + '</span></div>' +
                         '<div style="margin-top:10px; display:flex; justify-content:flex-end;">' + btnHtml + '</div>' +
                     '</div>';
                 }).join('');
@@ -581,6 +890,7 @@
 
         async function deductMeal(subId, cust) {
             try {
+                if (!canDeduct(currentStaff)) throw new Error('غير مصرّح لك بخصم الوجبات');
                 if (!confirm('تأكيد خصم وجبة من الاشتراك ' + subId + '؟')) return;
                 console.log('[deduct] ▶️', subId);
 
@@ -646,7 +956,6 @@
                 if (res.error || !res.data) return false;
                 currentStaff = res.data;
                 showShell();
-                await Promise.all([loadPerformance(), loadMyCustomers()]);
                 console.log('[restore] ✅', savedId);
                 return true;
             } catch (e) {
