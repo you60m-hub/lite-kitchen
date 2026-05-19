@@ -733,12 +733,18 @@
             var targetCust = Number(s.monthly_target_customers || currentStaff.monthly_target_customers || 0);
             var pct = targetCust > 0 ? Math.min(100, (thisMonthCust / targetCust) * 100) : 0;
 
+            var discountPct = Number(currentStaff.discount_percentage || 0);
+            var discountActive = currentStaff.discount_active === true && discountPct > 0;
+
             var html =
                 '<div class="commission-card">' +
                     '<div class="commission-icon">💰</div>' +
                     '<div class="commission-amount">' + fmtMoney(commission) + ' <span class="unit">ريال</span></div>' +
                     '<div class="commission-label">عمولتك هذا الشهر</div>' +
                     '<div class="commission-rate">نسبة عمولتك: ' + rate.toFixed(2) + '%</div>' +
+                    (discountActive
+                        ? '<div class="commission-rate" style="margin-right:8px;">🎁 خصم متابعيك: ' + discountPct + '%</div>'
+                        : '') +
                 '</div>' +
 
                 '<div class="stats-row">' +
