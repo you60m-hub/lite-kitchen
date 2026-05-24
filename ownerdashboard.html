@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0a1f15">
+    <title>لوحة المالك — Lite Kitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: linear-gradient(135deg, #0a1f15 0%, #1a3d2a 100%); min-height: 100vh; color: #e8f5ee; padding: 20px; padding-bottom: 60px; }
+        body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(251,191,36,0.12) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+        .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.25); }
+
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
+        .brand-side { display: flex; align-items: center; gap: 12px; }
+        .logo { font-size: 22px; font-weight: 900; color: #4ade80; }
+        .owner-badge { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #1a1100; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; box-shadow: 0 6px 18px rgba(251,191,36,0.35); }
+        .btn { padding: 10px 14px; border: none; border-radius: 10px; font-family: inherit; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.25s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn.ghost { background: rgba(255,255,255,0.1); color: #e8f5ee; border: 1px solid rgba(255,255,255,0.15); }
+        .btn.danger { background: rgba(239,68,68,0.18); color: #fca5a5; border: 1px solid rgba(239,68,68,0.35); }
+        .btn.primary { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); color: #0a1f15; }
+        .btn.gold { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #1a1100; }
+        .btn.gold:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(251,191,36,0.35); }
+        .btn.whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #fff; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 18px; }
+        .stat { padding: 18px; text-align: center; }
+        .stat .icon { font-size: 26px; margin-bottom: 4px; }
+        .stat .num { font-size: 28px; font-weight: 900; color: #fbbf24; margin: 4px 0; }
+        .stat .num.green { color: #4ade80; }
+        .stat .lbl { font-size: 12px; color: rgba(232,245,238,0.7); font-weight: 500; }
+
+        .section { margin-bottom: 18px; }
+        .section h3 { font-size: 16px; margin-bottom: 12px; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+
+        .link-box { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+        .link-box.gold { border-color: rgba(251,191,36,0.35); background: linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(245,158,11,0.04) 100%); }
+        .link-box .desc { font-size: 12px; color: rgba(232,245,238,0.7); margin-bottom: 8px; }
+        .link-value { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px 12px; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; direction: ltr; text-align: left; color: #fef3c7; margin-bottom: 10px; }
+        .link-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        thead th { background: rgba(0,0,0,0.3); color: #fbbf24; padding: 10px 8px; text-align: right; font-weight: 700; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        tbody td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
+        .tbl-wrap { overflow-x: auto; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; }
+        .tag.green { background: rgba(74,222,128,0.18); color: #4ade80; }
+        .tag.red { background: rgba(239,68,68,0.18); color: #fca5a5; }
+        .tag.amber { background: rgba(251,191,36,0.18); color: #fbbf24; }
+        .tag.gray { background: rgba(148,163,184,0.18); color: #cbd5e1; }
+        .tag.gold { background: rgba(251,191,36,0.25); color: #fef3c7; border: 1px solid rgba(251,191,36,0.4); }
+        .tag.code { font-family: 'Courier New', monospace; }
+
+        details { margin-top: 6px; cursor: pointer; }
+        details summary { font-size: 12px; color: #4ade80; padding: 4px 0; }
+        details[open] summary { margin-bottom: 6px; }
+        .detail-grid { background: rgba(0,0,0,0.35); border-radius: 8px; padding: 10px; font-size: 12px; }
+        .detail-grid div { padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.08); }
+        .detail-grid div:last-child { border-bottom: none; }
+        .detail-grid b { color: #fbbf24; display: block; font-size: 11px; margin-bottom: 2px; }
+        .detail-grid code { background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 11px; word-break: break-all; direction: ltr; display: inline-block; }
+
+        .empty { text-align: center; padding: 30px 12px; color: rgba(232,245,238,0.5); }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px); background: rgba(74,222,128,0.95); color: #0a1f15; padding: 12px 22px; border-radius: 12px; font-weight: 700; font-size: 14px; opacity: 0; transition: all 0.3s; z-index: 2000; box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.err { background: rgba(239,68,68,0.95); color: #fff; }
+
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .glass { padding: 14px; }
+            thead th, tbody td { padding: 8px 6px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast"></div>
+    <div class="container">
+        <div class="header glass">
+            <div class="brand-side">
+                <span class="logo">🌿</span>
+                <div>
+                    <div style="font-weight:800;font-size:15px;">لوحة المالك</div>
+                    <div style="font-size:12px;color:rgba(232,245,238,0.6);" id="whoName">—</div>
+                </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <span class="owner-badge">👑 OWNER</span>
+                <button type="button" class="btn danger" id="logoutBtn">خروج</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="glass stat"><div class="icon">👥</div><div class="num" id="statTotalCust">—</div><div class="lbl">إجمالي العملاء</div></div>
+            <div class="glass stat"><div class="icon">✅</div><div class="num green" id="statActiveSubs">—</div><div class="lbl">اشتراكات نشطة</div></div>
+            <div class="glass stat"><div class="icon">💰</div><div class="num" id="statMonthRev">—</div><div class="lbl">إيرادات الشهر (ر.س)</div></div>
+            <div class="glass stat"><div class="icon">📊</div><div class="num green" id="statCommissionsDue">—</div><div class="lbl">عمولات مستحقة</div></div>
+        </div>
+
+        <div class="section glass">
+            <h3>👑 روابطك الخاصة</h3>
+            <div class="link-box gold">
+                <div class="desc"><strong>رابط التسجيل المباشر (بدون عمولة)</strong> — لتسجيل عملائك مباشرة دون احتساب عمولة لأي شريك</div>
+                <div class="link-value" id="directLink">—</div>
+                <div class="link-actions">
+                    <button type="button" class="btn gold" id="copyDirect">📋 نسخ</button>
+                    <button type="button" class="btn whatsapp" id="shareDirect">💬 مشاركة عبر واتساب</button>
+                </div>
+            </div>
+            <div class="link-box">
+                <div class="desc">رابط لوحة المالك الخاص — احفظه للوصول السريع</div>
+                <div class="link-value" id="ownerDashLink">—</div>
+                <div class="link-actions">
+                    <button type="button" class="btn primary" id="copyOwnerDash">📋 نسخ</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section glass">
+            <h3>👥 إدارة الشركاء</h3>
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الاسم الحقيقي</th>
+                            <th>الرمز</th>
+                            <th>النوع</th>
+                            <th>المستوى</th>
+                            <th>L/A/E %</th>
+                            <th>الخصوصية</th>
+                            <th>التفاصيل</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staffBody">
+                        <tr><td colspan="7" class="empty">جاري التحميل...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section glass">
+            <h3>🆕 آخر 10 اشتراكات</h3>
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>العميل</th>
+                            <th>الجوال</th>
+                            <th>الباقة</th>
+                            <th>المبلغ</th>
+                            <th>الشريك</th>
+                            <th>الحالة</th>
+                            <th>الدفع</th>
+                            <th>التاريخ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subsBody">
+                        <tr><td colspan="8" class="empty">جاري التحميل...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+        const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
+        const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const staffId = sessionStorage.getItem('lk_staff_id');
+        const staffRole = sessionStorage.getItem('lk_staff_role');
+        const staffName = sessionStorage.getItem('lk_staff_name') || '';
+        const accessKey = sessionStorage.getItem('lk_access_key') || '';
+
+        if (!staffId || staffRole !== 'owner') window.location.href = 'partners.html';
+
+        document.getElementById('whoName').textContent = staffName || staffId;
+        document.getElementById('directLink').textContent = SITE_BASE + '/?ref=YOUSEF';
+        document.getElementById('ownerDashLink').textContent = accessKey ? (SITE_BASE + '/owner-dashboard.html?key=' + accessKey) : '—';
+
+        function fmt(n, d) { return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
+        function fmtDate(d) {
+            if (!d) return '—';
+            try { return new Date(d).toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (e) { return String(d); }
+        }
+        function escapeHtml(s) {
+            if (s === null || s === undefined) return '';
+            return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+        }
+        function toast(msg, kind) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.remove('err');
+            if (kind === 'error') el.classList.add('err');
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 2500);
+        }
+        function copy(text, label) {
+            if (!text || text === '—') return;
+            try {
+                if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => toast(label || '✅ تم النسخ', 'success'));
+                else {
+                    const ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+                    toast(label || '✅ تم النسخ', 'success');
+                }
+            } catch (e) { toast('فشل النسخ', 'error'); }
+        }
+
+        async function loadStats() {
+            try {
+                const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0,0,0,0);
+                const monthIso = monthStart.toISOString();
+
+                const [custCount, activeCount, monthRevenue] = await Promise.all([
+                    sb.from('customers').select('id', { count: 'exact', head: true }),
+                    sb.from('subscriptions').select('id', { count: 'exact', head: true }).eq('status', 'active'),
+                    sb.from('subscriptions').select('total_amount_sar').gte('created_at', monthIso).eq('payment_status', 'paid')
+                ]);
+
+                document.getElementById('statTotalCust').textContent = fmt(custCount.count || 0);
+                document.getElementById('statActiveSubs').textContent = fmt(activeCount.count || 0);
+                const rev = (monthRevenue.data || []).reduce((a, r) => a + Number(r.total_amount_sar || 0), 0);
+                document.getElementById('statMonthRev').textContent = fmt(rev, 0);
+                document.getElementById('statCommissionsDue').textContent = '—';
+            } catch (e) {
+                console.error('[loadStats]', e);
+                toast('فشل تحميل الإحصائيات', 'error');
+            }
+        }
+
+        let staffMap = {};
+        async function loadStaff() {
+            try {
+                const { data: meRow } = await sb.from('staff').select('*').eq('id', staffId).maybeSingle();
+                const { data, error } = await sb.from('staff').select('*').eq('is_active', true).neq('id', staffId).order('created_at');
+                if (error) throw error;
+                const rows = data || [];
+                rows.forEach(s => staffMap[s.id] = s);
+                if (meRow) staffMap[staffId] = meRow;
+
+                const body = document.getElementById('staffBody');
+                if (!rows.length) { body.innerHTML = '<tr><td colspan="7" class="empty">لا شركاء آخرون</td></tr>'; return; }
+
+                body.innerHTML = rows.map(s => {
+                    const isKitchen = s.role === 'kitchen' || s.id === 'STAFF-002';
+                    const dashFile = isKitchen ? 'kitchen-dashboard.html' : 'partner-dashboard.html';
+                    const refUrl = s.referral_code ? SITE_BASE + '/?ref=' + s.referral_code : '—';
+                    const dashUrl = s.access_key ? SITE_BASE + '/' + dashFile + '?key=' + s.access_key : '—';
+                    const typeLabel = s.partner_type === 'internal' ? '🏢 داخلي' : (s.partner_type ? '🤝 ' + s.partner_type : '—');
+                    const privacy = s.is_hidden ? '<span class="tag amber">مخفي</span>' : '<span class="tag gray">ظاهر</span>';
+                    return '<tr>' +
+                        '<td><strong>' + escapeHtml(s.full_name) + '</strong><br><small style="color:rgba(232,245,238,0.5);">' + escapeHtml(s.id) + '</small></td>' +
+                        '<td><span class="tag code">' + escapeHtml(s.display_label || s.referral_code || s.id) + '</span></td>' +
+                        '<td>' + typeLabel + '</td>' +
+                        '<td><span class="tag gold">' + escapeHtml(s.tier || '—') + '</span></td>' +
+                        '<td style="font-family:Courier New,monospace;">' + (s.commission_lite||0) + '/' + (s.commission_athlete||0) + '/' + (s.commission_elite||0) + '</td>' +
+                        '<td>' + privacy + '</td>' +
+                        '<td><details><summary>عرض التفاصيل</summary>' +
+                            '<div class="detail-grid">' +
+                                '<div><b>رابط التسويق</b><code>' + escapeHtml(refUrl) + '</code></div>' +
+                                '<div><b>رابط لوحته</b><code>' + escapeHtml(dashUrl) + '</code></div>' +
+                                '<div><b>المفتاح السري</b><code>' + escapeHtml(s.access_key || '—') + '</code></div>' +
+                                '<div><b>الجوال</b><code>' + escapeHtml(s.phone || '—') + '</code></div>' +
+                            '</div>' +
+                        '</details></td>' +
+                    '</tr>';
+                }).join('');
+            } catch (e) {
+                console.error('[loadStaff]', e);
+                document.getElementById('staffBody').innerHTML = '<tr><td colspan="7" class="empty">⚠️ ' + escapeHtml(e.message || '') + '</td></tr>';
+            }
+        }
+
+        async function loadRecentSubs() {
+            try {
+                const { data, error } = await sb
+                    .from('subscriptions')
+                    .select('id, created_at, status, payment_status, total_amount_sar, registered_by, plan_id, customer_id, customers!inner(full_name, phone), plans(name_ar, name_en)')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                if (error) throw error;
+                const rows = data || [];
+                const body = document.getElementById('subsBody');
+                if (!rows.length) { body.innerHTML = '<tr><td colspan="8" class="empty">لا اشتراكات بعد</td></tr>'; return; }
+                body.innerHTML = rows.map(r => {
+                    const cust = r.customers || {};
+                    const plan = r.plans || {};
+                    const partner = r.registered_by ? (staffMap[r.registered_by]?.full_name || r.registered_by) : '—';
+                    const status = r.status === 'active' ? '<span class="tag green">فعّال</span>'
+                        : r.status === 'pending' ? '<span class="tag amber">معلّق</span>'
+                        : r.status === 'cancelled' ? '<span class="tag red">ملغي</span>'
+                        : '<span class="tag gray">' + (r.status || '—') + '</span>';
+                    const pay = r.payment_status === 'paid' ? '<span class="tag green">مدفوع</span>' : '<span class="tag red">غير مدفوع</span>';
+                    return '<tr>' +
+                        '<td>' + escapeHtml(cust.full_name || '—') + '</td>' +
+                        '<td style="font-family:Courier New,monospace;direction:ltr;">' + escapeHtml(cust.phone || '—') + '</td>' +
+                        '<td>' + escapeHtml(plan.name_ar || plan.name_en || r.plan_id || '—') + '</td>' +
+                        '<td>' + fmt(r.total_amount_sar, 2) + '</td>' +
+                        '<td>' + escapeHtml(partner) + '</td>' +
+                        '<td>' + status + '</td>' +
+                        '<td>' + pay + '</td>' +
+                        '<td>' + fmtDate(r.created_at) + '</td>' +
+                    '</tr>';
+                }).join('');
+            } catch (e) {
+                console.error('[loadRecentSubs]', e);
+                document.getElementById('subsBody').innerHTML = '<tr><td colspan="8" class="empty">⚠️ ' + escapeHtml(e.message || '') + '</td></tr>';
+            }
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.clear();
+            window.location.href = 'partners.html';
+        });
+        document.getElementById('copyDirect').addEventListener('click', () => copy(document.getElementById('directLink').textContent, '✅ تم نسخ رابط التسجيل المباشر'));
+        document.getElementById('copyOwnerDash').addEventListener('click', () => copy(document.getElementById('ownerDashLink').textContent, '✅ تم نسخ رابط اللوحة'));
+        document.getElementById('shareDirect').addEventListener('click', () => {
+            const url = document.getElementById('directLink').textContent;
+            const msg = '🥗 اشترك في باقات الوجبات الصحية من Lite Kitchen!\n' + url;
+            window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+        });
+
+        (async () => { await loadStats(); await loadStaff(); await loadRecentSubs(); })();
+    </script>
+</body>
+</html>

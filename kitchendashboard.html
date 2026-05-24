@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#1a1100">
+    <title>لوحة المطبخ — Lite Kitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: linear-gradient(135deg, #1a1100 0%, #3d2a0a 100%); min-height: 100vh; color: #fef3c7; padding: 20px; padding-bottom: 60px; }
+        body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(251,191,36,0.15) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+        body::after { content: ''; position: fixed; bottom: -200px; left: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(239,68,68,0.12) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+        .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+        .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.3); }
+
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
+        .brand-side { display: flex; align-items: center; gap: 12px; }
+        .logo { font-size: 24px; font-weight: 900; color: #fbbf24; }
+        .chef-badge { background: linear-gradient(135deg, #fbbf24 0%, #ef4444 100%); color: #fff; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; box-shadow: 0 6px 18px rgba(251,191,36,0.35); }
+        .btn { padding: 10px 14px; border: none; border-radius: 10px; font-family: inherit; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.25s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn.ghost { background: rgba(255,255,255,0.1); color: #fef3c7; border: 1px solid rgba(255,255,255,0.15); }
+        .btn.danger { background: rgba(239,68,68,0.22); color: #fecaca; border: 1px solid rgba(239,68,68,0.4); }
+        .btn.primary { background: linear-gradient(135deg, #fbbf24 0%, #ef4444 100%); color: #fff; }
+        .btn.primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(239,68,68,0.4); }
+        .btn.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn.cancel { background: rgba(148,163,184,0.2); color: #cbd5e1; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
+        .stat { padding: 18px; text-align: center; }
+        .stat .icon { font-size: 28px; margin-bottom: 4px; }
+        .stat .num { font-size: 32px; font-weight: 900; color: #fbbf24; margin: 4px 0; }
+        .stat .num.red { color: #f87171; }
+        .stat .lbl { font-size: 12px; color: rgba(254,243,199,0.7); font-weight: 500; }
+
+        .section { margin-bottom: 18px; }
+        .section h3 { font-size: 16px; margin-bottom: 12px; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+        .link-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(251,191,36,0.25); border-radius: 12px; padding: 14px; }
+        .link-box .desc { font-size: 12px; color: rgba(254,243,199,0.7); margin-bottom: 8px; }
+        .link-value { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px 12px; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; direction: ltr; text-align: left; color: #fef3c7; margin-bottom: 10px; }
+
+        .customer-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .customer-card.low { border-color: rgba(239,68,68,0.4); background: linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(255,255,255,0.04) 100%); }
+        .customer-info { flex: 1; min-width: 200px; }
+        .customer-name { font-weight: 800; font-size: 15px; color: #fef3c7; }
+        .customer-meta { font-size: 12px; color: rgba(254,243,199,0.65); margin-top: 4px; }
+        .customer-meta code { font-family: 'Courier New', monospace; }
+        .meals-badge { background: rgba(251,191,36,0.18); color: #fbbf24; padding: 6px 14px; border-radius: 999px; font-weight: 800; font-size: 13px; white-space: nowrap; }
+        .meals-badge.low { background: rgba(239,68,68,0.22); color: #fca5a5; }
+        .customer-actions { display: flex; gap: 8px; }
+
+        .empty { text-align: center; padding: 30px 12px; color: rgba(254,243,199,0.5); }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal { background: linear-gradient(135deg, #1a1100 0%, #3d2a0a 100%); border: 1px solid rgba(251,191,36,0.3); border-radius: 18px; padding: 26px; max-width: 420px; width: 100%; box-shadow: 0 25px 70px rgba(0,0,0,0.5); }
+        .modal h2 { font-size: 18px; margin-bottom: 12px; color: #fbbf24; }
+        .modal p { font-size: 14px; color: rgba(254,243,199,0.85); line-height: 1.7; margin-bottom: 8px; }
+        .modal .name-strong { color: #fbbf24; font-weight: 700; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+        .modal-actions .btn { flex: 1; }
+
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px); background: rgba(74,222,128,0.95); color: #0a1f15; padding: 12px 22px; border-radius: 12px; font-weight: 800; font-size: 14px; opacity: 0; transition: all 0.3s; z-index: 2000; box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.err { background: rgba(239,68,68,0.95); color: #fff; }
+
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .glass { padding: 14px; }
+            .stat .num { font-size: 26px; }
+            .customer-card { flex-direction: column; align-items: stretch; }
+            .customer-actions { width: 100%; }
+            .customer-actions .btn { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast"></div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <h2>تأكيد خصم وجبة</h2>
+            <p>سيتم خصم وجبة من اشتراك <span class="name-strong" id="modalName">—</span>.</p>
+            <p style="font-size:12px;color:rgba(254,243,199,0.6);">هذه العملية ستُسجَّل في سجل الوجبات ولا يمكن التراجع عنها.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn cancel" id="modalCancel">إلغاء</button>
+                <button type="button" class="btn primary" id="modalConfirm">تأكيد الخصم</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header glass">
+            <div class="brand-side">
+                <span class="logo">🌿</span>
+                <div>
+                    <div style="font-weight:800;font-size:15px;">لوحة المطبخ</div>
+                    <div style="font-size:12px;color:rgba(254,243,199,0.6);">إدارة الوجبات وخصمها</div>
+                </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <span class="chef-badge">👨‍🍳 الشيف أحمد</span>
+                <button type="button" class="btn danger" id="logoutBtn">خروج</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="glass stat"><div class="icon">✅</div><div class="num" id="statActive">—</div><div class="lbl">اشتراكات نشطة</div></div>
+            <div class="glass stat"><div class="icon">🍽️</div><div class="num" id="statToday">—</div><div class="lbl">وجبات قُدِّمت اليوم</div></div>
+            <div class="glass stat"><div class="icon">📦</div><div class="num red" id="statRemaining">—</div><div class="lbl">إجمالي الوجبات المتبقية</div></div>
+        </div>
+
+        <div class="section glass">
+            <h3>🔐 رابط لوحة المطبخ الخاص</h3>
+            <div class="link-box">
+                <div class="desc">احفظ هذا الرابط للوصول السريع — لا تشاركه</div>
+                <div class="link-value" id="kitchenDashLink">—</div>
+                <button type="button" class="btn primary" id="copyDash">📋 نسخ الرابط</button>
+            </div>
+        </div>
+
+        <div class="section glass">
+            <h3>👥 العملاء النشطون</h3>
+            <div id="customersList">
+                <div class="empty">جاري التحميل...</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+        const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
+        const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const staffId = sessionStorage.getItem('lk_staff_id');
+        const staffRole = sessionStorage.getItem('lk_staff_role');
+        const accessKey = sessionStorage.getItem('lk_access_key') || '';
+
+        if (!staffId || (staffRole !== 'kitchen' && staffId !== 'STAFF-002' && staffRole !== 'owner')) {
+            window.location.href = 'partners.html';
+        }
+
+        document.getElementById('kitchenDashLink').textContent = accessKey ? (SITE_BASE + '/kitchen-dashboard.html?key=' + accessKey) : '—';
+
+        function fmt(n) { return Number(n || 0).toLocaleString('en-US'); }
+        function maskPhone(p) { if (!p) return '—'; return '••••' + String(p).slice(-4); }
+        function escapeHtml(s) {
+            if (s === null || s === undefined) return '';
+            return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+        }
+        function toast(msg, kind) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.remove('err');
+            if (kind === 'error') el.classList.add('err');
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 2500);
+        }
+        function copy(text, label) {
+            if (!text || text === '—') return;
+            try {
+                if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => toast(label || '✅ تم النسخ', 'success'));
+                else {
+                    const ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+                    toast(label || '✅ تم النسخ', 'success');
+                }
+            } catch (e) { toast('فشل النسخ', 'error'); }
+        }
+
+        async function loadStats() {
+            try {
+                const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+                const todayIso = todayStart.toISOString();
+
+                const [activeRes, todayRes, remainingRes] = await Promise.all([
+                    sb.from('subscriptions').select('id', { count: 'exact', head: true }).eq('status', 'active'),
+                    sb.from('meal_logs').select('id', { count: 'exact', head: true }).gte('consumed_at', todayIso),
+                    sb.from('subscriptions').select('remaining_meals').eq('status', 'active')
+                ]);
+
+                document.getElementById('statActive').textContent = fmt(activeRes.count || 0);
+                document.getElementById('statToday').textContent = fmt(todayRes.count || 0);
+                const totalRem = (remainingRes.data || []).reduce((a, r) => a + Number(r.remaining_meals || 0), 0);
+                document.getElementById('statRemaining').textContent = fmt(totalRem);
+            } catch (e) {
+                console.error('[stats]', e);
+            }
+        }
+
+        async function loadCustomers() {
+            try {
+                const { data, error } = await sb
+                    .from('subscriptions')
+                    .select('id, customer_id, total_meals, consumed_meals, remaining_meals, status, end_date, customers!inner(full_name, phone), plans(name_ar, meals_per_day)')
+                    .eq('status', 'active')
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+
+                const rows = data || [];
+                const box = document.getElementById('customersList');
+                if (!rows.length) { box.innerHTML = '<div class="empty">لا توجد اشتراكات نشطة</div>'; return; }
+
+                box.innerHTML = rows.map(r => {
+                    const cust = r.customers || {};
+                    const plan = r.plans || {};
+                    const remaining = Number(r.remaining_meals || 0);
+                    const low = remaining <= 3;
+                    return '<div class="customer-card' + (low ? ' low' : '') + '" data-sub="' + escapeHtml(r.id) + '" data-name="' + escapeHtml(cust.full_name || '') + '">' +
+                        '<div class="customer-info">' +
+                            '<div class="customer-name">' + escapeHtml(cust.full_name || '—') + '</div>' +
+                            '<div class="customer-meta">' +
+                                escapeHtml(plan.name_ar || '—') + ' · ' +
+                                '<code>' + maskPhone(cust.phone) + '</code> · ' +
+                                escapeHtml(r.id) +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="meals-badge' + (low ? ' low' : '') + '">' + remaining + ' / ' + fmt(r.total_meals) + ' وجبة</div>' +
+                        '<div class="customer-actions">' +
+                            '<button type="button" class="btn primary" data-action="deduct"' + (remaining <= 0 ? ' disabled' : '') + '>−1 وجبة</button>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+
+                box.querySelectorAll('[data-action="deduct"]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const card = btn.closest('.customer-card');
+                        openModal(card.getAttribute('data-sub'), card.getAttribute('data-name'));
+                    });
+                });
+            } catch (e) {
+                console.error('[loadCustomers]', e);
+                document.getElementById('customersList').innerHTML = '<div class="empty">⚠️ ' + escapeHtml(e.message || 'تعذّر التحميل') + '</div>';
+            }
+        }
+
+        let pendingSubId = null;
+        function openModal(subId, name) {
+            pendingSubId = subId;
+            document.getElementById('modalName').textContent = name || subId;
+            document.getElementById('modal').classList.add('show');
+        }
+        function closeModal() {
+            pendingSubId = null;
+            document.getElementById('modal').classList.remove('show');
+        }
+
+        async function deductMeal() {
+            const btn = document.getElementById('modalConfirm');
+            const originalLabel = btn.innerHTML;
+            try {
+                if (!pendingSubId) throw new Error('لا يوجد اشتراك محدد');
+                btn.disabled = true;
+                btn.innerHTML = 'جاري الخصم...';
+
+                const subId = pendingSubId;
+                const ins = await sb.from('meal_logs').insert({
+                    subscription_id: subId,
+                    meal_type: 'lunch',
+                    logged_by: 'الشيف أحمد',
+                    logged_by_id: 'STAFF-002',
+                    verification_method: 'manual'
+                });
+                if (ins.error) throw ins.error;
+
+                const cur = await sb.from('subscriptions').select('consumed_meals').eq('id', subId).single();
+                if (cur.error) throw cur.error;
+                const newVal = Number(cur.data?.consumed_meals || 0) + 1;
+                const upd = await sb.from('subscriptions').update({ consumed_meals: newVal }).eq('id', subId);
+                if (upd.error) throw upd.error;
+
+                closeModal();
+                toast('✅ تم خصم وجبة بنجاح', 'success');
+                await Promise.all([loadStats(), loadCustomers()]);
+            } catch (e) {
+                console.error('[deduct]', e);
+                toast('❌ فشل: ' + (e.message || e), 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalLabel;
+            }
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.clear();
+            window.location.href = 'partners.html';
+        });
+        document.getElementById('copyDash').addEventListener('click', () => copy(document.getElementById('kitchenDashLink').textContent, '✅ تم نسخ رابط اللوحة'));
+        document.getElementById('modalCancel').addEventListener('click', closeModal);
+        document.getElementById('modalConfirm').addEventListener('click', deductMeal);
+        document.getElementById('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+
+        (async () => { await loadStats(); await loadCustomers(); })();
+    </script>
+</body>
+</html>

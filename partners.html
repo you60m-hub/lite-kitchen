@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0a1f15">
+    <title>دخول الشركاء — Lite Kitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body {
+            background: linear-gradient(135deg, #0a1f15 0%, #1a3d2a 100%);
+            min-height: 100vh;
+            color: #e8f5ee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74,222,128,0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -200px;
+            left: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(74,222,128,0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .login-card {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 36px 28px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.4);
+            position: relative;
+            z-index: 1;
+        }
+        .brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: #4ade80;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: rgba(232,245,238,0.7);
+            font-weight: 500;
+        }
+
+        .field-group { margin-bottom: 16px; }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: rgba(232,245,238,0.85);
+            font-size: 13px;
+        }
+        select, input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.25s;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #4ade80;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 0 0 4px rgba(74,222,128,0.15);
+        }
+        select { cursor: pointer; }
+        select option { background: #0a1f15; color: #fff; }
+        input::placeholder { color: rgba(232,245,238,0.4); }
+        .access-key { letter-spacing: 2px; font-family: 'Courier New', monospace; }
+
+        .btn {
+            width: 100%;
+            padding: 15px 18px;
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #0a1f15;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.25s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(74,222,128,0.35);
+        }
+        .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .msg {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            display: none;
+            line-height: 1.5;
+        }
+        .msg.show { display: block; }
+        .msg.error { background: rgba(239,68,68,0.18); border: 1px solid rgba(239,68,68,0.4); color: #fecaca; }
+        .msg.success { background: rgba(74,222,128,0.18); border: 1px solid rgba(74,222,128,0.4); color: #bbf7d0; }
+        .msg code { background: rgba(0,0,0,0.3); padding: 1px 5px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 12px; }
+
+        .support {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 12px;
+            color: rgba(232,245,238,0.55);
+        }
+        .support a { color: #4ade80; text-decoration: none; }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(10,31,21,0.25);
+            border-top-color: #0a1f15;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="brand">
+            <div class="logo">🌿 Lite Kitchen</div>
+            <div class="subtitle">دخول الشركاء</div>
+        </div>
+
+        <div class="field-group">
+            <label for="identitySelect">اختر رمزك</label>
+            <select id="identitySelect">
+                <option value="">— جاري التحميل —</option>
+            </select>
+        </div>
+
+        <div class="field-group">
+            <label for="accessKey">المفتاح السري</label>
+            <input type="password" id="accessKey" class="access-key" placeholder="••••••••••••••" autocomplete="off" autocapitalize="off" spellcheck="false">
+        </div>
+
+        <button type="button" class="btn" id="loginBtn">دخول</button>
+
+        <div class="msg" id="msgBox"></div>
+
+        <div class="support">
+            تواصل مع الإدارة: <a href="https://wa.me/966558612908" target="_blank" rel="noopener">واتساب الدعم</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+        const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+
+        const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const $select = document.getElementById('identitySelect');
+        const $key = document.getElementById('accessKey');
+        const $btn = document.getElementById('loginBtn');
+        const $msg = document.getElementById('msgBox');
+
+        function showMsg(text, kind) {
+            try {
+                $msg.innerHTML = text;
+                $msg.classList.remove('error', 'success');
+                $msg.classList.add(kind || 'error');
+                $msg.classList.add('show');
+            } catch (e) { console.error('[showMsg]', e); }
+        }
+        function hideMsg() {
+            try { $msg.classList.remove('show'); } catch (e) {}
+        }
+
+        async function loadIdentities() {
+            try {
+                console.log('[partners] ▶️ loading identities');
+                const { data, error } = await sb.from('staff_public_list').select('*');
+                if (error) throw error;
+                const items = (data || []).slice().sort(() => Math.random() - 0.5);
+                $select.innerHTML = '<option value="">— اختر رمزك —</option>';
+                items.forEach(row => {
+                    const opt = document.createElement('option');
+                    opt.value = row.staff_id || row.id || '';
+                    opt.textContent = row.display_label || row.label || row.staff_id || '';
+                    $select.appendChild(opt);
+                });
+                console.log('[partners] ✅ loaded', items.length);
+            } catch (e) {
+                console.error('[partners] ❌ identities', e);
+                $select.innerHTML = '<option value="">— تعذّر التحميل —</option>';
+                showMsg('تعذّر تحميل القائمة: <code>' + (e.message || e) + '</code>', 'error');
+            }
+        }
+
+        async function doLogin() {
+            const originalLabel = $btn.innerHTML;
+            try {
+                hideMsg();
+                $btn.disabled = true;
+                $btn.innerHTML = '<span class="spinner"></span> جاري التحقق...';
+
+                const selectedId = $select.value;
+                const key = ($key.value || '').trim();
+                if (!selectedId) throw new Error('اختر رمزك من القائمة');
+                if (!key) throw new Error('أدخل المفتاح السري');
+
+                console.log('[partners] ▶️ authenticate', selectedId);
+                const { data, error } = await sb.rpc('authenticate_by_key', { p_key: key });
+                if (error) throw error;
+                const auth = Array.isArray(data) ? data[0] : data;
+                if (!auth || !auth.staff_id) throw new Error('المفتاح غير صحيح');
+
+                if (auth.staff_id !== selectedId) {
+                    throw new Error('المفتاح لا يطابق الرمز المختار');
+                }
+
+                sessionStorage.setItem('lk_staff_id', auth.staff_id);
+                sessionStorage.setItem('lk_staff_name', auth.full_name || '');
+                sessionStorage.setItem('lk_staff_label', auth.display_label || '');
+                sessionStorage.setItem('lk_staff_role', auth.role || '');
+                sessionStorage.setItem('lk_partner_type', auth.partner_type || '');
+                sessionStorage.setItem('lk_is_hidden', String(auth.is_hidden));
+                sessionStorage.setItem('lk_access_key', key);
+
+                showMsg('✅ تم التحقق — جاري التوجيه...', 'success');
+                console.log('[partners] ✅', auth.staff_id, auth.role);
+
+                let target = 'partner-dashboard.html';
+                if (auth.role === 'owner') target = 'owner-dashboard.html';
+                else if (auth.role === 'kitchen' || auth.staff_id === 'STAFF-002') target = 'kitchen-dashboard.html';
+                setTimeout(() => { window.location.href = target; }, 400);
+            } catch (e) {
+                console.error('[partners] ❌', e);
+                showMsg('⚠️ ' + (e.message || 'فشل الدخول'), 'error');
+                $btn.disabled = false;
+                $btn.innerHTML = originalLabel;
+            }
+        }
+
+        $btn.addEventListener('click', doLogin);
+        $key.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+        $select.addEventListener('change', hideMsg);
+
+        loadIdentities();
+    </script>
+</body>
+</html>

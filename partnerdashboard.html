@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0a1f15">
+    <title>لوحة الشريك — Lite Kitchen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: linear-gradient(135deg, #0a1f15 0%, #1a3d2a 100%); min-height: 100vh; color: #e8f5ee; padding: 20px; padding-bottom: 60px; }
+        body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(74,222,128,0.15) 0%, transparent 70%); pointer-events: none; z-index: 0; }
+        .container { max-width: 980px; margin: 0 auto; position: relative; z-index: 1; }
+
+        .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.25); }
+
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
+        .brand-side { display: flex; align-items: center; gap: 12px; }
+        .logo { font-size: 22px; font-weight: 900; color: #4ade80; }
+        .badge-label { background: rgba(74,222,128,0.2); border: 1px solid rgba(74,222,128,0.4); color: #4ade80; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; font-family: 'Courier New', monospace; letter-spacing: 1px; }
+        .header-actions { display: flex; gap: 8px; }
+        .btn { padding: 10px 14px; border: none; border-radius: 10px; font-family: inherit; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.25s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn.ghost { background: rgba(255,255,255,0.1); color: #e8f5ee; border: 1px solid rgba(255,255,255,0.15); }
+        .btn.ghost:hover { background: rgba(255,255,255,0.18); }
+        .btn.danger { background: rgba(239,68,68,0.18); color: #fca5a5; border: 1px solid rgba(239,68,68,0.35); }
+        .btn.primary { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); color: #0a1f15; }
+        .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(74,222,128,0.3); }
+        .btn.whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #fff; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
+        .stat { padding: 18px; text-align: center; }
+        .stat .icon { font-size: 24px; margin-bottom: 4px; }
+        .stat .num { font-size: 26px; font-weight: 900; color: #4ade80; margin: 4px 0; }
+        .stat .num.small { font-size: 18px; }
+        .stat .lbl { font-size: 12px; color: rgba(232,245,238,0.7); font-weight: 500; }
+
+        .section { margin-bottom: 18px; }
+        .section h3 { font-size: 16px; margin-bottom: 12px; color: #4ade80; display: flex; align-items: center; gap: 8px; }
+
+        .link-box { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+        .link-box .desc { font-size: 12px; color: rgba(232,245,238,0.65); margin-bottom: 8px; }
+        .link-value { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px 12px; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; direction: ltr; text-align: left; color: #d1fae5; margin-bottom: 10px; }
+        .link-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        thead th { background: rgba(0,0,0,0.3); color: #4ade80; padding: 10px 8px; text-align: right; font-weight: 700; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        tbody td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        tbody tr:hover { background: rgba(255,255,255,0.03); }
+        .tbl-wrap { overflow-x: auto; }
+
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; }
+        .tag.green { background: rgba(74,222,128,0.18); color: #4ade80; }
+        .tag.red { background: rgba(239,68,68,0.18); color: #fca5a5; }
+        .tag.amber { background: rgba(251,191,36,0.18); color: #fbbf24; }
+        .tag.gray { background: rgba(148,163,184,0.18); color: #cbd5e1; }
+
+        .empty { text-align: center; padding: 30px 12px; color: rgba(232,245,238,0.5); }
+
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px); background: rgba(74,222,128,0.95); color: #0a1f15; padding: 12px 22px; border-radius: 12px; font-weight: 700; font-size: 14px; opacity: 0; transition: all 0.3s; z-index: 2000; box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .toast.err { background: rgba(239,68,68,0.95); color: #fff; }
+
+        @media (max-width: 480px) {
+            body { padding: 12px; }
+            .glass { padding: 14px; }
+            .stat .num { font-size: 22px; }
+            thead th, tbody td { padding: 8px 6px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast"></div>
+    <div class="container">
+        <div class="header glass">
+            <div class="brand-side">
+                <span class="logo">🌿</span>
+                <div>
+                    <div style="font-weight:800;font-size:15px;" data-ar="لوحة الشريك" data-en="Partner Dashboard">لوحة الشريك</div>
+                    <div class="badge-label" id="badgeLabel">★ —</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="btn ghost" id="langBtn">EN</button>
+                <button type="button" class="btn danger" id="logoutBtn" data-ar="خروج" data-en="Logout">خروج</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="glass stat"><div class="icon">👥</div><div class="num" id="statClients">—</div><div class="lbl" data-ar="عملاء هذا الشهر" data-en="Clients this month">عملاء هذا الشهر</div></div>
+            <div class="glass stat"><div class="icon">💰</div><div class="num small" id="statCommission">—</div><div class="lbl" data-ar="عمولة الشهر (ر.س)" data-en="Monthly commission (SAR)">عمولة الشهر (ر.س)</div></div>
+            <div class="glass stat"><div class="icon">📈</div><div class="num small" id="statRevenue">—</div><div class="lbl" data-ar="إيرادات الشهر (ر.س)" data-en="Monthly revenue (SAR)">إيرادات الشهر (ر.س)</div></div>
+            <div class="glass stat"><div class="icon">⭐</div><div class="num small" id="statTier">—</div><div class="lbl" data-ar="مستواك ومعدلات العمولة" data-en="Your tier & rates">مستواك ومعدلات العمولة</div></div>
+        </div>
+
+        <div class="section glass">
+            <h3>🔗 <span data-ar="رابطك للتسويق" data-en="Your marketing link">رابطك للتسويق</span></h3>
+            <div class="link-box">
+                <div class="desc" data-ar="شارك هذا الرابط مع متابعيك. كل عميل يسجل عبره يُحسب لك." data-en="Share this link. Every signup is attributed to you.">شارك هذا الرابط مع متابعيك. كل عميل يسجل عبره يُحسب لك.</div>
+                <div class="link-value" id="refLink">—</div>
+                <div class="link-actions">
+                    <button type="button" class="btn primary" id="copyRef">📋 <span data-ar="نسخ" data-en="Copy">نسخ</span></button>
+                    <button type="button" class="btn whatsapp" id="shareRef">💬 <span data-ar="مشاركة عبر واتساب" data-en="Share on WhatsApp">مشاركة عبر واتساب</span></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section glass">
+            <h3>🔐 <span data-ar="رابط لوحتك الشخصية" data-en="Your private dashboard link">رابط لوحتك الشخصية</span></h3>
+            <div class="link-box">
+                <div class="desc" data-ar="احفظ هذا الرابط للوصول السريع — لا تشاركه مع أحد." data-en="Save this link for quick access — do NOT share it.">احفظ هذا الرابط للوصول السريع — لا تشاركه مع أحد.</div>
+                <div class="link-value" id="dashLink">—</div>
+                <div class="link-actions">
+                    <button type="button" class="btn primary" id="copyDash">📋 <span data-ar="نسخ" data-en="Copy">نسخ</span></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section glass">
+            <h3>👥 <span data-ar="عملاؤك" data-en="Your clients">عملاؤك</span></h3>
+            <div class="tbl-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th data-ar="العميل" data-en="Client">العميل</th>
+                            <th data-ar="الجوال" data-en="Phone">الجوال</th>
+                            <th data-ar="الباقة" data-en="Plan">الباقة</th>
+                            <th data-ar="المبلغ" data-en="Amount">المبلغ</th>
+                            <th data-ar="الحالة" data-en="Status">الحالة</th>
+                            <th data-ar="الدفع" data-en="Payment">الدفع</th>
+                            <th data-ar="التاريخ" data-en="Date">التاريخ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientsBody">
+                        <tr><td colspan="7" class="empty" data-ar="جاري التحميل..." data-en="Loading...">جاري التحميل...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+        const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
+        const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const staffId = sessionStorage.getItem('lk_staff_id');
+        const staffName = sessionStorage.getItem('lk_staff_name') || '';
+        const staffLabel = sessionStorage.getItem('lk_staff_label') || '';
+        const accessKey = sessionStorage.getItem('lk_access_key') || '';
+        if (!staffId) { window.location.href = 'partners.html'; }
+
+        let lang = sessionStorage.getItem('lk_lang') || 'ar';
+        if (staffId === 'STAFF-009' && !sessionStorage.getItem('lk_lang')) lang = 'en';
+
+        function applyLang() {
+            try {
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+                    el.textContent = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+                });
+                document.getElementById('langBtn').textContent = lang === 'ar' ? 'EN' : 'AR';
+            } catch (e) { console.error('[lang]', e); }
+        }
+
+        function toast(msg, kind) {
+            try {
+                const el = document.getElementById('toast');
+                el.textContent = msg;
+                el.classList.remove('err');
+                if (kind === 'error') el.classList.add('err');
+                el.classList.add('show');
+                setTimeout(() => el.classList.remove('show'), 2500);
+            } catch (e) { console.error('[toast]', e); }
+        }
+
+        function fmt(n, d) {
+            return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
+        }
+        function maskPhone(p) {
+            if (!p) return '—';
+            const s = String(p);
+            return '••••' + s.slice(-4);
+        }
+        function fmtDate(d) {
+            if (!d) return '—';
+            try {
+                return new Date(d).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch (e) { return String(d); }
+        }
+        function planTier(plan) {
+            if (!plan) return 'lite';
+            const id = String(plan.id || '').toUpperCase();
+            if (id.includes('ELITE')) return 'elite';
+            if (id.includes('ATHLETE')) return 'athlete';
+            return 'lite';
+        }
+
+        let staffRow = null;
+        async function loadStaff() {
+            try {
+                const { data, error } = await sb.from('staff').select('id, full_name, referral_code, tier, commission_lite, commission_athlete, commission_elite').eq('id', staffId).maybeSingle();
+                if (error) throw error;
+                staffRow = data;
+                document.getElementById('badgeLabel').textContent = staffLabel || ('★ ' + staffId);
+
+                const cL = Number(data?.commission_lite || 0);
+                const cA = Number(data?.commission_athlete || 0);
+                const cE = Number(data?.commission_elite || 0);
+                const tier = data?.tier || '—';
+                document.getElementById('statTier').textContent = tier + ' · ' + cL + '/' + cA + '/' + cE + '%';
+
+                const ref = data?.referral_code || '';
+                document.getElementById('refLink').textContent = ref ? (SITE_BASE + '/?ref=' + ref) : '—';
+                document.getElementById('dashLink').textContent = accessKey ? (SITE_BASE + '/partner-dashboard.html?key=' + accessKey) : '—';
+            } catch (e) {
+                console.error('[loadStaff]', e);
+                toast('فشل تحميل بياناتك', 'error');
+            }
+        }
+
+        async function loadClients() {
+            try {
+                const monthStart = new Date();
+                monthStart.setDate(1);
+                monthStart.setHours(0, 0, 0, 0);
+
+                const { data, error } = await sb
+                    .from('subscriptions')
+                    .select('id, created_at, status, total_amount_sar, payment_status, plan_id, customer_id, customers!inner(full_name, phone, city), plans(id, name_ar, name_en, price_sar)')
+                    .eq('registered_by', staffId)
+                    .order('created_at', { ascending: false });
+                if (error) throw error;
+
+                const rows = data || [];
+                let monthCount = 0, monthRevenue = 0, monthCommission = 0;
+                const cL = Number(staffRow?.commission_lite || 0);
+                const cA = Number(staffRow?.commission_athlete || 0);
+                const cE = Number(staffRow?.commission_elite || 0);
+
+                rows.forEach(r => {
+                    const created = r.created_at ? new Date(r.created_at) : null;
+                    if (created && created >= monthStart) {
+                        monthCount++;
+                        if (r.payment_status === 'paid') {
+                            const amt = Number(r.total_amount_sar || 0);
+                            monthRevenue += amt;
+                            const tier = planTier(r.plans);
+                            const rate = tier === 'elite' ? cE : (tier === 'athlete' ? cA : cL);
+                            monthCommission += amt * (rate / 100);
+                        }
+                    }
+                });
+
+                document.getElementById('statClients').textContent = fmt(monthCount);
+                document.getElementById('statRevenue').textContent = fmt(monthRevenue, 0);
+                document.getElementById('statCommission').textContent = fmt(monthCommission, 2);
+
+                const body = document.getElementById('clientsBody');
+                if (!rows.length) {
+                    body.innerHTML = '<tr><td colspan="7" class="empty">' + (lang === 'ar' ? 'لا عملاء بعد. شارك رابطك!' : 'No clients yet. Share your link!') + '</td></tr>';
+                    return;
+                }
+                body.innerHTML = rows.map(r => {
+                    const cust = r.customers || {};
+                    const plan = r.plans || {};
+                    const status = r.status === 'active' ? '<span class="tag green">' + (lang === 'ar' ? 'فعّال' : 'Active') + '</span>'
+                        : r.status === 'pending' ? '<span class="tag amber">' + (lang === 'ar' ? 'معلّق' : 'Pending') + '</span>'
+                        : r.status === 'cancelled' ? '<span class="tag red">' + (lang === 'ar' ? 'ملغي' : 'Cancelled') + '</span>'
+                        : '<span class="tag gray">' + (r.status || '—') + '</span>';
+                    const pay = r.payment_status === 'paid' ? '<span class="tag green">' + (lang === 'ar' ? 'مدفوع' : 'Paid') + '</span>'
+                        : '<span class="tag red">' + (lang === 'ar' ? 'غير مدفوع' : 'Unpaid') + '</span>';
+                    return '<tr>' +
+                        '<td>' + (cust.full_name || '—') + '</td>' +
+                        '<td style="font-family:Courier New,monospace;direction:ltr;">' + maskPhone(cust.phone) + '</td>' +
+                        '<td>' + (lang === 'ar' ? (plan.name_ar || plan.id || '—') : (plan.name_en || plan.id || '—')) + '</td>' +
+                        '<td>' + fmt(r.total_amount_sar, 2) + ' ر.س</td>' +
+                        '<td>' + status + '</td>' +
+                        '<td>' + pay + '</td>' +
+                        '<td>' + fmtDate(r.created_at) + '</td>' +
+                    '</tr>';
+                }).join('');
+            } catch (e) {
+                console.error('[loadClients]', e);
+                document.getElementById('clientsBody').innerHTML = '<tr><td colspan="7" class="empty">⚠️ ' + (e.message || 'تعذّر التحميل') + '</td></tr>';
+            }
+        }
+
+        function copy(text, label) {
+            if (!text || text === '—') return;
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => toast(label || '✅ تم النسخ', 'success'));
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+                    toast(label || '✅ تم النسخ', 'success');
+                }
+            } catch (e) { console.error('[copy]', e); toast('فشل النسخ', 'error'); }
+        }
+
+        document.getElementById('langBtn').addEventListener('click', () => {
+            lang = lang === 'ar' ? 'en' : 'ar';
+            sessionStorage.setItem('lk_lang', lang);
+            applyLang();
+            loadClients();
+        });
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            sessionStorage.clear();
+            window.location.href = 'partners.html';
+        });
+        document.getElementById('copyRef').addEventListener('click', () => copy(document.getElementById('refLink').textContent, lang === 'ar' ? '✅ تم نسخ رابط التسويق' : '✅ Marketing link copied'));
+        document.getElementById('shareRef').addEventListener('click', () => {
+            const url = document.getElementById('refLink').textContent;
+            if (!url || url === '—') return;
+            const msg = lang === 'ar'
+                ? '🥗 اشترك في باقات الوجبات الصحية معنا!\n' + url
+                : '🥗 Subscribe to our healthy meal plans!\n' + url;
+            window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+        });
+        document.getElementById('copyDash').addEventListener('click', () => copy(document.getElementById('dashLink').textContent, lang === 'ar' ? '✅ تم نسخ رابط اللوحة' : '✅ Dashboard link copied'));
+
+        applyLang();
+        (async () => { await loadStaff(); await loadClients(); })();
+        setInterval(loadClients, 30000);
+    </script>
+</body>
+</html>
