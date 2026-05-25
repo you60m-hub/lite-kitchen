@@ -3,267 +3,667 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>🌿 Lite Kitchen — اشتراكك يبدأ من هنا</title>
-<meta name="description" content="رشاقتك. اختيارك. ثلث طعامك. اشترك في وجبات صحية محسوبة من 8PM Healthy في حائل.">
-<meta name="theme-color" content="#4ade80">
+<title>Lite Kitchen — اشتراك الوجبات الصحية | 8PM Healthy</title>
+<meta name="description" content="رشاقتك. اختيارك. ثلث طعامك. اشترك في وجبات صحية محسوبة بدقة من 8PM Healthy في حائل.">
+<meta name="theme-color" content="#E0596C">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: 'Segoe UI', 'Tahoma', system-ui, sans-serif;
-    background: linear-gradient(180deg, #0a1f15 0%, #1a3d2a 100%);
-    color: #fff;
-    min-height: 100vh;
-    overflow-x: hidden;
+  :root {
+    /* === Sunbaked Palette === */
+    --beige-top:   #F4ECD8;
+    --beige-mid:   #EFE4CE;
+    --beige-bot:   #E5D6B6;
+
+    --watermelon:  #E0596C;
+    --coral:       #F08A5D;
+    --olive:       #6F7C3E;
+    --pink:        #E89BA6;
+
+    --ink:         #2A241C;
+    --ink-soft:    #5A4F42;
+    --ink-mute:    #8A7E6B;
+
+    --card:        #FBF3DD;
+    --card-edge:   rgba(42, 36, 28, 0.10);
+
+    --shadow-sm:   0 4px 12px rgba(42, 36, 28, 0.10);
+    --shadow-md:   0 8px 22px rgba(42, 36, 28, 0.18);
+    --shadow-lg:   0 16px 40px rgba(42, 36, 28, 0.22);
+
+    --radius-card: 14px;
+    --radius-lg:   18px;
+    --radius-pill: 9999px;
+
+    --bg-page: linear-gradient(180deg, var(--beige-top) 0%, var(--beige-mid) 55%, var(--beige-bot) 100%);
   }
-  .container { max-width: 600px; margin: 0 auto; padding: 16px; }
 
-  .hero { text-align: center; padding: 30px 16px 20px; position: relative; }
-  .hero-logo { font-size: 36px; font-weight: 800; color: #4ade80; margin-bottom: 6px; letter-spacing: -1px; }
-  .hero-tagline { font-size: 16px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
-  .hero-philosophy { font-size: 13px; color: rgba(255,255,255,0.5); font-style: italic; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg-page); scroll-behavior: smooth; }
+  body {
+    font-family: 'Cairo', system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    direction: rtl;
+    min-height: 100vh;
+    background: var(--bg-page);
+    overflow-x: hidden;
+    position: relative;
+  }
 
+  /* === Triple Radial Glow === */
+  body::before, body::after, .third-glow {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::before {
+    top: 8%; right: 12%;
+    width: 360px; height: 360px;
+    background: var(--watermelon);
+    opacity: 0.30;
+  }
+  body::after {
+    top: 45%; left: 10%;
+    width: 300px; height: 300px;
+    background: var(--olive);
+    opacity: 0.25;
+  }
+  .third-glow {
+    bottom: 8%; left: 35%;
+    width: 340px; height: 340px;
+    background: var(--coral);
+    opacity: 0.30;
+  }
+
+  /* === Grain Texture === */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.14;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* === Vignette === */
+  .vignette::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    box-shadow: inset 0 0 200px rgba(80, 55, 30, 0.18);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* === Hero === */
+  .hero {
+    text-align: right;
+    padding: 32px 8px 24px;
+    position: relative;
+  }
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    color: var(--ink);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    transform: rotate(-1deg);
+  }
+  .hero-tag::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--watermelon);
+  }
+  .hero-title {
+    font-weight: 900;
+    line-height: 0.95;
+    color: var(--ink);
+  }
+  .hero-title-top {
+    display: block;
+    font-size: clamp(48px, 13vw, 96px);
+    transform: rotate(-1.2deg);
+    margin-bottom: 4px;
+  }
+  .hero-title-bot {
+    display: block;
+    font-size: clamp(32px, 9vw, 64px);
+    font-weight: 700;
+    transform: rotate(0.6deg);
+    margin-right: 12px;
+  }
+  .hero-title-bot .grad {
+    background: linear-gradient(90deg, var(--watermelon), var(--coral));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero-subtitle {
+    margin-top: 22px;
+    color: var(--ink-soft);
+    font-size: clamp(15px, 4vw, 19px);
+    font-weight: 400;
+    line-height: 1.55;
+    max-width: 32ch;
+    margin-right: 0;
+  }
+  .hero-philosophy {
+    margin-top: 14px;
+    color: var(--ink-mute);
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* === Asymmetric divider === */
+  .divider {
+    position: relative;
+    height: 3px;
+    width: 60%;
+    margin: 32px 0;
+    background: linear-gradient(90deg,
+      rgba(224, 89, 108, 0) 0%,
+      rgba(224, 89, 108, 0.7) 45%,
+      var(--watermelon) 100%);
+  }
+  .divider::after {
+    content: "";
+    position: absolute;
+    right: -2px; top: -8px;
+    width: 18px; height: 18px;
+    background: var(--watermelon);
+  }
+
+  /* === Referral Banner === */
   .ref-banner {
     display: none;
-    background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(251,191,36,0.05));
-    border: 1.5px solid rgba(251,191,36,0.4);
-    border-radius: 16px;
-    padding: 16px 20px;
-    margin: 16px 0;
-    text-align: center;
-    animation: pulse 2s ease-in-out infinite;
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 20px 22px;
+    margin: 20px 0;
+    box-shadow: var(--shadow-md);
+    border-right: 6px solid var(--coral);
+    transform: rotate(-0.6deg);
+    position: relative;
   }
-  .ref-banner.show { display: block; }
-  @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0.4); }
-    50% { box-shadow: 0 0 0 12px rgba(251,191,36,0); }
+  .ref-banner.show { display: block; animation: settleIn 0.5s ease; }
+  @keyframes settleIn {
+    from { opacity: 0; transform: rotate(-3deg) translateY(-10px); }
+    to { opacity: 1; transform: rotate(-0.6deg) translateY(0); }
   }
-  .ref-banner .icon { font-size: 28px; margin-bottom: 6px; }
-  .ref-banner .title { font-size: 15px; font-weight: 700; color: #fcd34d; margin-bottom: 4px; }
-  .ref-banner .subtitle { font-size: 13px; color: rgba(255,255,255,0.7); }
+  .ref-banner .ref-tag {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--watermelon);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .ref-banner .ref-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .ref-banner .ref-title .num {
+    color: var(--watermelon);
+    font-size: 30px;
+  }
+  .ref-banner .ref-subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
 
-  .steps { display: flex; justify-content: space-between; margin: 24px 0; position: relative; }
+  /* === Steps === */
+  .steps {
+    display: flex;
+    justify-content: space-between;
+    margin: 28px 0 24px;
+    position: relative;
+    padding: 0 4px;
+  }
   .steps::before {
-    content: ''; position: absolute; top: 16px; right: 16px; left: 16px;
-    height: 2px; background: rgba(255,255,255,0.1); z-index: 0;
+    content: '';
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    left: 18px;
+    height: 2px;
+    background: rgba(42, 36, 28, 0.08);
+    z-index: 0;
   }
-  .step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+  .step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+  }
   .step-circle {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 14px; transition: all 0.3s;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 2px solid var(--card-edge);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 14px;
+    color: var(--ink-mute);
+    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
   }
-  .step.active .step-circle { background: #4ade80; border-color: #4ade80; color: #0a1f15; transform: scale(1.1); }
-  .step.done .step-circle { background: #4ade80; border-color: #4ade80; color: #0a1f15; }
-  .step-label { font-size: 11px; color: rgba(255,255,255,0.6); }
+  .step.active .step-circle {
+    background: var(--watermelon);
+    border-color: var(--watermelon);
+    color: #FFF8E7;
+    transform: scale(1.15) rotate(-3deg);
+    box-shadow: 0 6px 18px rgba(224, 89, 108, 0.35);
+  }
+  .step.done .step-circle {
+    background: var(--olive);
+    border-color: var(--olive);
+    color: #FFF8E7;
+  }
+  .step-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-mute);
+    transition: color 0.3s;
+  }
+  .step.active .step-label { color: var(--ink); }
+  .step.done .step-label { color: var(--olive); }
 
+  /* === Card === */
   .card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 20px; padding: 24px 20px; margin-bottom: 20px;
-    backdrop-filter: blur(10px);
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 24px 22px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 16px;
+    position: relative;
+    transform: rotate(-0.4deg);
   }
-  .card-title { font-size: 18px; font-weight: 700; color: #4ade80; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card:nth-of-type(2n) { transform: rotate(0.3deg); }
+  .card-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--ink);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .card-tag::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--watermelon);
+  }
+  .card-tag.olive::before { background: var(--olive); }
+  .card-tag.coral::before { background: var(--coral); }
+  .card-tag.pink::before { background: var(--pink); }
+  .card-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .card-subtitle {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
 
-  .plans-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-  .plan-card {
-    background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);
-    border-radius: 16px; padding: 18px; cursor: pointer;
-    transition: all 0.25s; position: relative;
+  /* === Plan Cards === */
+  .plans-grid {
+    display: grid;
+    gap: 14px;
   }
-  .plan-card:hover { border-color: rgba(74,222,128,0.3); transform: translateY(-2px); }
+  .plan-card {
+    background: var(--card);
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+  }
+  .plan-card:nth-child(1) { transform: rotate(-0.8deg); }
+  .plan-card:nth-child(2) { transform: rotate(0.5deg); }
+  .plan-card:nth-child(3) { transform: rotate(-0.3deg); }
+  .plan-card:nth-child(4) { transform: rotate(0.7deg); }
+  .plan-card:nth-child(5) { transform: rotate(-0.5deg); }
+  .plan-card:nth-child(6) { transform: rotate(0.4deg); }
+  .plan-card:hover {
+    transform: rotate(0deg) translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
   .plan-card.selected {
-    border-color: #4ade80; background: rgba(74,222,128,0.1);
-    box-shadow: 0 8px 24px rgba(74,222,128,0.2);
+    border-color: var(--watermelon);
+    border-width: 2px;
+    background: linear-gradient(135deg, var(--card) 0%, #FFF8E7 100%);
+    box-shadow: 0 8px 24px rgba(224, 89, 108, 0.18);
+    transform: rotate(0deg) translateY(-2px);
   }
   .plan-card.selected::after {
-    content: '✓'; position: absolute; top: 14px; left: 14px;
-    width: 26px; height: 26px; background: #4ade80; color: #0a1f15;
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 14px;
+    content: '✓';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    width: 30px;
+    height: 30px;
+    background: var(--watermelon);
+    color: #FFF8E7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 15px;
+    box-shadow: var(--shadow-sm);
+    transform: rotate(-8deg);
   }
-  .plan-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-  .plan-name { font-size: 18px; font-weight: 700; color: #fff; }
-  .plan-desc { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
-  .plan-pricing { text-align: left; direction: ltr; }
-  .plan-original { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: line-through; margin-bottom: 2px; }
-  .plan-final { font-size: 22px; font-weight: 800; color: #4ade80; }
-  .plan-final .unit { font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 400; }
+  .plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .plan-name {
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .plan-desc {
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-top: 3px;
+  }
+  .plan-pricing {
+    text-align: left;
+    direction: ltr;
+    flex-shrink: 0;
+  }
+  .plan-original {
+    font-size: 13px;
+    color: var(--ink-mute);
+    text-decoration: line-through;
+    font-weight: 700;
+  }
+  .plan-final {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--watermelon);
+    line-height: 1;
+  }
+  .plan-final .unit {
+    font-size: 11px;
+    color: var(--ink-mute);
+    font-weight: 700;
+    margin-right: 3px;
+  }
   .plan-savings {
-    display: inline-block; background: rgba(251,191,36,0.2); color: #fcd34d;
-    padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; margin-top: 6px;
+    display: inline-block;
+    background: var(--coral);
+    color: #FFF8E7;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 10px;
+    font-weight: 900;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
   }
-  .plan-features { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; flex-wrap: wrap; gap: 6px; }
-  .plan-feature { background: rgba(255,255,255,0.06); padding: 4px 10px; border-radius: 999px; font-size: 11px; color: rgba(255,255,255,0.7); }
+  .plan-features {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--card-edge);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .plan-feature {
+    background: rgba(111, 124, 62, 0.12);
+    color: var(--olive);
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 700;
+  }
 
+  /* === Forms === */
   .form-group { margin-bottom: 16px; }
-  label { display: block; font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 8px; font-weight: 500; }
-  label .required { color: #ef4444; }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  label .required { color: var(--watermelon); }
   input, textarea, select {
-    width: 100%; padding: 14px 16px;
-    background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.1);
-    border-radius: 12px; color: #fff; font-size: 16px; font-family: inherit;
+    width: 100%;
+    padding: 14px 16px;
+    background: #FFF8E7;
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    color: var(--ink);
+    font-size: 16px;
+    font-family: inherit;
+    font-weight: 700;
     transition: all 0.2s;
   }
-  input:focus, textarea:focus, select:focus { outline: none; border-color: #4ade80; background: rgba(0,0,0,0.5); }
-  input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
-  select option { background: #1a3d2a; }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--watermelon);
+    background: #FFFCEC;
+    box-shadow: 0 0 0 3px rgba(224, 89, 108, 0.12);
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--ink-mute);
+    font-weight: 400;
+  }
+  select option { background: var(--card); color: var(--ink); }
+  textarea { resize: vertical; font-family: inherit; }
 
   .phone-wrapper { display: flex; gap: 8px; }
   .phone-prefix {
-    background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.1);
-    border-radius: 12px; padding: 14px 16px; color: #4ade80; font-weight: 600;
-    display: flex; align-items: center; direction: ltr;
+    background: var(--ink);
+    color: #FFF8E7;
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    direction: ltr;
+    flex-shrink: 0;
   }
 
+  /* === Allergies (Critical UI) === */
   .allergies-card {
-    background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02));
-    border: 1.5px solid rgba(239,68,68,0.25);
-    border-radius: 16px; padding: 20px;
+    background: var(--card);
+    border-right: 6px solid var(--watermelon);
+    border-radius: var(--radius-card);
+    padding: 24px 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-md);
+    transform: rotate(-0.5deg);
+    position: relative;
   }
-  .allergies-card .card-title { color: #f87171; }
   .allergies-toggle {
-    display: flex; align-items: center; gap: 12px; padding: 14px;
-    background: rgba(0,0,0,0.3); border-radius: 12px; cursor: pointer; margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: #FFF8E7;
+    border: 1.5px dashed var(--card-edge);
+    border-radius: var(--radius-card);
+    cursor: pointer;
+    margin-bottom: 14px;
+    transition: all 0.2s;
   }
-  .allergies-toggle input[type="checkbox"] { width: 22px; height: 22px; accent-color: #ef4444; cursor: pointer; }
-  .allergies-toggle-label { flex: 1; font-size: 14px; font-weight: 600; }
-  .allergies-detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(239,68,68,0.2); }
-  .allergies-detail.show { display: block; }
-  .severity-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .allergies-toggle:hover { border-color: var(--watermelon); }
+  .allergies-toggle input[type="checkbox"] {
+    width: 22px; height: 22px;
+    accent-color: var(--watermelon);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .allergies-toggle-label {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .allergies-detail { display: none; }
+  .allergies-detail.show { display: block; animation: fadeIn 0.3s ease; }
+
+  .severity-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
   .severity-option {
-    padding: 10px 8px; background: rgba(0,0,0,0.3);
-    border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px;
-    text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s;
+    padding: 12px 8px;
+    background: #FFF8E7;
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--ink-soft);
+    transition: all 0.2s;
   }
-  .severity-option:hover { border-color: rgba(239,68,68,0.4); }
-  .severity-option.selected { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #fca5a5; }
+  .severity-option:hover { border-color: var(--watermelon); transform: translateY(-2px); }
+  .severity-option.selected {
+    background: var(--watermelon);
+    border-color: var(--watermelon);
+    color: #FFF8E7;
+    box-shadow: var(--shadow-sm);
+  }
 
-  .allergy-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .allergy-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
   .allergy-chip {
-    background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.1);
-    padding: 8px 14px; border-radius: 999px; cursor: pointer;
-    font-size: 13px; transition: all 0.2s; user-select: none;
+    background: #FFF8E7;
+    border: 1.5px solid var(--card-edge);
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    transition: all 0.2s;
+    user-select: none;
   }
-  .allergy-chip:hover { border-color: rgba(239,68,68,0.4); }
-  .allergy-chip.selected { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #fca5a5; }
+  .allergy-chip:hover { border-color: var(--watermelon); transform: translateY(-1px); }
+  .allergy-chip.selected {
+    background: var(--watermelon);
+    border-color: var(--watermelon);
+    color: #FFF8E7;
+  }
 
-  .summary-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-  .summary-row.discount { color: #fcd34d; }
-  .summary-row.total {
-    font-size: 18px; font-weight: 700; color: #4ade80;
-    border-bottom: none; padding-top: 14px; margin-top: 6px;
-    border-top: 2px dashed rgba(74,222,128,0.3);
-  }
-
-  .btn {
-    width: 100%; padding: 16px; border: none; border-radius: 14px;
-    font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
-    transition: all 0.2s; margin-top: 10px;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg, #4ade80, #22c55e); color: #0a1f15;
-    box-shadow: 0 6px 16px rgba(74,222,128,0.3);
-  }
-  .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(74,222,128,0.4); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); }
-  .btn-back { margin-top: 8px; }
-
-  .step-section { display: none; }
-  .step-section.active { display: block; animation: fadeIn 0.4s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-  .success-screen { display: none; text-align: center; padding: 40px 20px; }
-  .success-screen.show { display: block; animation: fadeIn 0.6s; }
-  .success-icon {
-    width: 80px; height: 80px;
-    background: linear-gradient(135deg, #4ade80, #22c55e);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 20px; font-size: 40px; animation: bounce 0.6s ease;
-  }
-  .failed-icon {
-    width: 80px; height: 80px;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 20px; font-size: 40px;
-  }
-  @keyframes bounce { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
-  .success-title { font-size: 24px; font-weight: 800; color: #4ade80; margin-bottom: 8px; }
-  .success-title.failed { color: #ef4444; }
-  .success-text { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 20px; }
-  .customer-number {
-    background: rgba(0,0,0,0.4); border: 1px dashed rgba(74,222,128,0.4);
-    border-radius: 12px; padding: 14px; margin: 16px 0; direction: ltr;
-  }
-  .customer-number .label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
-  .customer-number .value { font-size: 20px; font-weight: 700; color: #4ade80; }
-
-  .toast {
-    position: fixed; top: 20px; left: 50%;
-    transform: translateX(-50%) translateY(-100px);
-    background: #ef4444; color: #fff; padding: 14px 24px;
-    border-radius: 12px; z-index: 1000; transition: transform 0.3s;
-    font-weight: 600; max-width: 90%;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.ok { background: #4ade80; color: #0a1f15; }
-
-  .skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
-    background-size: 200% 100%; animation: shimmer 1.5s infinite;
-    border-radius: 12px; height: 100px; margin-bottom: 10px;
-  }
-  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-  /* === Addon cards === */
+  /* === Addon Cards === */
   .addon-card {
-    background: rgba(0,0,0,0.3);
-    border: 2px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    padding: 18px;
+    background: var(--card);
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
     cursor: pointer;
     transition: all 0.25s;
-    position: relative;
     margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 14px;
+    box-shadow: var(--shadow-sm);
   }
-  .addon-card:hover { border-color: rgba(74,222,128,0.3); transform: translateY(-2px); }
+  .addon-card:nth-of-type(odd) { transform: rotate(-0.5deg); }
+  .addon-card:nth-of-type(even) { transform: rotate(0.6deg); }
+  .addon-card:hover { transform: rotate(0) translateY(-2px); box-shadow: var(--shadow-md); }
   .addon-card.selected {
-    border-color: #4ade80;
-    background: rgba(74,222,128,0.1);
-    box-shadow: 0 8px 24px rgba(74,222,128,0.15);
+    border-color: var(--olive);
+    border-width: 2px;
+    background: linear-gradient(135deg, var(--card) 0%, rgba(111,124,62,0.08) 100%);
+    box-shadow: 0 6px 18px rgba(111, 124, 62, 0.18);
   }
   .addon-icon {
-    font-size: 36px;
+    font-size: 32px;
     flex-shrink: 0;
-    width: 56px;
-    height: 56px;
+    width: 54px;
+    height: 54px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(74,222,128,0.1);
-    border-radius: 14px;
+    background: #FFF8E7;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-sm);
+    transform: rotate(-4deg);
   }
-  .addon-content { flex: 1; }
-  .addon-name { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 2px; }
-  .addon-desc { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .addon-card.selected .addon-icon {
+    background: var(--olive);
+    transform: rotate(4deg);
+  }
+  .addon-content { flex: 1; min-width: 0; }
+  .addon-name { font-size: 16px; font-weight: 900; color: var(--ink); margin-bottom: 2px; }
+  .addon-desc { font-size: 12px; color: var(--ink-mute); margin-bottom: 6px; line-height: 1.4; }
   .addon-price {
     font-size: 18px;
-    font-weight: 800;
-    color: #4ade80;
+    font-weight: 900;
+    color: var(--olive);
     direction: ltr;
+    text-align: left;
   }
-  .addon-price .unit { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 400; }
+  .addon-price .unit { font-size: 11px; color: var(--ink-mute); font-weight: 700; }
   .addon-toggle {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.2);
+    border: 2px solid var(--card-edge);
+    background: #FFF8E7;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -271,51 +671,348 @@
     transition: all 0.2s;
   }
   .addon-card.selected .addon-toggle {
-    background: #4ade80;
-    border-color: #4ade80;
-    color: #0a1f15;
-    font-weight: 800;
+    background: var(--olive);
+    border-color: var(--olive);
+    color: #FFF8E7;
+    font-weight: 900;
   }
   .addon-card.selected .addon-toggle::after { content: '✓'; }
 
+  /* === Summary === */
+  .summary-card {
+    background: linear-gradient(135deg, var(--card) 0%, #FFF8E7 100%);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-card);
+    padding: 22px 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-lg);
+    transform: rotate(-0.3deg);
+    position: relative;
+  }
+  .summary-card::before {
+    content: '';
+    position: absolute;
+    top: -6px; right: 24px;
+    background: var(--watermelon);
+    color: #FFF8E7;
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    content: 'ملخص الاشتراك';
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    border-bottom: 1px dashed var(--card-edge);
+  }
+  .summary-row strong { color: var(--ink); font-weight: 900; }
+  .summary-row.discount {
+    color: var(--coral);
+  }
+  .summary-row.discount strong { color: var(--coral); }
+  .summary-row.total {
+    font-size: 18px;
+    color: var(--ink);
+    border-bottom: none;
+    padding-top: 14px;
+    margin-top: 8px;
+    border-top: 2px solid var(--ink);
+  }
+  .summary-row.total .price {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--watermelon);
+  }
+  .summary-perks {
+    background: rgba(111, 124, 62, 0.08);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    font-weight: 700;
+  }
+  .summary-perks .perk { display: flex; align-items: center; gap: 8px; }
+  .summary-perks .perk-dot {
+    width: 6px; height: 6px;
+    background: var(--olive);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* === Buttons === */
+  .btn {
+    width: 100%;
+    padding: 18px 20px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    font-size: 17px;
+    font-weight: 900;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+    margin-top: 8px;
+    box-shadow: var(--shadow-md);
+    letter-spacing: 0.3px;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-2px) rotate(-0.6deg); box-shadow: var(--shadow-lg); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-primary {
+    background: var(--watermelon);
+    color: #FFF8E7;
+  }
+  .btn-pay {
+    background: var(--olive);
+    color: #FFF8E7;
+    font-size: 18px;
+    padding: 20px;
+  }
+  .btn-back {
+    background: transparent;
+    color: var(--ink-soft);
+    box-shadow: none;
+    border: 1.5px solid var(--card-edge);
+    margin-top: 10px;
+    font-size: 14px;
+    padding: 12px;
+  }
+  .btn-back:hover { background: var(--card); transform: none; }
+
+  /* === Sections === */
+  .step-section { display: none; }
+  .step-section.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === Payment badges === */
+  .pay-badges {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 16px 0 10px;
+    flex-wrap: wrap;
+  }
+  .pay-badge {
+    background: var(--card);
+    border: 1.5px solid var(--card-edge);
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--ink-soft);
+    box-shadow: var(--shadow-sm);
+  }
+  .pay-badge:nth-child(2n) { transform: rotate(-1.5deg); }
+  .pay-badge:nth-child(2n+1) { transform: rotate(1deg); }
+
+  /* === Success Screen === */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 20px 30px;
+    position: relative;
+  }
+  .success-screen.show { display: block; animation: fadeIn 0.6s ease; }
+  .success-icon {
+    width: 96px; height: 96px;
+    background: var(--olive);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: var(--shadow-lg);
+    transform: rotate(-3deg);
+    animation: bounceIn 0.7s ease;
+  }
+  .success-icon svg { width: 50px; height: 50px; color: #FFF8E7; }
+  .failed-icon { background: var(--watermelon); }
+  .pending-icon { background: var(--coral); }
+  @keyframes bounceIn {
+    0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(-3deg); }
+  }
+  .success-title {
+    font-size: clamp(32px, 8vw, 48px);
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .success-title .grad {
+    background: linear-gradient(90deg, var(--watermelon), var(--coral));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .success-title.failed { color: var(--watermelon); }
+  .success-text {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin: 18px auto 0;
+    max-width: 36ch;
+    font-weight: 700;
+  }
+  .success-details {
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 22px;
+    margin: 24px auto 0;
+    max-width: 380px;
+    box-shadow: var(--shadow-md);
+    text-align: right;
+    transform: rotate(-0.5deg);
+  }
+  .success-details .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    border-bottom: 1px dashed var(--card-edge);
+  }
+  .success-details .detail-row:last-child { border-bottom: none; }
+  .success-details .detail-row strong { color: var(--ink); font-weight: 900; }
+  .customer-number {
+    background: var(--ink);
+    color: var(--beige-top);
+    border-radius: var(--radius-card);
+    padding: 16px 20px;
+    margin: 20px auto 0;
+    max-width: 280px;
+    direction: ltr;
+    box-shadow: var(--shadow-lg);
+    transform: rotate(1deg);
+  }
+  .customer-number .label {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    opacity: 0.6;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .customer-number .value {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--coral);
+  }
+
+  /* === Toast === */
+  .toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--ink);
+    color: var(--beige-top);
+    padding: 14px 24px;
+    border-radius: var(--radius-card);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    font-weight: 900;
+    font-size: 14px;
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--watermelon); }
+  .toast.ok { background: var(--olive); }
+
+  /* === Skeleton === */
+  .skeleton {
+    background: linear-gradient(90deg, var(--card) 25%, #FFF8E7 50%, var(--card) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+    border-radius: var(--radius-card);
+    height: 100px;
+    margin-bottom: 12px;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* === Loading overlay === */
   .loading-overlay {
-    display: none; position: fixed; inset: 0; background: rgba(10,31,21,0.92);
-    z-index: 999; align-items: center; justify-content: center; flex-direction: column;
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(239, 228, 206, 0.94);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
   .loading-overlay.show { display: flex; }
   .spinner {
-    width: 60px; height: 60px; border: 4px solid rgba(74,222,128,0.2);
-    border-top-color: #4ade80; border-radius: 50%; animation: spin 0.8s linear infinite;
+    width: 60px; height: 60px;
+    border: 4px solid rgba(224, 89, 108, 0.2);
+    border-top-color: var(--watermelon);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
     margin-bottom: 20px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-text { color: #4ade80; font-size: 16px; font-weight: 600; }
-
-  .footer-info { text-align: center; padding: 20px 0; font-size: 12px; color: rgba(255,255,255,0.4); }
-  .footer-info a { color: #4ade80; text-decoration: none; }
-  .pay-badges { display: flex; justify-content: center; gap: 12px; margin: 14px 0; flex-wrap: wrap; }
-  .pay-badge {
-    background: rgba(255,255,255,0.08); padding: 6px 12px; border-radius: 8px;
-    font-size: 11px; color: rgba(255,255,255,0.7);
+  .loading-text {
+    color: var(--ink);
+    font-size: 16px;
+    font-weight: 900;
   }
+
+  /* === Footer === */
+  .footer {
+    text-align: center;
+    padding: 24px 0 16px;
+    margin-top: 32px;
+    font-size: 11px;
+    color: var(--ink-mute);
+    font-weight: 700;
+    border-top: 1px dashed var(--card-edge);
+  }
+  .footer a { color: var(--olive); text-decoration: none; font-weight: 900; }
+  .footer .line { margin-top: 4px; }
 </style>
 </head>
-<body>
+<body class="grain vignette">
+<div class="third-glow"></div>
 
 <div class="container">
 
-  <div class="hero">
-    <div class="hero-logo">🌿 Lite Kitchen</div>
-    <div class="hero-tagline">رشاقتك. اختيارك. ثلث طعامك.</div>
-    <div class="hero-philosophy">«كلوا واشربوا ولا تسرفوا»</div>
-  </div>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-tag">8PM Healthy · حائل</div>
+    <h1 class="hero-title">
+      <span class="hero-title-top">Lite</span>
+      <span class="hero-title-bot"><span class="grad">Kitchen</span></span>
+    </h1>
+    <p class="hero-subtitle">رشاقتك. اختيارك. ثلث طعامك.</p>
+    <p class="hero-philosophy">«كلوا واشربوا ولا تسرفوا»</p>
+    <div class="divider"></div>
+  </header>
 
+  <!-- Referral Banner -->
   <div class="ref-banner" id="refBanner">
-    <div class="icon">🎁</div>
-    <div class="title">رائع! حصلت على خصم خاص</div>
-    <div class="subtitle">خصم <strong id="refDiscount">10%</strong> على جميع الباقات من <strong id="refName">شريكنا</strong></div>
+    <div class="ref-tag">عرض حصري</div>
+    <div class="ref-title">خصم <span class="num" id="refDiscount">10%</span> لك</div>
+    <div class="ref-subtitle">من <strong id="refName">شريكنا</strong> — مطبّق على جميع الباقات</div>
   </div>
 
+  <!-- Steps -->
   <div class="steps" id="stepsBar">
     <div class="step active" data-step="1"><div class="step-circle">1</div><div class="step-label">الباقة</div></div>
     <div class="step" data-step="2"><div class="step-circle">2</div><div class="step-label">بياناتك</div></div>
@@ -324,26 +1021,33 @@
     <div class="step" data-step="4"><div class="step-circle">5</div><div class="step-label">الدفع</div></div>
   </div>
 
-  <!-- STEP 1 -->
+  <!-- STEP 1: Plans -->
   <div class="step-section active" id="step1">
     <div class="card">
-      <div class="card-title">🥗 اختر باقتك الصحية</div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;">26 يوم من الوجبات المحسوبة بدقة. اختر ما يناسب هدفك.</p>
+      <div class="card-tag">اختر</div>
+      <h2 class="card-title">باقتك الصحية</h2>
+      <p class="card-subtitle">26 يوم من الوجبات المحسوبة بدقة. اختر ما يناسب هدفك.</p>
       <div class="plans-grid" id="plansGrid">
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
       </div>
     </div>
     <button class="btn btn-primary" id="next1" disabled>التالي ←</button>
   </div>
 
-  <!-- STEP 2 -->
+  <!-- STEP 2: Personal Info -->
   <div class="step-section" id="step2">
     <div class="card">
-      <div class="card-title">👤 بياناتك الشخصية</div>
+      <div class="card-tag olive">عرّفنا بنفسك</div>
+      <h2 class="card-title">بياناتك الشخصية</h2>
+      <p class="card-subtitle">معلومات أساسية للتواصل وتوصيل الوجبات.</p>
+
       <div class="form-group">
         <label>الاسم الكامل <span class="required">*</span></label>
         <input type="text" id="fullName" placeholder="مثال: محمد العتيبي" autocomplete="name">
       </div>
+
       <div class="form-group">
         <label>رقم الجوال <span class="required">*</span></label>
         <div class="phone-wrapper">
@@ -351,10 +1055,12 @@
           <input type="tel" id="phone" placeholder="5XXXXXXXX" autocomplete="tel" maxlength="9">
         </div>
       </div>
+
       <div class="form-group">
         <label>البريد الإلكتروني</label>
         <input type="email" id="email" placeholder="email@example.com" autocomplete="email">
       </div>
+
       <div class="form-group">
         <label>المدينة</label>
         <select id="city">
@@ -364,6 +1070,7 @@
           <option value="other">مدينة أخرى</option>
         </select>
       </div>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div class="form-group">
           <label>الجنس</label>
@@ -380,14 +1087,16 @@
       </div>
     </div>
     <button class="btn btn-primary" id="next2">التالي ←</button>
-    <button class="btn btn-secondary btn-back" id="back2">→ السابق</button>
+    <button class="btn btn-back" id="back2">→ السابق</button>
   </div>
 
-  <!-- STEP 3 -->
+  <!-- STEP 3: Health -->
   <div class="step-section" id="step3">
     <div class="card">
-      <div class="card-title">💪 صحتك أولاً</div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;">معلوماتك تساعدنا في تخصيص وجباتك. كلها اختيارية ما عدا تنبيهات الحساسية.</p>
+      <div class="card-tag coral">صحتك أولاً</div>
+      <h2 class="card-title">معلومات صحية</h2>
+      <p class="card-subtitle">تساعدنا في تخصيص وجباتك. اختيارية ما عدا الحساسيات.</p>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
         <div class="form-group">
           <label>الوزن (كجم)</label>
@@ -398,6 +1107,7 @@
           <input type="number" id="height" placeholder="170" min="100" max="220">
         </div>
       </div>
+
       <div class="form-group">
         <label>هدفك من الاشتراك</label>
         <select id="goal">
@@ -405,10 +1115,11 @@
           <option value="weight_loss">خسارة الوزن</option>
           <option value="muscle_gain">بناء العضلات</option>
           <option value="maintenance">المحافظة على الوزن</option>
-          <option value="marathon_prep">الاستعداد لماراثون / تحدي رياضي</option>
+          <option value="marathon_prep">الاستعداد لماراثون</option>
           <option value="health">تحسين صحة عامة</option>
         </select>
       </div>
+
       <div class="form-group">
         <label>مستوى النشاط البدني</label>
         <select id="activity">
@@ -422,129 +1133,157 @@
       </div>
     </div>
 
-    <div class="card allergies-card">
-      <div class="card-title">⚠️ تنبيهات صحية مهمة</div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:14px;line-height:1.6;">
-        إذا كان لديك أي حساسية، أخبرنا الآن. سنُعلِم الشيف بشكل واضح ومباشر ليتجنبها في وجباتك.
-      </p>
+    <div class="allergies-card">
+      <div class="card-tag">تنبيهات مهمة</div>
+      <h2 class="card-title" style="color: var(--watermelon);">حساسية أو ممنوعات</h2>
+      <p class="card-subtitle">إذا كان لديك أي حساسية، أخبرنا. سنُعلِم الشيف بشكل واضح.</p>
+
       <label class="allergies-toggle">
         <input type="checkbox" id="hasAllergies">
-        <span class="allergies-toggle-label">نعم، لدي حساسية أو ممنوعات غذائية</span>
+        <span class="allergies-toggle-label">نعم، لديّ حساسية أو ممنوعات غذائية</span>
       </label>
+
       <div class="allergies-detail" id="allergiesDetail">
-        <label style="margin-top:6px;">حدّد شدة الحساسية:</label>
+        <label style="margin-top:6px;">شدة الحساسية</label>
         <div class="severity-options" id="severityOptions">
           <div class="severity-option" data-severity="mild">خفيفة</div>
           <div class="severity-option" data-severity="moderate">متوسطة</div>
-          <div class="severity-option" data-severity="severe">شديدة ⚠️</div>
+          <div class="severity-option" data-severity="severe">شديدة</div>
         </div>
-        <label>اختر ما لا يناسبك (يمكنك اختيار أكثر من نوع):</label>
+
+        <label>اختر ما لا يناسبك</label>
         <div class="allergy-chips" id="allergyChips">
-          <div class="allergy-chip" data-allergen="nuts">🥜 المكسرات</div>
-          <div class="allergy-chip" data-allergen="dairy">🥛 الألبان</div>
-          <div class="allergy-chip" data-allergen="gluten">🌾 الجلوتين</div>
-          <div class="allergy-chip" data-allergen="eggs">🥚 البيض</div>
-          <div class="allergy-chip" data-allergen="seafood">🦐 المأكولات البحرية</div>
-          <div class="allergy-chip" data-allergen="soy">🫘 الصويا</div>
-          <div class="allergy-chip" data-allergen="sesame">🌱 السمسم</div>
-          <div class="allergy-chip" data-allergen="peanuts">🥜 الفول السوداني</div>
+          <div class="allergy-chip" data-allergen="nuts">المكسرات</div>
+          <div class="allergy-chip" data-allergen="dairy">الألبان</div>
+          <div class="allergy-chip" data-allergen="gluten">الجلوتين</div>
+          <div class="allergy-chip" data-allergen="eggs">البيض</div>
+          <div class="allergy-chip" data-allergen="seafood">المأكولات البحرية</div>
+          <div class="allergy-chip" data-allergen="soy">الصويا</div>
+          <div class="allergy-chip" data-allergen="sesame">السمسم</div>
+          <div class="allergy-chip" data-allergen="peanuts">الفول السوداني</div>
         </div>
+
         <div class="form-group">
-          <label>حساسيات أخرى أو تفاصيل (اكتب بوضوح):</label>
-          <textarea id="customAllergies" rows="3" placeholder="مثال: حساسية شديدة من الفراولة. حساسية من بعض البهارات الحارة."></textarea>
+          <label>تفاصيل إضافية</label>
+          <textarea id="customAllergies" rows="3" placeholder="مثال: حساسية شديدة من الفراولة..."></textarea>
         </div>
       </div>
+
       <div class="form-group" style="margin-top:14px;">
-        <label>أطعمة لا تفضّلها (ليست حساسية، فقط لا تحبها):</label>
-        <textarea id="disliked" rows="2" placeholder="مثال: لا أحب الكوسا، أو أفضل البروتين مشوياً وليس مقلياً"></textarea>
+        <label>أطعمة لا تفضّلها (ليست حساسية)</label>
+        <textarea id="disliked" rows="2" placeholder="مثال: لا أحب الكوسا..."></textarea>
       </div>
     </div>
 
     <button class="btn btn-primary" id="next3">التالي ←</button>
-    <button class="btn btn-secondary btn-back" id="back3">→ السابق</button>
+    <button class="btn btn-back" id="back3">→ السابق</button>
   </div>
 
   <!-- STEP 3.5: Addons -->
   <div class="step-section" id="step35">
     <div class="card">
-      <div class="card-title">🎁 إضافات اختيارية</div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;">حسّن تجربتك مع هذه الإضافات (يمكنك تخطيها).</p>
+      <div class="card-tag pink">اختياري</div>
+      <h2 class="card-title">إضافات لتجربتك</h2>
+      <p class="card-subtitle">حسّن اشتراكك مع هذه الإضافات. يمكنك تخطيها.</p>
       <div id="addonsList">
         <div class="skeleton"></div>
         <div class="skeleton"></div>
       </div>
     </div>
     <button class="btn btn-primary" id="next35">التالي ←</button>
-    <button class="btn btn-secondary btn-back" id="back35">→ السابق</button>
+    <button class="btn btn-back" id="back35">→ السابق</button>
   </div>
 
-  <!-- STEP 4 -->
+  <!-- STEP 4: Payment -->
   <div class="step-section" id="step4">
-    <div class="card">
-      <div class="card-title">💳 ملخص الاشتراك والدفع</div>
-      <div id="orderSummary">
-        <div class="summary-row"><span>الباقة المختارة:</span><strong id="sumPlanName">—</strong></div>
-        <div class="summary-row"><span>المدة:</span><strong id="sumDuration">26 يوم</strong></div>
-        <div class="summary-row"><span>سعر الباقة:</span><span id="sumOriginal" style="direction:ltr">—</span></div>
+    <div class="summary-card">
+      <div style="margin-top: 16px;" id="orderSummary">
+        <div class="summary-row">
+          <span>الباقة المختارة</span>
+          <strong id="sumPlanName">—</strong>
+        </div>
+        <div class="summary-row">
+          <span>المدة</span>
+          <strong id="sumDuration">26 يوم</strong>
+        </div>
+        <div class="summary-row">
+          <span>سعر الباقة</span>
+          <span id="sumOriginal" style="direction:ltr"><strong>—</strong></span>
+        </div>
         <div id="sumAddonsRows"></div>
         <div class="summary-row discount" id="sumDiscountRow" style="display:none;">
-          <span>🎁 خصم الشريك (10%):</span>
-          <span id="sumDiscount" style="direction:ltr">—</span>
+          <span>خصم الشريك</span>
+          <strong id="sumDiscount" style="direction:ltr">—</strong>
         </div>
         <div class="summary-row total">
-          <span>الإجمالي المستحق:</span>
-          <span id="sumFinal" style="direction:ltr">—</span>
+          <span>الإجمالي</span>
+          <span class="price" id="sumFinal" style="direction:ltr">—</span>
         </div>
       </div>
-      <div style="background:rgba(74,222,128,0.08);border-radius:12px;padding:14px;margin-top:14px;font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;">
-        ✅ يبدأ اشتراكك فور تأكيد الدفع<br>
-        🍽️ وجبات طازجة من مطبخنا<br>
-        📍 الاستلام من فرع حائل أو توصيل
+
+      <div class="summary-perks">
+        <div class="perk"><span class="perk-dot"></span>يبدأ اشتراكك فور تأكيد الدفع</div>
+        <div class="perk"><span class="perk-dot"></span>وجبات طازجة من مطبخنا</div>
+        <div class="perk"><span class="perk-dot"></span>الاستلام من فرع حائل أو توصيل</div>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title">🔒 طريقة الدفع</div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:10px;">
-        دفع آمن عبر <strong>Moyasar</strong> — يدعم جميع البطاقات
-      </p>
+      <div class="card-tag olive">دفع آمن</div>
+      <h2 class="card-title">طريقة الدفع</h2>
+      <p class="card-subtitle">عبر بوابة Moyasar الآمنة، يدعم جميع البطاقات.</p>
       <div class="pay-badges">
-        <span class="pay-badge">💳 مدى</span>
-        <span class="pay-badge">💳 Visa</span>
-        <span class="pay-badge">💳 Mastercard</span>
-        <span class="pay-badge">🍎 Apple Pay</span>
-        <span class="pay-badge">📱 STC Pay</span>
+        <span class="pay-badge">مدى</span>
+        <span class="pay-badge">Visa</span>
+        <span class="pay-badge">Mastercard</span>
+        <span class="pay-badge">Apple Pay</span>
+        <span class="pay-badge">STC Pay</span>
       </div>
-      <p style="font-size:11px;color:rgba(255,255,255,0.4);text-align:center;margin-top:10px;">
-        سيتم تحويلك لصفحة دفع آمنة، ثم العودة هنا تلقائياً
+      <p style="font-size:11px;color:var(--ink-mute);text-align:center;margin-top:8px;font-weight:700;">
+        ↓ تحويل لصفحة دفع آمنة ثم العودة هنا تلقائياً
       </p>
     </div>
 
-    <button class="btn btn-primary" id="payBtn">🔐 المتابعة للدفع الآمن</button>
-    <button class="btn btn-secondary btn-back" id="back4">→ السابق</button>
+    <button class="btn btn-pay" id="payBtn">تأكيد والمتابعة للدفع</button>
+    <button class="btn btn-back" id="back4">→ السابق</button>
   </div>
 
   <!-- Success Screen -->
   <div class="success-screen" id="successScreen">
-    <div class="success-icon" id="successIcon">🎉</div>
-    <div class="success-title" id="successTitle">مبروك! اشتراكك جاهز</div>
-    <div class="success-text" id="successText">
-      أنت الآن جزء من عائلة Lite Kitchen 🌿<br>
-      سنتواصل معك خلال 24 ساعة لتأكيد بدء اشتراكك.
+    <div class="success-icon" id="successIcon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
     </div>
+    <h1 class="success-title" id="successTitle"><span class="grad">مبروك!</span> اشتراكك جاهز</h1>
+    <p class="success-text" id="successText">
+      تم استلام الدفعة بنجاح. أنت الآن جزء من عائلة Lite Kitchen.
+    </p>
+
+    <div class="success-details" id="successDetails">
+      <div class="detail-row">
+        <span>الباقة</span>
+        <strong id="dPlan">—</strong>
+      </div>
+      <div class="detail-row">
+        <span>المبلغ المدفوع</span>
+        <strong id="dAmount" style="direction:ltr">—</strong>
+      </div>
+      <div class="detail-row">
+        <span>تاريخ البداية</span>
+        <strong id="dDate">—</strong>
+      </div>
+    </div>
+
     <div class="customer-number" id="customerNumberBox">
-      <div class="label">رقم العميل الخاص بك</div>
+      <div class="label">رقم العميل</div>
       <div class="value" id="finalCustomerId">—</div>
     </div>
-    <button class="btn btn-primary" id="shareBtn">📱 شاركها مع أصدقائك</button>
-    <a href="https://wa.me/966558612908" style="display:block;margin-top:14px;color:#4ade80;text-decoration:none;font-weight:600;">
-      💬 تواصل معنا على واتساب
-    </a>
   </div>
 
-  <div class="footer-info">
-    🔒 بياناتك محمية · 8PM Healthy © 2026 · حائل، المملكة العربية السعودية<br>
-    استفسار: <a href="https://wa.me/966558612908">+966 55 861 2908</a>
+  <div class="footer">
+    🔒 بياناتك محمية
+    <div class="line">8PM Healthy © 2026 · حائل، المملكة العربية السعودية</div>
   </div>
 </div>
 
@@ -552,7 +1291,7 @@
 
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
-  <div class="loading-text" id="loadingText">جاري إنشاء الفاتورة...</div>
+  <div class="loading-text" id="loadingText">جاري المعالجة...</div>
 </div>
 
 <script type="module">
@@ -578,7 +1317,7 @@ const state = {
 function toast(msg, isError = false) {
   const t = $('toast');
   t.textContent = msg;
-  t.className = 'toast show' + (isError ? '' : ' ok');
+  t.className = 'toast show' + (isError ? ' error' : ' ok');
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
@@ -586,11 +1325,9 @@ function showLoading(text) {
   $('loadingText').textContent = text || 'جاري المعالجة...';
   $('loadingOverlay').classList.add('show');
 }
-function hideLoading() {
-  $('loadingOverlay').classList.remove('show');
-}
+function hideLoading() { $('loadingOverlay').classList.remove('show'); }
 
-// === CHECK IF RETURNING FROM PAYMENT ===
+// === Check Payment Return ===
 async function checkPaymentReturn() {
   const params = new URLSearchParams(window.location.search);
   const subId = params.get('subscription_id') || params.get('payment_callback');
@@ -599,12 +1336,10 @@ async function checkPaymentReturn() {
 
   if (!subId && !paymentId) return false;
 
-  // Hide normal flow
   document.querySelectorAll('.step-section, .steps, .ref-banner, .hero').forEach(el => el.style.display = 'none');
 
   showLoading('جاري التحقق من حالة الدفع...');
 
-  // === Try to verify payment actively via Edge Function (not waiting for webhook) ===
   let verifyResult = null;
   if (subId) {
     try {
@@ -618,80 +1353,58 @@ async function checkPaymentReturn() {
         body: JSON.stringify({ subscription_id: subId })
       });
       verifyResult = await verifyRes.json();
-      console.log('Verify result:', verifyResult);
-    } catch (e) {
-      console.error('Verify call failed:', e);
-    }
+    } catch (e) { console.error('Verify failed:', e); }
   }
 
-  // Wait a bit then re-check DB (in case webhook also updated it)
-  await new Promise(r => setTimeout(r, 1500));
+  await new Promise(r => setTimeout(r, 1200));
 
   let subscription = null;
   if (subId) {
     const { data } = await sb
       .from('subscriptions')
-      .select('id, customer_id, status, payment_status, total_amount_sar, plans(name_ar)')
+      .select('id, customer_id, status, payment_status, total_amount_sar, start_date, plans(name_ar)')
       .eq('id', subId)
       .single();
     subscription = data;
   }
 
   hideLoading();
-
   $('successScreen').classList.add('show');
 
-  const isPaid = (subscription && subscription.payment_status === 'paid') ||
-                 (verifyResult && verifyResult.status === 'paid');
-  const isFailed = (moyasarStatus === 'failed') ||
-                   (subscription && subscription.payment_status === 'failed') ||
-                   (verifyResult && verifyResult.status === 'failed');
+  const isPaid = (subscription?.payment_status === 'paid') || (verifyResult?.status === 'paid');
+  const isFailed = (moyasarStatus === 'failed') || (subscription?.payment_status === 'failed') || (verifyResult?.status === 'failed');
 
   if (isPaid) {
-    // SUCCESS
-    $('successIcon').textContent = '🎉';
-    $('successIcon').className = 'success-icon';
-    $('successTitle').textContent = 'مبروك! اشتراكك جاهز';
-    $('successTitle').className = 'success-title';
-    $('successText').innerHTML = `
-      تم استلام الدفعة بنجاح ✅<br>
-      الباقة: <strong style="color:#4ade80">${subscription?.plans?.name_ar || ''}</strong><br>
-      المبلغ: <strong>${subscription ? parseFloat(subscription.total_amount_sar).toFixed(2) : ''} ر.س</strong><br>
-      أنت الآن جزء من عائلة Lite Kitchen 🌿
-    `;
-    $('finalCustomerId').textContent = subscription?.customer_id || '—';
+    $('successTitle').innerHTML = '<span class="grad">مبروك!</span> اشتراكك جاهز';
+    $('successText').textContent = 'تم استلام الدفعة بنجاح. أنت الآن جزء من عائلة Lite Kitchen.';
+
+    if (subscription) {
+      $('dPlan').textContent = subscription.plans?.name_ar || '—';
+      $('dAmount').textContent = parseFloat(subscription.total_amount_sar).toFixed(2) + ' ر.س';
+      $('dDate').textContent = subscription.start_date ? new Date(subscription.start_date).toLocaleDateString('ar-SA') : 'سيتم التحديد';
+      $('finalCustomerId').textContent = subscription.customer_id || '—';
+    }
   } else if (isFailed) {
-    // FAILED
-    $('successIcon').textContent = '❌';
-    $('successIcon').className = 'failed-icon';
-    $('successTitle').textContent = 'لم يكتمل الدفع';
-    $('successTitle').className = 'success-title failed';
-    $('successText').innerHTML = `
-      عذراً، لم تكتمل عملية الدفع.<br>
-      يمكنك المحاولة مرة أخرى أو التواصل معنا على واتساب.
-    `;
+    $('successIcon').classList.add('failed-icon');
+    $('successIcon').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+    $('successTitle').innerHTML = '<span style="color: var(--watermelon)">لم يكتمل</span> الدفع';
+    $('successText').textContent = 'عذراً، لم تكتمل عملية الدفع. حاول مرة أخرى.';
+    $('successDetails').style.display = 'none';
     $('customerNumberBox').style.display = 'none';
-    $('shareBtn').textContent = 'العودة للصفحة الرئيسية';
-    $('shareBtn').onclick = () => window.location.href = window.location.origin + window.location.pathname;
   } else {
-    // PENDING - show retry button
-    $('successIcon').textContent = '⏳';
-    $('successTitle').textContent = 'جاري معالجة الدفع';
-    $('successText').innerHTML = `
-      نتلقى تأكيد البنك خلال لحظات.<br>
-      رقم اشتراكك: <code style="background:rgba(0,0,0,0.4);padding:4px 10px;border-radius:6px;direction:ltr;">${subId}</code><br><br>
-      <button onclick="window.location.reload()" style="background:#4ade80;color:#0a1f15;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;">🔄 تحديث الحالة</button>
-    `;
+    $('successIcon').classList.add('pending-icon');
+    $('successIcon').innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>';
+    $('successTitle').innerHTML = '<span style="color: var(--coral)">قيد المعالجة</span>';
+    $('successText').innerHTML = `نتلقى تأكيد البنك خلال لحظات.<br>رقم اشتراكك: <strong>${subId}</strong>`;
+    $('successDetails').style.display = 'none';
     $('customerNumberBox').style.display = 'none';
-    $('shareBtn').style.display = 'none';
   }
 
   return true;
 }
 
 function getReferral() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('ref');
+  return new URLSearchParams(window.location.search).get('ref');
 }
 
 async function loadReferrer() {
@@ -719,11 +1432,7 @@ async function loadReferrer() {
 async function loadPlans() {
   const { data, error } = await sb
     .from('plans').select('*').eq('is_active', true).order('sort_order');
-
-  if (error || !data) {
-    toast('تعذّر تحميل الباقات', true);
-    return;
-  }
+  if (error || !data) { toast('تعذّر تحميل الباقات', true); return; }
   state.plans = data;
   renderPlans();
 }
@@ -731,46 +1440,12 @@ async function loadPlans() {
 async function loadAddons() {
   const { data, error } = await sb
     .from('addons').select('*').eq('is_active', true).order('display_order');
-
   if (error || !data) {
-    $('addonsList').innerHTML = '<div style="color:#fca5a5;text-align:center;padding:20px;">تعذّر تحميل الإضافات</div>';
+    $('addonsList').innerHTML = '<div style="color:var(--watermelon);text-align:center;padding:20px;font-weight:900;">تعذّر تحميل الإضافات</div>';
     return;
   }
   state.addons = data;
   renderAddons();
-}
-
-function renderAddons() {
-  const container = $('addonsList');
-  container.innerHTML = '';
-  state.addons.forEach(addon => {
-    const card = document.createElement('div');
-    card.className = 'addon-card';
-    card.dataset.addonId = addon.id;
-    card.innerHTML = `
-      <div class="addon-icon">${addon.icon || '✨'}</div>
-      <div class="addon-content">
-        <div class="addon-name">${addon.name_ar}</div>
-        <div class="addon-desc">${addon.description || ''}</div>
-        <div class="addon-price">${parseFloat(addon.price_sar).toFixed(0)}<span class="unit"> ر.س / للاشتراك كامل</span></div>
-      </div>
-      <div class="addon-toggle"></div>
-    `;
-    card.addEventListener('click', () => toggleAddon(addon));
-    container.appendChild(card);
-  });
-}
-
-function toggleAddon(addon) {
-  const idx = state.selectedAddons.findIndex(a => a.id === addon.id);
-  const cardEl = document.querySelector(`[data-addon-id="${addon.id}"]`);
-  if (idx >= 0) {
-    state.selectedAddons.splice(idx, 1);
-    cardEl.classList.remove('selected');
-  } else {
-    state.selectedAddons.push(addon);
-    cardEl.classList.add('selected');
-  }
 }
 
 function renderPlans() {
@@ -784,11 +1459,10 @@ function renderPlans() {
 
     const features = [];
     if (plan.meals_per_day) features.push(`${plan.meals_per_day} وجبة/يوم`);
-    if (plan.meal_size_grams) features.push(`${plan.meal_size_grams}ج/وجبة`);
-    if (plan.calories_range) features.push(`🔥 ${plan.calories_range}`);
-    if (plan.includes_carbs) features.push('🌾 كارب');
-    if (plan.includes_snacks) features.push('🍎 سناك');
-    if (plan.free_delivery) features.push('🚗 توصيل مجاني');
+    if (plan.meal_size_grams) features.push(`${plan.meal_size_grams}جم`);
+    if (plan.calories_range) features.push(`${plan.calories_range}`);
+    if (plan.includes_carbs) features.push('كارب');
+    if (plan.free_delivery) features.push('توصيل');
 
     const card = document.createElement('div');
     card.className = 'plan-card';
@@ -801,7 +1475,7 @@ function renderPlans() {
         </div>
         <div class="plan-pricing">
           ${discountPct > 0 ? `<div class="plan-original">${original.toFixed(0)} ر.س</div>` : ''}
-          <div class="plan-final">${finalPrice.toFixed(0)}<span class="unit"> ر.س</span></div>
+          <div class="plan-final">${finalPrice.toFixed(0)}<span class="unit">ر.س</span></div>
           ${discountPct > 0 ? `<div class="plan-savings">وفرت ${savings.toFixed(0)} ر.س</div>` : ''}
         </div>
       </div>
@@ -812,6 +1486,40 @@ function renderPlans() {
     card.addEventListener('click', () => selectPlan(plan));
     grid.appendChild(card);
   });
+}
+
+function renderAddons() {
+  const c = $('addonsList');
+  c.innerHTML = '';
+  const icons = { 'ADD-SALAD': '🥗', 'ADD-DELIVERY': '🚚' };
+  state.addons.forEach(addon => {
+    const card = document.createElement('div');
+    card.className = 'addon-card';
+    card.dataset.addonId = addon.id;
+    card.innerHTML = `
+      <div class="addon-icon">${icons[addon.id] || addon.icon || '✨'}</div>
+      <div class="addon-content">
+        <div class="addon-name">${addon.name_ar}</div>
+        <div class="addon-desc">${addon.description || ''}</div>
+        <div class="addon-price">${parseFloat(addon.price_sar).toFixed(0)}<span class="unit"> ر.س / لكامل الاشتراك</span></div>
+      </div>
+      <div class="addon-toggle"></div>
+    `;
+    card.addEventListener('click', () => toggleAddon(addon));
+    c.appendChild(card);
+  });
+}
+
+function toggleAddon(addon) {
+  const idx = state.selectedAddons.findIndex(a => a.id === addon.id);
+  const el = document.querySelector(`[data-addon-id="${addon.id}"]`);
+  if (idx >= 0) {
+    state.selectedAddons.splice(idx, 1);
+    el.classList.remove('selected');
+  } else {
+    state.selectedAddons.push(addon);
+    el.classList.add('selected');
+  }
 }
 
 function selectPlan(plan) {
@@ -828,8 +1536,7 @@ function goToStep(n) {
   state.step = n;
   document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
   $('step' + n).classList.add('active');
-  // Map: 1->0, 2->1, 3->2, 35->3, 4->4
-  const stepIndex = { 1:0, 2:1, 3:2, 35:3, 4:4 };
+  const stepIndex = { 1: 0, 2: 1, 3: 2, 35: 3, 4: 4 };
   const currentIdx = stepIndex[n];
   document.querySelectorAll('.steps .step').forEach((s, i) => {
     s.classList.remove('active', 'done');
@@ -865,17 +1572,11 @@ $('next3').onclick = () => {
   state.customer.activity_level = $('activity').value || null;
   state.allergies.custom = $('customAllergies').value.trim();
   state.allergies.disliked = $('disliked').value.trim();
-  if (state.allergies.has && !state.allergies.severity) {
-    toast('حدد شدة الحساسية', true);
-    return;
-  }
-  goToStep(35); // Go to addons step
+  if (state.allergies.has && !state.allergies.severity) { toast('حدد شدة الحساسية', true); return; }
+  goToStep(35);
 };
 $('back35').onclick = () => goToStep(3);
-$('next35').onclick = () => {
-  updateSummary();
-  goToStep(4);
-};
+$('next35').onclick = () => { updateSummary(); goToStep(4); };
 $('back4').onclick = () => goToStep(35);
 
 $('hasAllergies').addEventListener('change', (e) => {
@@ -900,35 +1601,32 @@ document.querySelectorAll('.severity-option').forEach(el => {
 document.querySelectorAll('.allergy-chip').forEach(el => {
   el.addEventListener('click', () => {
     el.classList.toggle('selected');
-    const allergen = el.dataset.allergen;
+    const a = el.dataset.allergen;
     if (el.classList.contains('selected')) {
-      if (!state.allergies.list.includes(allergen)) state.allergies.list.push(allergen);
+      if (!state.allergies.list.includes(a)) state.allergies.list.push(a);
     } else {
-      state.allergies.list = state.allergies.list.filter(a => a !== allergen);
+      state.allergies.list = state.allergies.list.filter(x => x !== a);
     }
   });
 });
 
 function updateSummary() {
-  // Calculate addons total
   state.pricing.addonsTotal = state.selectedAddons.reduce((sum, a) => sum + parseFloat(a.price_sar), 0);
-
-  // Recalculate final price: (plan + addons) - discount on plan only
   const planAfterDiscount = state.pricing.original - state.pricing.discount;
   state.pricing.final = planAfterDiscount + state.pricing.addonsTotal;
 
   $('sumPlanName').textContent = state.selectedPlan.name_ar;
   $('sumDuration').textContent = (state.selectedPlan.duration_days || 26) + ' يوم';
-  $('sumOriginal').textContent = state.pricing.original.toFixed(2) + ' ر.س';
+  $('sumOriginal').innerHTML = `<strong>${state.pricing.original.toFixed(2)} ر.س</strong>`;
 
-  // Render addons rows
-  const addonsContainer = $('sumAddonsRows');
-  addonsContainer.innerHTML = '';
+  const ac = $('sumAddonsRows');
+  ac.innerHTML = '';
+  const icons = { 'ADD-SALAD': '🥗', 'ADD-DELIVERY': '🚚' };
   state.selectedAddons.forEach(addon => {
     const row = document.createElement('div');
     row.className = 'summary-row';
-    row.innerHTML = `<span>${addon.icon || '✨'} ${addon.name_ar}:</span><span style="direction:ltr">+ ${parseFloat(addon.price_sar).toFixed(2)} ر.س</span>`;
-    addonsContainer.appendChild(row);
+    row.innerHTML = `<span>${icons[addon.id] || ''} ${addon.name_ar}</span><strong style="direction:ltr">+ ${parseFloat(addon.price_sar).toFixed(2)} ر.س</strong>`;
+    ac.appendChild(row);
   });
 
   if (state.pricing.discount > 0) {
@@ -938,13 +1636,12 @@ function updateSummary() {
   $('sumFinal').textContent = state.pricing.final.toFixed(2) + ' ر.س';
 }
 
-// === SUBMIT & CREATE PAYMENT VIA EDGE FUNCTION ===
+// === Payment ===
 $('payBtn').onclick = async () => {
   $('payBtn').disabled = true;
   showLoading('جاري إنشاء فاتورتك...');
 
   try {
-    // 1. Create or find customer
     const customerPayload = {
       ...state.customer,
       has_allergies: state.allergies.has,
@@ -969,7 +1666,6 @@ $('payBtn').onclick = async () => {
       customerId = newCust.id;
     }
 
-    // 2. Create subscription (pending)
     const totalMeals = (state.selectedPlan.meals_per_day || 1) * (state.selectedPlan.duration_days || 26);
     const { data: sub, error: subErr } = await sb
       .from('subscriptions')
@@ -989,7 +1685,6 @@ $('payBtn').onclick = async () => {
       .select('id').single();
     if (subErr) throw subErr;
 
-    // 2.5 Save selected addons
     if (state.selectedAddons.length > 0) {
       const addonRows = state.selectedAddons.map(a => ({
         subscription_id: sub.id,
@@ -999,7 +1694,6 @@ $('payBtn').onclick = async () => {
       await sb.from('subscription_addons').insert(addonRows);
     }
 
-    // 3. Call Edge Function to create Moyasar invoice
     showLoading('جاري التحويل لصفحة الدفع الآمنة...');
 
     const response = await fetch(`${SUPABASE_URL}/functions/v1/create-payment`, {
@@ -1022,14 +1716,9 @@ $('payBtn').onclick = async () => {
     });
 
     const result = await response.json();
+    if (!response.ok || !result.success) throw new Error(result.error || 'فشل في إنشاء الفاتورة');
 
-    if (!response.ok || !result.success) {
-      throw new Error(result.error || 'فشل في إنشاء الفاتورة');
-    }
-
-    // 4. Redirect to Moyasar hosted payment page
     window.location.href = result.payment_url;
-
   } catch (e) {
     console.error(e);
     hideLoading();
@@ -1038,23 +1727,10 @@ $('payBtn').onclick = async () => {
   }
 };
 
-$('shareBtn').addEventListener('click', () => {
-  const text = `🌿 انضممت لعائلة Lite Kitchen!\nوجبات صحية محسوبة من 8PM Healthy في حائل\n${window.location.origin}/lite-kitchen/`;
-  if (navigator.share) {
-    navigator.share({ title: 'Lite Kitchen', text });
-  } else {
-    navigator.clipboard.writeText(text);
-    toast('تم نسخ الرسالة');
-  }
-});
-
 // === Init ===
 (async () => {
-  // Check if returning from payment first
   const handled = await checkPaymentReturn();
   if (handled) return;
-
-  // Normal flow
   await loadReferrer();
   await Promise.all([loadPlans(), loadAddons()]);
 })();
