@@ -218,6 +218,66 @@
   }
   @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
+  /* === Addon cards === */
+  .addon-card {
+    background: rgba(0,0,0,0.3);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .addon-card:hover { border-color: rgba(74,222,128,0.3); transform: translateY(-2px); }
+  .addon-card.selected {
+    border-color: #4ade80;
+    background: rgba(74,222,128,0.1);
+    box-shadow: 0 8px 24px rgba(74,222,128,0.15);
+  }
+  .addon-icon {
+    font-size: 36px;
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(74,222,128,0.1);
+    border-radius: 14px;
+  }
+  .addon-content { flex: 1; }
+  .addon-name { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .addon-desc { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+  .addon-price {
+    font-size: 18px;
+    font-weight: 800;
+    color: #4ade80;
+    direction: ltr;
+  }
+  .addon-price .unit { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 400; }
+  .addon-toggle {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .addon-card.selected .addon-toggle {
+    background: #4ade80;
+    border-color: #4ade80;
+    color: #0a1f15;
+    font-weight: 800;
+  }
+  .addon-card.selected .addon-toggle::after { content: '✓'; }
+
   .loading-overlay {
     display: none; position: fixed; inset: 0; background: rgba(10,31,21,0.92);
     z-index: 999; align-items: center; justify-content: center; flex-direction: column;
@@ -260,7 +320,8 @@
     <div class="step active" data-step="1"><div class="step-circle">1</div><div class="step-label">الباقة</div></div>
     <div class="step" data-step="2"><div class="step-circle">2</div><div class="step-label">بياناتك</div></div>
     <div class="step" data-step="3"><div class="step-circle">3</div><div class="step-label">الصحة</div></div>
-    <div class="step" data-step="4"><div class="step-circle">4</div><div class="step-label">الدفع</div></div>
+    <div class="step" data-step="35"><div class="step-circle">4</div><div class="step-label">الإضافات</div></div>
+    <div class="step" data-step="4"><div class="step-circle">5</div><div class="step-label">الدفع</div></div>
   </div>
 
   <!-- STEP 1 -->
@@ -403,6 +464,20 @@
     <button class="btn btn-secondary btn-back" id="back3">→ السابق</button>
   </div>
 
+  <!-- STEP 3.5: Addons -->
+  <div class="step-section" id="step35">
+    <div class="card">
+      <div class="card-title">🎁 إضافات اختيارية</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;">حسّن تجربتك مع هذه الإضافات (يمكنك تخطيها).</p>
+      <div id="addonsList">
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="next35">التالي ←</button>
+    <button class="btn btn-secondary btn-back" id="back35">→ السابق</button>
+  </div>
+
   <!-- STEP 4 -->
   <div class="step-section" id="step4">
     <div class="card">
@@ -411,6 +486,7 @@
         <div class="summary-row"><span>الباقة المختارة:</span><strong id="sumPlanName">—</strong></div>
         <div class="summary-row"><span>المدة:</span><strong id="sumDuration">26 يوم</strong></div>
         <div class="summary-row"><span>سعر الباقة:</span><span id="sumOriginal" style="direction:ltr">—</span></div>
+        <div id="sumAddonsRows"></div>
         <div class="summary-row discount" id="sumDiscountRow" style="display:none;">
           <span>🎁 خصم الشريك (10%):</span>
           <span id="sumDiscount" style="direction:ltr">—</span>
@@ -490,11 +566,13 @@ const $ = (id) => document.getElementById(id);
 const state = {
   step: 1,
   plans: [],
+  addons: [],
+  selectedAddons: [],
   selectedPlan: null,
   referralStaff: null,
   customer: {},
   allergies: { has: false, severity: null, list: [], custom: '', disliked: '' },
-  pricing: { original: 0, discount: 0, final: 0, discountPercent: 0 }
+  pricing: { original: 0, discount: 0, addonsTotal: 0, final: 0, discountPercent: 0 }
 };
 
 function toast(msg, isError = false) {
@@ -526,10 +604,29 @@ async function checkPaymentReturn() {
 
   showLoading('جاري التحقق من حالة الدفع...');
 
-  // Wait briefly for webhook to potentially process
-  await new Promise(r => setTimeout(r, 2000));
+  // === Try to verify payment actively via Edge Function (not waiting for webhook) ===
+  let verifyResult = null;
+  if (subId) {
+    try {
+      const verifyRes = await fetch(`${SUPABASE_URL}/functions/v1/verify-payment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`
+        },
+        body: JSON.stringify({ subscription_id: subId })
+      });
+      verifyResult = await verifyRes.json();
+      console.log('Verify result:', verifyResult);
+    } catch (e) {
+      console.error('Verify call failed:', e);
+    }
+  }
 
-  // Check subscription status from DB
+  // Wait a bit then re-check DB (in case webhook also updated it)
+  await new Promise(r => setTimeout(r, 1500));
+
   let subscription = null;
   if (subId) {
     const { data } = await sb
@@ -544,7 +641,13 @@ async function checkPaymentReturn() {
 
   $('successScreen').classList.add('show');
 
-  if (subscription && subscription.payment_status === 'paid') {
+  const isPaid = (subscription && subscription.payment_status === 'paid') ||
+                 (verifyResult && verifyResult.status === 'paid');
+  const isFailed = (moyasarStatus === 'failed') ||
+                   (subscription && subscription.payment_status === 'failed') ||
+                   (verifyResult && verifyResult.status === 'failed');
+
+  if (isPaid) {
     // SUCCESS
     $('successIcon').textContent = '🎉';
     $('successIcon').className = 'success-icon';
@@ -552,12 +655,12 @@ async function checkPaymentReturn() {
     $('successTitle').className = 'success-title';
     $('successText').innerHTML = `
       تم استلام الدفعة بنجاح ✅<br>
-      الباقة: <strong style="color:#4ade80">${subscription.plans?.name_ar || ''}</strong><br>
-      المبلغ: <strong>${parseFloat(subscription.total_amount_sar).toFixed(2)} ر.س</strong><br>
+      الباقة: <strong style="color:#4ade80">${subscription?.plans?.name_ar || ''}</strong><br>
+      المبلغ: <strong>${subscription ? parseFloat(subscription.total_amount_sar).toFixed(2) : ''} ر.س</strong><br>
       أنت الآن جزء من عائلة Lite Kitchen 🌿
     `;
-    $('finalCustomerId').textContent = subscription.customer_id;
-  } else if (moyasarStatus === 'failed' || (subscription && subscription.payment_status === 'failed')) {
+    $('finalCustomerId').textContent = subscription?.customer_id || '—';
+  } else if (isFailed) {
     // FAILED
     $('successIcon').textContent = '❌';
     $('successIcon').className = 'failed-icon';
@@ -571,14 +674,16 @@ async function checkPaymentReturn() {
     $('shareBtn').textContent = 'العودة للصفحة الرئيسية';
     $('shareBtn').onclick = () => window.location.href = window.location.origin + window.location.pathname;
   } else {
-    // PENDING (webhook may not have processed yet)
+    // PENDING - show retry button
     $('successIcon').textContent = '⏳';
     $('successTitle').textContent = 'جاري معالجة الدفع';
     $('successText').innerHTML = `
-      نتلقى تأكيد البنك خلال لحظات. سنتواصل معك على واتساب فور التأكيد.<br>
-      رقم اشتراكك: <code style="background:rgba(0,0,0,0.4);padding:4px 10px;border-radius:6px;direction:ltr;">${subId}</code>
+      نتلقى تأكيد البنك خلال لحظات.<br>
+      رقم اشتراكك: <code style="background:rgba(0,0,0,0.4);padding:4px 10px;border-radius:6px;direction:ltr;">${subId}</code><br><br>
+      <button onclick="window.location.reload()" style="background:#4ade80;color:#0a1f15;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-family:inherit;">🔄 تحديث الحالة</button>
     `;
     $('customerNumberBox').style.display = 'none';
+    $('shareBtn').style.display = 'none';
   }
 
   return true;
@@ -621,6 +726,51 @@ async function loadPlans() {
   }
   state.plans = data;
   renderPlans();
+}
+
+async function loadAddons() {
+  const { data, error } = await sb
+    .from('addons').select('*').eq('is_active', true).order('display_order');
+
+  if (error || !data) {
+    $('addonsList').innerHTML = '<div style="color:#fca5a5;text-align:center;padding:20px;">تعذّر تحميل الإضافات</div>';
+    return;
+  }
+  state.addons = data;
+  renderAddons();
+}
+
+function renderAddons() {
+  const container = $('addonsList');
+  container.innerHTML = '';
+  state.addons.forEach(addon => {
+    const card = document.createElement('div');
+    card.className = 'addon-card';
+    card.dataset.addonId = addon.id;
+    card.innerHTML = `
+      <div class="addon-icon">${addon.icon || '✨'}</div>
+      <div class="addon-content">
+        <div class="addon-name">${addon.name_ar}</div>
+        <div class="addon-desc">${addon.description || ''}</div>
+        <div class="addon-price">${parseFloat(addon.price_sar).toFixed(0)}<span class="unit"> ر.س / للاشتراك كامل</span></div>
+      </div>
+      <div class="addon-toggle"></div>
+    `;
+    card.addEventListener('click', () => toggleAddon(addon));
+    container.appendChild(card);
+  });
+}
+
+function toggleAddon(addon) {
+  const idx = state.selectedAddons.findIndex(a => a.id === addon.id);
+  const cardEl = document.querySelector(`[data-addon-id="${addon.id}"]`);
+  if (idx >= 0) {
+    state.selectedAddons.splice(idx, 1);
+    cardEl.classList.remove('selected');
+  } else {
+    state.selectedAddons.push(addon);
+    cardEl.classList.add('selected');
+  }
 }
 
 function renderPlans() {
@@ -668,7 +818,7 @@ function selectPlan(plan) {
   state.selectedPlan = plan;
   state.pricing.original = parseFloat(plan.price_sar);
   state.pricing.discount = state.pricing.original * (state.pricing.discountPercent / 100);
-  state.pricing.final = state.pricing.original - state.pricing.discount;
+  state.pricing.final = state.pricing.original - state.pricing.discount + state.pricing.addonsTotal;
   document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
   document.querySelector(`[data-plan-id="${plan.id}"]`).classList.add('selected');
   $('next1').disabled = false;
@@ -678,10 +828,13 @@ function goToStep(n) {
   state.step = n;
   document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
   $('step' + n).classList.add('active');
+  // Map: 1->0, 2->1, 3->2, 35->3, 4->4
+  const stepIndex = { 1:0, 2:1, 3:2, 35:3, 4:4 };
+  const currentIdx = stepIndex[n];
   document.querySelectorAll('.steps .step').forEach((s, i) => {
     s.classList.remove('active', 'done');
-    if (i + 1 < n) s.classList.add('done');
-    if (i + 1 === n) s.classList.add('active');
+    if (i < currentIdx) s.classList.add('done');
+    if (i === currentIdx) s.classList.add('active');
   });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -716,10 +869,14 @@ $('next3').onclick = () => {
     toast('حدد شدة الحساسية', true);
     return;
   }
+  goToStep(35); // Go to addons step
+};
+$('back35').onclick = () => goToStep(3);
+$('next35').onclick = () => {
   updateSummary();
   goToStep(4);
 };
-$('back4').onclick = () => goToStep(3);
+$('back4').onclick = () => goToStep(35);
 
 $('hasAllergies').addEventListener('change', (e) => {
   state.allergies.has = e.target.checked;
@@ -753,9 +910,27 @@ document.querySelectorAll('.allergy-chip').forEach(el => {
 });
 
 function updateSummary() {
+  // Calculate addons total
+  state.pricing.addonsTotal = state.selectedAddons.reduce((sum, a) => sum + parseFloat(a.price_sar), 0);
+
+  // Recalculate final price: (plan + addons) - discount on plan only
+  const planAfterDiscount = state.pricing.original - state.pricing.discount;
+  state.pricing.final = planAfterDiscount + state.pricing.addonsTotal;
+
   $('sumPlanName').textContent = state.selectedPlan.name_ar;
   $('sumDuration').textContent = (state.selectedPlan.duration_days || 26) + ' يوم';
   $('sumOriginal').textContent = state.pricing.original.toFixed(2) + ' ر.س';
+
+  // Render addons rows
+  const addonsContainer = $('sumAddonsRows');
+  addonsContainer.innerHTML = '';
+  state.selectedAddons.forEach(addon => {
+    const row = document.createElement('div');
+    row.className = 'summary-row';
+    row.innerHTML = `<span>${addon.icon || '✨'} ${addon.name_ar}:</span><span style="direction:ltr">+ ${parseFloat(addon.price_sar).toFixed(2)} ر.س</span>`;
+    addonsContainer.appendChild(row);
+  });
+
   if (state.pricing.discount > 0) {
     $('sumDiscountRow').style.display = 'flex';
     $('sumDiscount').textContent = '- ' + state.pricing.discount.toFixed(2) + ' ر.س';
@@ -806,12 +981,23 @@ $('payBtn').onclick = async () => {
         original_price: state.pricing.original,
         discount_amount: state.pricing.discount,
         discount_percentage: state.pricing.discountPercent,
+        addons_total: state.pricing.addonsTotal,
         registered_by: state.referralStaff?.id || null,
         status: 'pending_payment',
         payment_status: 'unpaid'
       })
       .select('id').single();
     if (subErr) throw subErr;
+
+    // 2.5 Save selected addons
+    if (state.selectedAddons.length > 0) {
+      const addonRows = state.selectedAddons.map(a => ({
+        subscription_id: sub.id,
+        addon_id: a.id,
+        price_paid: parseFloat(a.price_sar)
+      }));
+      await sb.from('subscription_addons').insert(addonRows);
+    }
 
     // 3. Call Edge Function to create Moyasar invoice
     showLoading('جاري التحويل لصفحة الدفع الآمنة...');
@@ -870,7 +1056,7 @@ $('shareBtn').addEventListener('click', () => {
 
   // Normal flow
   await loadReferrer();
-  await loadPlans();
+  await Promise.all([loadPlans(), loadAddons()]);
 })();
 </script>
 </body>
