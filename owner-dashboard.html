@@ -1,333 +1,602 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="theme-color" content="#0a1f15">
-    <title>لوحة المالك — Lite Kitchen</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: linear-gradient(135deg, #0a1f15 0%, #1a3d2a 100%); min-height: 100vh; color: #e8f5ee; padding: 20px; padding-bottom: 60px; }
-        body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(251,191,36,0.12) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-        .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
-        .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.25); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة المالك — Lite Kitchen</title>
+<meta name="robots" content="noindex, nofollow">
 
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
-        .brand-side { display: flex; align-items: center; gap: 12px; }
-        .logo { font-size: 22px; font-weight: 900; color: #4ade80; }
-        .owner-badge { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #1a1100; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; box-shadow: 0 6px 18px rgba(251,191,36,0.35); }
-        .btn { padding: 10px 14px; border: none; border-radius: 10px; font-family: inherit; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.25s; display: inline-flex; align-items: center; gap: 6px; }
-        .btn.ghost { background: rgba(255,255,255,0.1); color: #e8f5ee; border: 1px solid rgba(255,255,255,0.15); }
-        .btn.danger { background: rgba(239,68,68,0.18); color: #fca5a5; border: 1px solid rgba(239,68,68,0.35); }
-        .btn.primary { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); color: #0a1f15; }
-        .btn.gold { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); color: #1a1100; }
-        .btn.gold:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(251,191,36,0.35); }
-        .btn.whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #fff; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 18px; }
-        .stat { padding: 18px; text-align: center; }
-        .stat .icon { font-size: 26px; margin-bottom: 4px; }
-        .stat .num { font-size: 28px; font-weight: 900; color: #fbbf24; margin: 4px 0; }
-        .stat .num.green { color: #4ade80; }
-        .stat .lbl { font-size: 12px; color: rgba(232,245,238,0.7); font-weight: 500; }
+<style>
+  :root {
+    --beige-top: #F4ECD8; --beige-mid: #EFE4CE; --beige-bot: #E5D6B6;
+    --watermelon: #E0596C; --coral: #F08A5D; --olive: #6F7C3E; --pink: #E89BA6;
+    --ink: #2A241C; --ink-soft: #5A4F42; --ink-mute: #8A7E6B;
+    --card: #FBF3DD; --card-edge: rgba(42, 36, 28, 0.10);
+    --shadow-sm: 0 4px 12px rgba(42, 36, 28, 0.10);
+    --shadow-md: 0 8px 22px rgba(42, 36, 28, 0.18);
+    --shadow-lg: 0 16px 40px rgba(42, 36, 28, 0.22);
+    --radius-card: 14px; --radius-pill: 9999px;
+    --bg-page: linear-gradient(180deg, var(--beige-top) 0%, var(--beige-mid) 55%, var(--beige-bot) 100%);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg-page); }
+  body {
+    font-family: 'Cairo', system-ui, sans-serif;
+    color: var(--ink); direction: rtl; min-height: 100vh;
+    background: var(--bg-page); padding: 16px; position: relative;
+  }
+  body::before, body::after {
+    content: ""; position: fixed; border-radius: 50%; filter: blur(80px);
+    pointer-events: none; z-index: 0;
+  }
+  body::before { top: 8%; right: 12%; width: 360px; height: 360px; background: var(--watermelon); opacity: 0.28; }
+  body::after { bottom: 10%; left: 12%; width: 320px; height: 320px; background: var(--olive); opacity: 0.25; }
+  .grain::after {
+    content: ""; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.12; mix-blend-mode: multiply; pointer-events: none; z-index: 1;
+  }
+  .container { max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; }
 
-        .section { margin-bottom: 18px; }
-        .section h3 { font-size: 16px; margin-bottom: 12px; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
+  .header {
+    background: var(--card); border: 1px solid var(--card-edge);
+    border-right: 6px solid var(--watermelon);
+    border-radius: var(--radius-card); padding: 20px 24px;
+    margin-bottom: 22px; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 14px;
+    box-shadow: var(--shadow-md); transform: rotate(-0.3deg);
+  }
+  .header .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .header .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 900; letter-spacing: 1.2px;
+    color: var(--ink); text-transform: uppercase;
+  }
+  .header .tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--watermelon); }
+  .header .title { font-size: 24px; font-weight: 900; line-height: 1; color: var(--ink); }
+  .header .title .grad {
+    background: linear-gradient(90deg, var(--watermelon), var(--coral));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .header .badge {
+    background: var(--watermelon); color: #FFF8E7;
+    padding: 7px 16px; border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 900; letter-spacing: 0.6px;
+    box-shadow: var(--shadow-sm); transform: rotate(-2deg);
+  }
+  .btn {
+    background: transparent; border: 1.5px solid var(--card-edge);
+    color: var(--ink-soft); padding: 9px 16px;
+    border-radius: var(--radius-pill); cursor: pointer;
+    font-size: 12px; font-weight: 900; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: var(--card); border-color: var(--ink); color: var(--ink); }
+  .btn.primary { background: var(--watermelon); color: #FFF8E7; border-color: var(--watermelon); box-shadow: var(--shadow-sm); }
+  .btn.primary:hover { transform: translateY(-1px) rotate(-0.5deg); }
+  .btn.olive { background: var(--olive); color: #FFF8E7; border-color: var(--olive); box-shadow: var(--shadow-sm); }
 
-        .link-box { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
-        .link-box.gold { border-color: rgba(251,191,36,0.35); background: linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(245,158,11,0.04) 100%); }
-        .link-box .desc { font-size: 12px; color: rgba(232,245,238,0.7); margin-bottom: 8px; }
-        .link-value { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px 12px; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; direction: ltr; text-align: left; color: #fef3c7; margin-bottom: 10px; }
-        .link-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* Tabs */
+  .tabs {
+    display: flex; gap: 8px; margin-bottom: 22px;
+    overflow-x: auto; padding-bottom: 6px;
+  }
+  .tab {
+    flex: 1; min-width: 130px; padding: 14px 16px;
+    background: var(--card); border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card); color: var(--ink-mute);
+    cursor: pointer; font-weight: 900; text-align: center;
+    transition: all 0.2s; font-size: 13px; box-shadow: var(--shadow-sm);
+  }
+  .tab:nth-child(2n) { transform: rotate(0.5deg); }
+  .tab:nth-child(2n+1) { transform: rotate(-0.5deg); }
+  .tab.active {
+    background: var(--watermelon); color: #FFF8E7;
+    border-color: var(--watermelon); box-shadow: var(--shadow-md); transform: rotate(0);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        thead th { background: rgba(0,0,0,0.3); color: #fbbf24; padding: 10px 8px; text-align: right; font-weight: 700; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        tbody td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
-        .tbl-wrap { overflow-x: auto; }
-        .tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; }
-        .tag.green { background: rgba(74,222,128,0.18); color: #4ade80; }
-        .tag.red { background: rgba(239,68,68,0.18); color: #fca5a5; }
-        .tag.amber { background: rgba(251,191,36,0.18); color: #fbbf24; }
-        .tag.gray { background: rgba(148,163,184,0.18); color: #cbd5e1; }
-        .tag.gold { background: rgba(251,191,36,0.25); color: #fef3c7; border: 1px solid rgba(251,191,36,0.4); }
-        .tag.code { font-family: 'Courier New', monospace; }
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px; margin-bottom: 22px;
+  }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card); padding: 20px 18px;
+    text-align: center; box-shadow: var(--shadow-sm);
+  }
+  .stat-card:nth-child(1) { transform: rotate(-0.6deg); border-right: 4px solid var(--watermelon); }
+  .stat-card:nth-child(2) { transform: rotate(0.4deg); border-right: 4px solid var(--olive); }
+  .stat-card:nth-child(3) { transform: rotate(-0.3deg); border-right: 4px solid var(--coral); }
+  .stat-card:nth-child(4) { transform: rotate(0.6deg); border-right: 4px solid var(--pink); }
+  .stat-card .label {
+    font-size: 10px; font-weight: 900; color: var(--ink-mute);
+    margin-bottom: 6px; letter-spacing: 0.6px; text-transform: uppercase;
+  }
+  .stat-card .value { font-size: 34px; font-weight: 900; color: var(--ink); line-height: 1; }
+  .stat-card .sub { font-size: 11px; color: var(--ink-mute); margin-top: 4px; font-weight: 700; }
 
-        details { margin-top: 6px; cursor: pointer; }
-        details summary { font-size: 12px; color: #4ade80; padding: 4px 0; }
-        details[open] summary { margin-bottom: 6px; }
-        .detail-grid { background: rgba(0,0,0,0.35); border-radius: 8px; padding: 10px; font-size: 12px; }
-        .detail-grid div { padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.08); }
-        .detail-grid div:last-child { border-bottom: none; }
-        .detail-grid b { color: #fbbf24; display: block; font-size: 11px; margin-bottom: 2px; }
-        .detail-grid code { background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 11px; word-break: break-all; direction: ltr; display: inline-block; }
+  .section {
+    background: var(--card); border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card); padding: 24px;
+    margin-bottom: 20px; box-shadow: var(--shadow-md);
+    transform: rotate(-0.2deg);
+  }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 900; font-size: 11px; letter-spacing: 1px;
+    color: var(--ink); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .section-tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--watermelon); }
+  .section-tag.olive::before { background: var(--olive); }
+  .section-tag.coral::before { background: var(--coral); }
+  .section h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; color: var(--ink); line-height: 1.1; }
+  .section-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 18px; font-weight: 700; line-height: 1.5; }
 
-        .empty { text-align: center; padding: 30px 12px; color: rgba(232,245,238,0.5); }
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px); background: rgba(74,222,128,0.95); color: #0a1f15; padding: 12px 22px; border-radius: 12px; font-weight: 700; font-size: 14px; opacity: 0; transition: all 0.3s; z-index: 2000; box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast.err { background: rgba(239,68,68,0.95); color: #fff; }
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    background: #FFF8E7; border-radius: var(--radius-card); overflow: hidden;
+    border: 1px solid var(--card-edge); box-shadow: var(--shadow-sm);
+  }
+  th {
+    background: var(--ink); color: var(--beige-top);
+    padding: 12px 14px; text-align: right; font-weight: 900;
+    font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  td {
+    padding: 14px; border-bottom: 1px dashed var(--card-edge);
+    font-size: 13px; color: var(--ink); font-weight: 700;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(224, 89, 108, 0.04); }
 
-        @media (max-width: 480px) {
-            body { padding: 12px; }
-            .glass { padding: 14px; }
-            thead th, tbody td { padding: 8px 6px; font-size: 12px; }
-        }
-    </style>
+  .pill {
+    display: inline-block; padding: 4px 12px;
+    border-radius: var(--radius-pill); font-size: 11px;
+    font-weight: 900; letter-spacing: 0.4px;
+  }
+  .pill.active { background: var(--olive); color: #FFF8E7; }
+  .pill.pending { background: var(--coral); color: #FFF8E7; }
+  .pill.paid { background: var(--olive); color: #FFF8E7; }
+  .pill.unpaid { background: var(--watermelon); color: #FFF8E7; }
+  .pill.cancelled { background: var(--ink-mute); color: #FFF8E7; }
+  .pill.partner { background: var(--pink); color: var(--ink); }
+  .pill.influencer { background: var(--coral); color: #FFF8E7; }
+  .pill.kitchen { background: var(--olive); color: #FFF8E7; }
+  .pill.trainer { background: var(--watermelon); color: #FFF8E7; }
+  .pill.owner-pill { background: var(--ink); color: var(--coral); }
+
+  .allergy-mark {
+    background: var(--watermelon); color: #FFF8E7;
+    padding: 2px 8px; border-radius: var(--radius-pill);
+    font-size: 10px; font-weight: 900; margin-right: 6px;
+  }
+
+  /* Partner card */
+  .partner-card {
+    background: #FFF8E7; border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card); padding: 18px;
+    margin-bottom: 14px; box-shadow: var(--shadow-sm);
+    display: grid; grid-template-columns: 1fr auto; gap: 12px;
+    align-items: center;
+  }
+  .partner-card:nth-child(2n) { transform: rotate(0.4deg); }
+  .partner-card:nth-child(2n+1) { transform: rotate(-0.4deg); }
+  .partner-info .name { font-weight: 900; font-size: 16px; color: var(--ink); margin-bottom: 4px; }
+  .partner-info .label-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 11px; color: var(--ink-mute); font-weight: 700; }
+  .partner-stats { text-align: left; }
+  .partner-stats .num { font-size: 22px; font-weight: 900; color: var(--watermelon); line-height: 1; }
+  .partner-stats .num-label { font-size: 10px; color: var(--ink-mute); font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px; }
+
+  .link-box {
+    background: var(--ink); color: var(--coral);
+    border-radius: var(--radius-card); padding: 12px;
+    word-break: break-all; font-family: 'Consolas', monospace;
+    font-size: 11px; direction: ltr; text-align: left;
+    margin-top: 10px;
+  }
+
+  .empty {
+    text-align: center; padding: 40px 20px;
+    color: var(--ink-mute); font-weight: 700;
+  }
+  .empty .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+
+  /* Toast */
+  .toast {
+    position: fixed; top: 20px; left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--olive); color: #FFF8E7;
+    padding: 14px 24px; border-radius: var(--radius-card);
+    font-weight: 900; z-index: 200; transition: transform 0.3s;
+    box-shadow: var(--shadow-lg);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--watermelon); }
+
+  @media (max-width: 640px) {
+    th, td { padding: 8px 10px; font-size: 11px; }
+    .stat-card .value { font-size: 26px; }
+  }
+</style>
 </head>
-<body>
-    <div class="toast" id="toast"></div>
-    <div class="container">
-        <div class="header glass">
-            <div class="brand-side">
-                <span class="logo">🌿</span>
-                <div>
-                    <div style="font-weight:800;font-size:15px;">لوحة المالك</div>
-                    <div style="font-size:12px;color:rgba(232,245,238,0.6);" id="whoName">—</div>
-                </div>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-                <span class="owner-badge">👑 OWNER</span>
-                <button type="button" class="btn danger" id="logoutBtn">خروج</button>
-            </div>
-        </div>
+<body class="grain">
+<div class="container">
 
-        <div class="stats-grid">
-            <div class="glass stat"><div class="icon">👥</div><div class="num" id="statTotalCust">—</div><div class="lbl">إجمالي العملاء</div></div>
-            <div class="glass stat"><div class="icon">✅</div><div class="num green" id="statActiveSubs">—</div><div class="lbl">اشتراكات نشطة</div></div>
-            <div class="glass stat"><div class="icon">💰</div><div class="num" id="statMonthRev">—</div><div class="lbl">إيرادات الشهر (ر.س)</div></div>
-            <div class="glass stat"><div class="icon">📊</div><div class="num green" id="statCommissionsDue">—</div><div class="lbl">عمولات مستحقة</div></div>
-        </div>
+  <div class="header">
+    <div class="brand">
+      <div>
+        <div class="tag">المالك</div>
+        <div class="title"><span class="grad">Lite</span> Kitchen</div>
+      </div>
+      <span class="badge">يوسف الشمري</span>
+    </div>
+    <button class="btn" id="logoutBtn">خروج</button>
+  </div>
 
-        <div class="section glass">
-            <h3>👑 روابطك الخاصة</h3>
-            <div class="link-box gold">
-                <div class="desc"><strong>رابط التسجيل المباشر (بدون عمولة)</strong> — لتسجيل عملائك مباشرة دون احتساب عمولة لأي شريك</div>
-                <div class="link-value" id="directLink">—</div>
-                <div class="link-actions">
-                    <button type="button" class="btn gold" id="copyDirect">📋 نسخ</button>
-                    <button type="button" class="btn whatsapp" id="shareDirect">💬 مشاركة عبر واتساب</button>
-                </div>
-            </div>
-            <div class="link-box">
-                <div class="desc">رابط لوحة المالك الخاص — احفظه للوصول السريع</div>
-                <div class="link-value" id="ownerDashLink">—</div>
-                <div class="link-actions">
-                    <button type="button" class="btn primary" id="copyOwnerDash">📋 نسخ</button>
-                </div>
-            </div>
-        </div>
+  <div class="tabs">
+    <div class="tab active" data-tab="overview">نظرة عامة</div>
+    <div class="tab" data-tab="subscriptions">الاشتراكات</div>
+    <div class="tab" data-tab="partners">الشركاء</div>
+    <div class="tab" data-tab="my-link">رابطي</div>
+  </div>
 
-        <div class="section glass">
-            <h3>👥 إدارة الشركاء</h3>
-            <div class="tbl-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>الاسم الحقيقي</th>
-                            <th>الرمز</th>
-                            <th>النوع</th>
-                            <th>المستوى</th>
-                            <th>L/A/E %</th>
-                            <th>الخصوصية</th>
-                            <th>التفاصيل</th>
-                        </tr>
-                    </thead>
-                    <tbody id="staffBody">
-                        <tr><td colspan="7" class="empty">جاري التحميل...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="section glass">
-            <h3>🆕 آخر 10 اشتراكات</h3>
-            <div class="tbl-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>العميل</th>
-                            <th>الجوال</th>
-                            <th>الباقة</th>
-                            <th>المبلغ</th>
-                            <th>الشريك</th>
-                            <th>الحالة</th>
-                            <th>الدفع</th>
-                            <th>التاريخ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="subsBody">
-                        <tr><td colspan="8" class="empty">جاري التحميل...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <!-- OVERVIEW -->
+  <div class="tab-content active" id="tab-overview">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="label">عملاء نشطون</div>
+        <div class="value" id="statCustomers">—</div>
+        <div class="sub">إجمالي العملاء</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">اشتراكات نشطة</div>
+        <div class="value" id="statSubs">—</div>
+        <div class="sub">قيد الاستهلاك</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">إيرادات تراكمية</div>
+        <div class="value" id="statRevenue">—</div>
+        <div class="sub">ر.س مدفوعة</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">حساسيات</div>
+        <div class="value" id="statAllergies">—</div>
+        <div class="sub">عملاء بحساسية</div>
+      </div>
     </div>
 
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-        const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
-        const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
-        const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    <div class="section">
+      <div class="section-tag olive">اليوم</div>
+      <h2>نشاط اليوم</h2>
+      <p class="section-sub">آخر النشاطات والأحداث في النظام.</p>
+      <div class="stats" style="margin-bottom: 0;">
+        <div class="stat-card">
+          <div class="label">اشتراكات جديدة اليوم</div>
+          <div class="value" id="statTodaySubs">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">إيراد اليوم</div>
+          <div class="value" id="statTodayRevenue">—</div>
+          <div class="sub">ر.س</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">وجبات مُستهلكة اليوم</div>
+          <div class="value" id="statTodayMeals">—</div>
+        </div>
+      </div>
+    </div>
 
-        const staffId = sessionStorage.getItem('lk_staff_id');
-        const staffRole = sessionStorage.getItem('lk_staff_role');
-        const staffName = sessionStorage.getItem('lk_staff_name') || '';
-        const accessKey = sessionStorage.getItem('lk_access_key') || '';
+    <div class="section">
+      <div class="section-tag">آخر الاشتراكات</div>
+      <h2>الأنشطة الحديثة</h2>
+      <p class="section-sub">آخر 10 اشتراكات.</p>
+      <div class="table-wrap">
+        <table id="recentTable">
+          <thead>
+            <tr>
+              <th>العميل</th><th>الباقة</th><th>المبلغ</th>
+              <th>الشريك</th><th>الحالة</th>
+            </tr>
+          </thead>
+          <tbody id="recentBody"><tr><td colspan="5" class="empty">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-        if (!staffId || staffRole !== 'owner') window.location.href = 'partners.html';
+  <!-- SUBSCRIPTIONS -->
+  <div class="tab-content" id="tab-subscriptions">
+    <div class="section">
+      <div class="section-tag coral">كل الاشتراكات</div>
+      <h2>قائمة الاشتراكات</h2>
+      <p class="section-sub">جميع الاشتراكات المسجّلة (نشطة، مدفوعة، ملغاة).</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الرقم</th><th>العميل</th><th>الجوال</th><th>الباقة</th>
+              <th>المبلغ</th><th>الشريك</th><th>الحالة</th><th>الدفع</th>
+            </tr>
+          </thead>
+          <tbody id="allSubsBody"><tr><td colspan="8" class="empty">جاري التحميل...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-        document.getElementById('whoName').textContent = staffName || staffId;
-        document.getElementById('directLink').textContent = SITE_BASE + '/?ref=YOUSEF';
-        document.getElementById('ownerDashLink').textContent = accessKey ? (SITE_BASE + '/owner-dashboard.html?key=' + accessKey) : '—';
+  <!-- PARTNERS -->
+  <div class="tab-content" id="tab-partners">
+    <div class="section">
+      <div class="section-tag">فريق العمل</div>
+      <h2>الشركاء والفريق</h2>
+      <p class="section-sub">جميع الشركاء بأسمائهم الحقيقية، وعمولاتهم، وإحصائياتهم.</p>
+      <div id="partnersGrid"><div class="empty">جاري التحميل...</div></div>
+    </div>
+  </div>
 
-        function fmt(n, d) { return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 }); }
-        function fmtDate(d) {
-            if (!d) return '—';
-            try { return new Date(d).toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' }); } catch (e) { return String(d); }
-        }
-        function escapeHtml(s) {
-            if (s === null || s === undefined) return '';
-            return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-        }
-        function toast(msg, kind) {
-            const el = document.getElementById('toast');
-            el.textContent = msg;
-            el.classList.remove('err');
-            if (kind === 'error') el.classList.add('err');
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 2500);
-        }
-        function copy(text, label) {
-            if (!text || text === '—') return;
-            try {
-                if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => toast(label || '✅ تم النسخ', 'success'));
-                else {
-                    const ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
-                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-                    toast(label || '✅ تم النسخ', 'success');
-                }
-            } catch (e) { toast('فشل النسخ', 'error'); }
-        }
+  <!-- MY LINK -->
+  <div class="tab-content" id="tab-my-link">
+    <div class="section">
+      <div class="section-tag">سري</div>
+      <h2>رابط لوحتك الخاص</h2>
+      <p class="section-sub">احفظه في المتصفح. لا تشاركه أبداً.</p>
+      <div class="link-box" id="ownerDashLink">جاري التحميل...</div>
+      <button class="btn primary" id="copyOwnerLink" style="margin-top:12px;">نسخ الرابط</button>
+    </div>
 
-        async function loadStats() {
-            try {
-                const monthStart = new Date(); monthStart.setDate(1); monthStart.setHours(0,0,0,0);
-                const monthIso = monthStart.toISOString();
+    <div class="section">
+      <div class="section-tag coral">إحالة مباشرة</div>
+      <h2>رابطك للتسجيل المباشر</h2>
+      <p class="section-sub">شاركه إذا تريد تسجيل عميل بنفسك بدون عمولة.</p>
+      <div class="link-box" id="ownerRefLink">جاري التحميل...</div>
+      <button class="btn olive" id="copyOwnerRef" style="margin-top:12px;">نسخ الرابط</button>
+    </div>
 
-                const [custCount, activeCount, monthRevenue] = await Promise.all([
-                    sb.from('customers').select('id', { count: 'exact', head: true }),
-                    sb.from('subscriptions').select('id', { count: 'exact', head: true }).eq('status', 'active'),
-                    sb.from('subscriptions').select('total_amount_sar').gte('created_at', monthIso).eq('payment_status', 'paid')
-                ]);
+    <div class="section">
+      <div class="section-tag olive">روابط النظام</div>
+      <h2>أدوات إدارية</h2>
+      <p class="section-sub">روابط مهمة للوصول السريع.</p>
+      <div style="display:grid;gap:10px;">
+        <a href="kitchen-dashboard.html" class="btn olive" style="text-decoration:none;text-align:center;padding:14px;">→ لوحة المطبخ (الشيف أحمد)</a>
+        <a href="partners.html" class="btn" style="text-decoration:none;text-align:center;padding:14px;">→ صفحة دخول الشركاء</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-                document.getElementById('statTotalCust').textContent = fmt(custCount.count || 0);
-                document.getElementById('statActiveSubs').textContent = fmt(activeCount.count || 0);
-                const rev = (monthRevenue.data || []).reduce((a, r) => a + Number(r.total_amount_sar || 0), 0);
-                document.getElementById('statMonthRev').textContent = fmt(rev, 0);
-                document.getElementById('statCommissionsDue').textContent = '—';
-            } catch (e) {
-                console.error('[loadStats]', e);
-                toast('فشل تحميل الإحصائيات', 'error');
-            }
-        }
+<div class="toast" id="toast"></div>
 
-        let staffMap = {};
-        async function loadStaff() {
-            try {
-                const { data: meRow } = await sb.from('staff').select('*').eq('id', staffId).maybeSingle();
-                const { data, error } = await sb.from('staff').select('*').eq('is_active', true).neq('id', staffId).order('created_at');
-                if (error) throw error;
-                const rows = data || [];
-                rows.forEach(s => staffMap[s.id] = s);
-                if (meRow) staffMap[staffId] = meRow;
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-                const body = document.getElementById('staffBody');
-                if (!rows.length) { body.innerHTML = '<tr><td colspan="7" class="empty">لا شركاء آخرون</td></tr>'; return; }
+const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = (id) => document.getElementById(id);
+const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
 
-                body.innerHTML = rows.map(s => {
-                    const isKitchen = s.role === 'kitchen' || s.id === 'STAFF-002';
-                    const dashFile = isKitchen ? 'kitchen-dashboard.html' : 'partner-dashboard.html';
-                    const refUrl = s.referral_code ? SITE_BASE + '/?ref=' + s.referral_code : '—';
-                    const dashUrl = s.access_key ? SITE_BASE + '/' + dashFile + '?key=' + s.access_key : '—';
-                    const typeLabel = s.partner_type === 'internal' ? '🏢 داخلي' : (s.partner_type ? '🤝 ' + s.partner_type : '—');
-                    const privacy = s.is_hidden ? '<span class="tag amber">مخفي</span>' : '<span class="tag gray">ظاهر</span>';
-                    return '<tr>' +
-                        '<td><strong>' + escapeHtml(s.full_name) + '</strong><br><small style="color:rgba(232,245,238,0.5);">' + escapeHtml(s.id) + '</small></td>' +
-                        '<td><span class="tag code">' + escapeHtml(s.display_label || s.referral_code || s.id) + '</span></td>' +
-                        '<td>' + typeLabel + '</td>' +
-                        '<td><span class="tag gold">' + escapeHtml(s.tier || '—') + '</span></td>' +
-                        '<td style="font-family:Courier New,monospace;">' + (s.commission_lite||0) + '/' + (s.commission_athlete||0) + '/' + (s.commission_elite||0) + '</td>' +
-                        '<td>' + privacy + '</td>' +
-                        '<td><details><summary>عرض التفاصيل</summary>' +
-                            '<div class="detail-grid">' +
-                                '<div><b>رابط التسويق</b><code>' + escapeHtml(refUrl) + '</code></div>' +
-                                '<div><b>رابط لوحته</b><code>' + escapeHtml(dashUrl) + '</code></div>' +
-                                '<div><b>المفتاح السري</b><code>' + escapeHtml(s.access_key || '—') + '</code></div>' +
-                                '<div><b>الجوال</b><code>' + escapeHtml(s.phone || '—') + '</code></div>' +
-                            '</div>' +
-                        '</details></td>' +
-                    '</tr>';
-                }).join('');
-            } catch (e) {
-                console.error('[loadStaff]', e);
-                document.getElementById('staffBody').innerHTML = '<tr><td colspan="7" class="empty">⚠️ ' + escapeHtml(e.message || '') + '</td></tr>';
-            }
-        }
+const staffRole = sessionStorage.getItem('lk_staff_role');
+if (staffRole !== 'owner') window.location.href = 'partners.html';
 
-        async function loadRecentSubs() {
-            try {
-                const { data, error } = await sb
-                    .from('subscriptions')
-                    .select('id, created_at, status, payment_status, total_amount_sar, registered_by, plan_id, customer_id, customers!inner(full_name, phone), plans(name_ar, name_en)')
-                    .order('created_at', { ascending: false })
-                    .limit(10);
-                if (error) throw error;
-                const rows = data || [];
-                const body = document.getElementById('subsBody');
-                if (!rows.length) { body.innerHTML = '<tr><td colspan="8" class="empty">لا اشتراكات بعد</td></tr>'; return; }
-                body.innerHTML = rows.map(r => {
-                    const cust = r.customers || {};
-                    const plan = r.plans || {};
-                    const partner = r.registered_by ? (staffMap[r.registered_by]?.full_name || r.registered_by) : '—';
-                    const status = r.status === 'active' ? '<span class="tag green">فعّال</span>'
-                        : r.status === 'pending' ? '<span class="tag amber">معلّق</span>'
-                        : r.status === 'cancelled' ? '<span class="tag red">ملغي</span>'
-                        : '<span class="tag gray">' + (r.status || '—') + '</span>';
-                    const pay = r.payment_status === 'paid' ? '<span class="tag green">مدفوع</span>' : '<span class="tag red">غير مدفوع</span>';
-                    return '<tr>' +
-                        '<td>' + escapeHtml(cust.full_name || '—') + '</td>' +
-                        '<td style="font-family:Courier New,monospace;direction:ltr;">' + escapeHtml(cust.phone || '—') + '</td>' +
-                        '<td>' + escapeHtml(plan.name_ar || plan.name_en || r.plan_id || '—') + '</td>' +
-                        '<td>' + fmt(r.total_amount_sar, 2) + '</td>' +
-                        '<td>' + escapeHtml(partner) + '</td>' +
-                        '<td>' + status + '</td>' +
-                        '<td>' + pay + '</td>' +
-                        '<td>' + fmtDate(r.created_at) + '</td>' +
-                    '</tr>';
-                }).join('');
-            } catch (e) {
-                console.error('[loadRecentSubs]', e);
-                document.getElementById('subsBody').innerHTML = '<tr><td colspan="8" class="empty">⚠️ ' + escapeHtml(e.message || '') + '</td></tr>';
-            }
-        }
+$('logoutBtn').addEventListener('click', () => {
+  sessionStorage.clear();
+  window.location.href = 'partners.html';
+});
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            sessionStorage.clear();
-            window.location.href = 'partners.html';
-        });
-        document.getElementById('copyDirect').addEventListener('click', () => copy(document.getElementById('directLink').textContent, '✅ تم نسخ رابط التسجيل المباشر'));
-        document.getElementById('copyOwnerDash').addEventListener('click', () => copy(document.getElementById('ownerDashLink').textContent, '✅ تم نسخ رابط اللوحة'));
-        document.getElementById('shareDirect').addEventListener('click', () => {
-            const url = document.getElementById('directLink').textContent;
-            const msg = '🥗 اشترك في باقات الوجبات الصحية من Lite Kitchen!\n' + url;
-            window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-        });
+function showToast(msg, isError = false) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
 
-        (async () => { await loadStats(); await loadStaff(); await loadRecentSubs(); })();
-    </script>
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    $('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function partnerTypePill(type, role) {
+  if (role === 'owner') return '<span class="pill owner-pill">مالك</span>';
+  if (role === 'kitchen') return '<span class="pill kitchen">مطبخ</span>';
+  if (type === 'influencer') return '<span class="pill influencer">مؤثرة</span>';
+  if (type === 'trainer') return '<span class="pill trainer">مدرّبة</span>';
+  return '<span class="pill partner">شريك</span>';
+}
+
+async function loadOverview() {
+  // Counts
+  const { count: customersCount } = await sb.from('customers').select('*', { count: 'exact', head: true });
+  const { count: activeSubsCount } = await sb.from('subscriptions').select('*', { count: 'exact', head: true }).eq('status', 'active');
+  const { count: allergiesCount } = await sb.from('customers').select('*', { count: 'exact', head: true }).eq('has_allergies', true);
+
+  $('statCustomers').textContent = customersCount || 0;
+  $('statSubs').textContent = activeSubsCount || 0;
+  $('statAllergies').textContent = allergiesCount || 0;
+
+  // Revenue
+  const { data: paidSubs } = await sb.from('subscriptions').select('total_amount_sar').eq('payment_status', 'paid');
+  const totalRevenue = (paidSubs || []).reduce((sum, s) => sum + parseFloat(s.total_amount_sar || 0), 0);
+  $('statRevenue').textContent = totalRevenue.toFixed(0);
+
+  // Today
+  const today = new Date(); today.setHours(0,0,0,0);
+  const todayISO = today.toISOString();
+
+  const { data: todaySubs } = await sb.from('subscriptions')
+    .select('total_amount_sar, payment_status')
+    .gte('created_at', todayISO);
+  const todaySubsCount = (todaySubs || []).length;
+  const todayRevenue = (todaySubs || [])
+    .filter(s => s.payment_status === 'paid')
+    .reduce((sum, s) => sum + parseFloat(s.total_amount_sar || 0), 0);
+
+  $('statTodaySubs').textContent = todaySubsCount;
+  $('statTodayRevenue').textContent = todayRevenue.toFixed(0);
+
+  const { count: mealsToday } = await sb.from('meal_logs')
+    .select('*', { count: 'exact', head: true })
+    .gte('consumed_at', todayISO);
+  $('statTodayMeals').textContent = mealsToday || 0;
+
+  // Recent subscriptions
+  const { data: recent } = await sb.from('subscriptions').select(`
+    id, total_amount_sar, status, payment_status,
+    customers!inner(full_name, has_allergies),
+    plans(name_ar),
+    staff:registered_by(full_name, display_label)
+  `).order('created_at', { ascending: false }).limit(10);
+
+  if (!recent || recent.length === 0) {
+    $('recentBody').innerHTML = '<tr><td colspan="5" class="empty">لا توجد اشتراكات بعد</td></tr>';
+    return;
+  }
+
+  let html = '';
+  recent.forEach(s => {
+    const c = s.customers || {};
+    const partnerName = s.staff ? s.staff.full_name : 'تسجيل مباشر';
+    const allergyMark = c.has_allergies ? '<span class="allergy-mark">حساسية</span>' : '';
+    html += `
+      <tr>
+        <td>${allergyMark}${escapeHtml(c.full_name || '—')}</td>
+        <td>${escapeHtml(s.plans?.name_ar || '—')}</td>
+        <td style="direction:ltr;font-weight:900;color:var(--watermelon);">${parseFloat(s.total_amount_sar).toFixed(0)} ر.س</td>
+        <td>${escapeHtml(partnerName)}</td>
+        <td><span class="pill ${s.status}">${s.status === 'active' ? 'نشط' : (s.status === 'pending_payment' ? 'بانتظار' : s.status)}</span></td>
+      </tr>
+    `;
+  });
+  $('recentBody').innerHTML = html;
+}
+
+async function loadAllSubscriptions() {
+  const { data, error } = await sb.from('subscriptions').select(`
+    id, total_amount_sar, status, payment_status, created_at,
+    customers!inner(full_name, phone, has_allergies),
+    plans(name_ar),
+    staff:registered_by(full_name, display_label)
+  `).order('created_at', { ascending: false });
+
+  if (error || !data || data.length === 0) {
+    $('allSubsBody').innerHTML = '<tr><td colspan="8" class="empty">لا توجد اشتراكات بعد</td></tr>';
+    return;
+  }
+
+  let html = '';
+  data.forEach(s => {
+    const c = s.customers || {};
+    const partnerName = s.staff ? s.staff.full_name : 'تسجيل مباشر';
+    const allergyMark = c.has_allergies ? '<span class="allergy-mark">⚠</span>' : '';
+    const statusLabel = { active: 'نشط', pending_payment: 'بانتظار', cancelled: 'ملغي' }[s.status] || s.status;
+    const payLabel = { paid: 'مدفوع', unpaid: 'غير مدفوع', failed: 'فشل' }[s.payment_status] || s.payment_status;
+    html += `
+      <tr>
+        <td style="font-family:monospace;font-weight:900;color:var(--coral);">${s.id}</td>
+        <td>${allergyMark}${escapeHtml(c.full_name || '—')}</td>
+        <td style="direction:ltr;">${escapeHtml(c.phone || '—')}</td>
+        <td>${escapeHtml(s.plans?.name_ar || '—')}</td>
+        <td style="direction:ltr;font-weight:900;color:var(--watermelon);">${parseFloat(s.total_amount_sar).toFixed(0)}</td>
+        <td>${escapeHtml(partnerName)}</td>
+        <td><span class="pill ${s.status}">${statusLabel}</span></td>
+        <td><span class="pill ${s.payment_status}">${payLabel}</span></td>
+      </tr>
+    `;
+  });
+  $('allSubsBody').innerHTML = html;
+}
+
+async function loadPartners() {
+  const { data: partners } = await sb.from('staff').select('*').eq('is_active', true).order('id');
+  if (!partners) return;
+
+  // Get stats per partner
+  const { data: allSubs } = await sb.from('subscriptions').select('registered_by, total_amount_sar, payment_status');
+
+  let html = '';
+  partners.forEach(p => {
+    const partnerSubs = (allSubs || []).filter(s => s.registered_by === p.id);
+    const totalSubs = partnerSubs.length;
+    const paidSubs = partnerSubs.filter(s => s.payment_status === 'paid').length;
+    const revenue = partnerSubs
+      .filter(s => s.payment_status === 'paid')
+      .reduce((sum, s) => sum + parseFloat(s.total_amount_sar || 0), 0);
+
+    const commission = (p.commission_lite || 0) + '%/' + (p.commission_athlete || 0) + '%/' + (p.commission_elite || 0) + '%';
+    const dashLink = `${SITE_BASE}/${p.role === 'owner' ? 'owner-dashboard' : (p.role === 'kitchen' ? 'kitchen-dashboard' : 'partner-dashboard')}.html?key=${p.access_key}`;
+    const refLink = `${SITE_BASE}/?ref=${p.referral_code}`;
+
+    html += `
+      <div class="partner-card">
+        <div class="partner-info">
+          <div class="name">${escapeHtml(p.full_name)}</div>
+          <div class="label-row">
+            ${partnerTypePill(p.partner_type, p.role)}
+            <span>الرمز: <strong style="color:var(--ink);">${escapeHtml(p.display_label || '')}</strong></span>
+            <span>إحالة: <code style="background:var(--ink);color:var(--coral);padding:1px 6px;border-radius:4px;font-weight:900;">${p.referral_code}</code></span>
+            <span>عمولات: <strong style="color:var(--coral);">${commission}</strong></span>
+            ${p.discount_active ? `<span style="color:var(--olive);font-weight:900;">خصم ${p.discount_percentage}%</span>` : ''}
+          </div>
+          <div class="link-box">${dashLink}</div>
+        </div>
+        <div class="partner-stats">
+          <div class="num">${totalSubs}</div>
+          <div class="num-label">اشتراك</div>
+          <div class="num" style="color:var(--olive);margin-top:8px;">${revenue.toFixed(0)}</div>
+          <div class="num-label">ر.س مدفوع</div>
+        </div>
+      </div>
+    `;
+  });
+  $('partnersGrid').innerHTML = html;
+}
+
+async function loadOwnerLinks() {
+  const { data } = await sb.from('staff').select('access_key, referral_code').eq('id', 'STAFF-001').single();
+  if (!data) return;
+  const dashLink = `${SITE_BASE}/owner-dashboard.html?key=${data.access_key}`;
+  const refLink = `${SITE_BASE}/?ref=${data.referral_code}`;
+  $('ownerDashLink').textContent = dashLink;
+  $('ownerRefLink').textContent = refLink;
+  $('copyOwnerLink').onclick = () => {
+    navigator.clipboard.writeText(dashLink).then(() => {
+      $('copyOwnerLink').textContent = '✓ تم النسخ';
+      setTimeout(() => $('copyOwnerLink').textContent = 'نسخ الرابط', 1500);
+    });
+  };
+  $('copyOwnerRef').onclick = () => {
+    navigator.clipboard.writeText(refLink).then(() => {
+      $('copyOwnerRef').textContent = '✓ تم النسخ';
+      setTimeout(() => $('copyOwnerRef').textContent = 'نسخ الرابط', 1500);
+    });
+  };
+}
+
+loadOverview();
+loadAllSubscriptions();
+loadPartners();
+loadOwnerLinks();
+setInterval(() => { loadOverview(); }, 30000);
+</script>
 </body>
 </html>
