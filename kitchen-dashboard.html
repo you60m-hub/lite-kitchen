@@ -1,301 +1,1336 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="theme-color" content="#1a1100">
-    <title>لوحة المطبخ — Lite Kitchen</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: linear-gradient(135deg, #1a1100 0%, #3d2a0a 100%); min-height: 100vh; color: #fef3c7; padding: 20px; padding-bottom: 60px; }
-        body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(251,191,36,0.15) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-        body::after { content: ''; position: fixed; bottom: -200px; left: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(239,68,68,0.12) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-        .container { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
-        .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.3); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة المطبخ — الشيف أحمد</title>
+<meta name="robots" content="noindex, nofollow">
 
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
-        .brand-side { display: flex; align-items: center; gap: 12px; }
-        .logo { font-size: 24px; font-weight: 900; color: #fbbf24; }
-        .chef-badge { background: linear-gradient(135deg, #fbbf24 0%, #ef4444 100%); color: #fff; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 800; box-shadow: 0 6px 18px rgba(251,191,36,0.35); }
-        .btn { padding: 10px 14px; border: none; border-radius: 10px; font-family: inherit; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.25s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn.ghost { background: rgba(255,255,255,0.1); color: #fef3c7; border: 1px solid rgba(255,255,255,0.15); }
-        .btn.danger { background: rgba(239,68,68,0.22); color: #fecaca; border: 1px solid rgba(239,68,68,0.4); }
-        .btn.primary { background: linear-gradient(135deg, #fbbf24 0%, #ef4444 100%); color: #fff; }
-        .btn.primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(239,68,68,0.4); }
-        .btn.primary:disabled { opacity: 0.5; cursor: not-allowed; }
-        .btn.cancel { background: rgba(148,163,184,0.2); color: #cbd5e1; }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
-        .stat { padding: 18px; text-align: center; }
-        .stat .icon { font-size: 28px; margin-bottom: 4px; }
-        .stat .num { font-size: 32px; font-weight: 900; color: #fbbf24; margin: 4px 0; }
-        .stat .num.red { color: #f87171; }
-        .stat .lbl { font-size: 12px; color: rgba(254,243,199,0.7); font-weight: 500; }
+<style>
+  :root {
+    --beige-top: #F4ECD8; --beige-mid: #EFE4CE; --beige-bot: #E5D6B6;
+    --watermelon: #E0596C; --coral: #F08A5D; --olive: #6F7C3E; --pink: #E89BA6;
+    --ink: #2A241C; --ink-soft: #5A4F42; --ink-mute: #8A7E6B;
+    --card: #FBF3DD; --card-edge: rgba(42, 36, 28, 0.10);
+    --shadow-sm: 0 4px 12px rgba(42, 36, 28, 0.10);
+    --shadow-md: 0 8px 22px rgba(42, 36, 28, 0.18);
+    --shadow-lg: 0 16px 40px rgba(42, 36, 28, 0.22);
+    --radius-card: 14px; --radius-pill: 9999px;
+    --bg-page: linear-gradient(180deg, var(--beige-top) 0%, var(--beige-mid) 55%, var(--beige-bot) 100%);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg-page); }
+  body {
+    font-family: 'Cairo', system-ui, sans-serif;
+    color: var(--ink);
+    direction: rtl;
+    min-height: 100vh;
+    background: var(--bg-page);
+    padding: 16px;
+    position: relative;
+  }
+  body::before, body::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::before { top: 8%; right: 12%; width: 320px; height: 320px; background: var(--coral); opacity: 0.25; }
+  body::after { bottom: 10%; left: 15%; width: 300px; height: 300px; background: var(--olive); opacity: 0.22; }
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.12;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .container { max-width: 940px; margin: 0 auto; position: relative; z-index: 2; }
 
-        .section { margin-bottom: 18px; }
-        .section h3 { font-size: 16px; margin-bottom: 12px; color: #fbbf24; display: flex; align-items: center; gap: 8px; }
-        .link-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(251,191,36,0.25); border-radius: 12px; padding: 14px; }
-        .link-box .desc { font-size: 12px; color: rgba(254,243,199,0.7); margin-bottom: 8px; }
-        .link-value { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px 12px; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; direction: ltr; text-align: left; color: #fef3c7; margin-bottom: 10px; }
+  /* === Header === */
+  .header {
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-right: 6px solid var(--coral);
+    border-radius: var(--radius-card);
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: var(--shadow-md);
+    transform: rotate(-0.3deg);
+  }
+  .header .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .header .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 900; letter-spacing: 1.2px;
+    color: var(--ink); text-transform: uppercase;
+  }
+  .header .tag::before {
+    content: ""; width: 6px; height: 6px;
+    border-radius: 50%; background: var(--coral);
+  }
+  .header .title {
+    font-size: 22px; font-weight: 900; line-height: 1; color: var(--ink);
+  }
+  .header .title .grad {
+    background: linear-gradient(90deg, var(--coral), var(--watermelon));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .header .badge {
+    background: var(--coral);
+    color: #FFF8E7;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+    transform: rotate(-2deg);
+  }
+  .btn {
+    background: transparent;
+    border: 1.5px solid var(--card-edge);
+    color: var(--ink-soft);
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 900;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: var(--card); border-color: var(--ink); color: var(--ink); }
+  .btn.primary {
+    background: var(--watermelon);
+    color: #FFF8E7;
+    border-color: var(--watermelon);
+    box-shadow: var(--shadow-sm);
+  }
+  .btn.primary:hover { background: var(--ink); border-color: var(--ink); color: #FFF8E7; transform: translateY(-1px) rotate(-0.5deg); }
+  .btn.success { background: var(--olive); color: #FFF8E7; border-color: var(--olive); box-shadow: var(--shadow-sm); }
+  .btn.success:hover { transform: translateY(-1px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        .customer-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-        .customer-card.low { border-color: rgba(239,68,68,0.4); background: linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(255,255,255,0.04) 100%); }
-        .customer-info { flex: 1; min-width: 200px; }
-        .customer-name { font-weight: 800; font-size: 15px; color: #fef3c7; }
-        .customer-meta { font-size: 12px; color: rgba(254,243,199,0.65); margin-top: 4px; }
-        .customer-meta code { font-family: 'Courier New', monospace; }
-        .meals-badge { background: rgba(251,191,36,0.18); color: #fbbf24; padding: 6px 14px; border-radius: 999px; font-weight: 800; font-size: 13px; white-space: nowrap; }
-        .meals-badge.low { background: rgba(239,68,68,0.22); color: #fca5a5; }
-        .customer-actions { display: flex; gap: 8px; }
+  /* === Tabs === */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .tab {
+    flex: 1;
+    min-width: 130px;
+    padding: 14px 18px;
+    background: var(--card);
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    color: var(--ink-mute);
+    cursor: pointer;
+    font-weight: 900;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 13px;
+    box-shadow: var(--shadow-sm);
+  }
+  .tab:nth-child(2n) { transform: rotate(0.5deg); }
+  .tab:nth-child(2n+1) { transform: rotate(-0.5deg); }
+  .tab.active {
+    background: var(--watermelon);
+    color: #FFF8E7;
+    border-color: var(--watermelon);
+    box-shadow: var(--shadow-md);
+    transform: rotate(0);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .empty { text-align: center; padding: 30px 12px; color: rgba(254,243,199,0.5); }
+  /* === Stats Grid === */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .stat-card:nth-child(1) { transform: rotate(-0.5deg); }
+  .stat-card:nth-child(2) { transform: rotate(0.4deg); }
+  .stat-card:nth-child(3) { transform: rotate(-0.3deg); }
+  .stat-card:nth-child(4) { transform: rotate(0.6deg); }
+  .stat-card .label {
+    font-size: 10px;
+    font-weight: 900;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .stat-card .value {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--watermelon);
+    line-height: 1;
+  }
+  .stat-card.allergy-stat .value { color: var(--watermelon); }
+  .stat-card.normal-stat .value { color: var(--olive); }
 
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-overlay.show { display: flex; }
-        .modal { background: linear-gradient(135deg, #1a1100 0%, #3d2a0a 100%); border: 1px solid rgba(251,191,36,0.3); border-radius: 18px; padding: 26px; max-width: 420px; width: 100%; box-shadow: 0 25px 70px rgba(0,0,0,0.5); }
-        .modal h2 { font-size: 18px; margin-bottom: 12px; color: #fbbf24; }
-        .modal p { font-size: 14px; color: rgba(254,243,199,0.85); line-height: 1.7; margin-bottom: 8px; }
-        .modal .name-strong { color: #fbbf24; font-weight: 700; }
-        .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
-        .modal-actions .btn { flex: 1; }
+  /* === Allergy Banner === */
+  .allergy-banner {
+    background: var(--card);
+    border: 2px solid var(--watermelon);
+    border-radius: var(--radius-card);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: none;
+    transform: rotate(-0.4deg);
+    box-shadow: var(--shadow-md);
+    animation: pulseWarm 2.5s ease-in-out infinite;
+  }
+  .allergy-banner.show { display: block; }
+  @keyframes pulseWarm {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(224, 89, 108, 0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(224, 89, 108, 0); }
+  }
+  .allergy-banner .title { font-size: 15px; font-weight: 900; color: var(--watermelon); margin-bottom: 4px; }
+  .allergy-banner .text { font-size: 13px; color: var(--ink-soft); font-weight: 700; }
 
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px); background: rgba(74,222,128,0.95); color: #0a1f15; padding: 12px 22px; border-radius: 12px; font-weight: 800; font-size: 14px; opacity: 0; transition: all 0.3s; z-index: 2000; box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast.err { background: rgba(239,68,68,0.95); color: #fff; }
+  /* === Section === */
+  .section {
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 22px 22px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-md);
+    transform: rotate(-0.2deg);
+  }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 900; font-size: 11px; letter-spacing: 1px;
+    color: var(--ink); text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .section-tag::before {
+    content: ""; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--coral);
+  }
+  .section-tag.olive::before { background: var(--olive); }
+  .section-tag.pink::before { background: var(--pink); }
+  .section h2 {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 6px;
+    color: var(--ink);
+    line-height: 1.1;
+  }
+  .section-sub {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
 
-        @media (max-width: 480px) {
-            body { padding: 12px; }
-            .glass { padding: 14px; }
-            .stat .num { font-size: 26px; }
-            .customer-card { flex-direction: column; align-items: stretch; }
-            .customer-actions { width: 100%; }
-            .customer-actions .btn { flex: 1; }
-        }
-    </style>
+  /* === Customer Card === */
+  .customer-card {
+    background: #FFF8E7;
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .customer-card:nth-child(2n) { transform: rotate(0.3deg); }
+  .customer-card:nth-child(2n+1) { transform: rotate(-0.3deg); }
+  .customer-card.has-allergy {
+    border: 2px solid var(--watermelon);
+    background: linear-gradient(135deg, #FFF8E7 0%, rgba(224, 89, 108, 0.06) 100%);
+  }
+  .customer-card.severe {
+    border-width: 3px;
+    box-shadow: 0 0 18px rgba(224, 89, 108, 0.25);
+  }
+
+  .customer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .customer-info { flex: 1; min-width: 180px; }
+  .customer-info .name {
+    font-weight: 900;
+    font-size: 16px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .customer-info .meta {
+    font-size: 11px;
+    color: var(--ink-mute);
+    margin-top: 4px;
+    font-weight: 700;
+  }
+  .meals-remaining {
+    background: var(--olive);
+    color: #FFF8E7;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
+    font-weight: 900;
+    box-shadow: var(--shadow-sm);
+  }
+  .meals-remaining.low { background: var(--watermelon); }
+
+  /* === Allergy block === */
+  .allergy-block {
+    background: rgba(224, 89, 108, 0.08);
+    border: 1.5px solid rgba(224, 89, 108, 0.3);
+    border-radius: var(--radius-card);
+    padding: 12px 14px;
+    margin-top: 10px;
+  }
+  .allergy-block.severe {
+    background: rgba(224, 89, 108, 0.15);
+    border-color: var(--watermelon);
+  }
+  .allergy-block .head {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 8px;
+    font-weight: 900;
+    color: var(--watermelon);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .severity-pill {
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+  }
+  .severity-pill.mild { background: rgba(240, 138, 93, 0.2); color: var(--coral); }
+  .severity-pill.moderate { background: rgba(240, 138, 93, 0.3); color: #8B4513; }
+  .severity-pill.severe { background: var(--watermelon); color: #FFF8E7; }
+  .allergy-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-bottom: 8px;
+  }
+  .allergy-tag {
+    background: var(--watermelon);
+    color: #FFF8E7;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .allergy-custom {
+    font-size: 13px;
+    color: var(--ink);
+    background: #FFF8E7;
+    padding: 10px 12px;
+    border-radius: var(--radius-card);
+    margin-top: 6px;
+    line-height: 1.5;
+    font-weight: 700;
+    border: 1px dashed rgba(224, 89, 108, 0.3);
+  }
+  .disliked-block {
+    background: rgba(232, 155, 166, 0.1);
+    border: 1px solid rgba(232, 155, 166, 0.3);
+    border-radius: var(--radius-card);
+    padding: 10px 12px;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .disliked-block strong { color: var(--pink); }
+
+  .actions-row { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* === Empty state === */
+  .empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--ink-mute);
+    font-weight: 700;
+  }
+  .empty .icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+
+  /* === Link box === */
+  .link-box {
+    background: var(--ink);
+    color: var(--coral);
+    border-radius: var(--radius-card);
+    padding: 14px;
+    margin-bottom: 12px;
+    word-break: break-all;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12px;
+    direction: ltr;
+    text-align: left;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* === Form === */
+  .form-group { margin-bottom: 16px; }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  label .req { color: var(--watermelon); }
+  input, textarea, select {
+    width: 100%;
+    padding: 13px 14px;
+    background: #FFF8E7;
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    color: var(--ink);
+    font-size: 15px;
+    font-family: inherit;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--watermelon);
+    background: #FFFCEC;
+  }
+  input::placeholder, textarea::placeholder { color: var(--ink-mute); font-weight: 400; }
+  select option { background: var(--card); color: var(--ink); }
+  textarea { resize: vertical; font-family: inherit; }
+
+  .phone-wrap { display: flex; gap: 6px; }
+  .phone-prefix {
+    background: var(--ink);
+    color: #FFF8E7;
+    border-radius: var(--radius-card);
+    padding: 13px 14px;
+    font-weight: 900;
+    direction: ltr;
+    flex-shrink: 0;
+  }
+
+  /* Plan mini */
+  .plan-mini {
+    background: #FFF8E7;
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 12px 14px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .plan-mini:nth-child(2n) { transform: rotate(0.3deg); }
+  .plan-mini:nth-child(2n+1) { transform: rotate(-0.3deg); }
+  .plan-mini:hover { border-color: var(--watermelon); transform: translateY(-2px) rotate(0); }
+  .plan-mini.selected {
+    border-color: var(--watermelon);
+    border-width: 2px;
+    background: linear-gradient(135deg, #FFF8E7, rgba(224,89,108,0.06));
+  }
+  .plan-mini-head { display: flex; justify-content: space-between; align-items: center; }
+  .plan-mini-name { font-weight: 900; font-size: 15px; color: var(--ink); }
+  .plan-mini-price { font-weight: 900; color: var(--watermelon); direction: ltr; font-size: 17px; }
+  .plan-mini-price .original {
+    color: var(--ink-mute);
+    text-decoration: line-through;
+    font-size: 11px;
+    margin-right: 4px;
+    font-weight: 700;
+  }
+  .plan-mini-meta { font-size: 11px; color: var(--ink-mute); margin-top: 4px; font-weight: 700; }
+
+  /* Payment methods */
+  .pay-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .pay-method {
+    background: #FFF8E7;
+    border: 2px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 18px 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+  }
+  .pay-method:nth-child(1) { transform: rotate(-0.8deg); }
+  .pay-method:nth-child(2) { transform: rotate(0.8deg); }
+  .pay-method:hover { border-color: var(--olive); transform: rotate(0) translateY(-2px); }
+  .pay-method.selected {
+    border-color: var(--olive);
+    background: linear-gradient(135deg, #FFF8E7, rgba(111,124,62,0.08));
+  }
+  .pay-method .icon { font-size: 28px; margin-bottom: 6px; }
+  .pay-method .label { font-size: 14px; font-weight: 900; color: var(--ink); }
+
+  /* Allergies mini */
+  .allergies-mini {
+    background: rgba(224, 89, 108, 0.05);
+    border: 1.5px solid rgba(224, 89, 108, 0.2);
+    border-right: 4px solid var(--watermelon);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .allergies-toggle {
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+  }
+  .allergies-toggle input[type="checkbox"] {
+    width: 20px; height: 20px;
+    accent-color: var(--watermelon);
+  }
+  .allergies-detail-mini {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(224, 89, 108, 0.3);
+  }
+  .allergies-detail-mini.show { display: block; }
+  .sev-options-mini {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .sev-option-mini {
+    padding: 10px 4px;
+    background: #FFF8E7;
+    border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    text-align: center;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--ink-soft);
+    transition: all 0.2s;
+  }
+  .sev-option-mini.selected {
+    background: var(--watermelon);
+    border-color: var(--watermelon);
+    color: #FFF8E7;
+  }
+  .chips-mini { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .chip-mini {
+    background: #FFF8E7;
+    border: 1.5px solid var(--card-edge);
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    user-select: none;
+    transition: all 0.2s;
+  }
+  .chip-mini.selected {
+    background: var(--watermelon);
+    border-color: var(--watermelon);
+    color: #FFF8E7;
+  }
+
+  /* Summary */
+  .summary-mini {
+    background: linear-gradient(135deg, var(--card), #FFF8E7);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-card);
+    padding: 18px 20px;
+    margin-top: 16px;
+    box-shadow: var(--shadow-md);
+    transform: rotate(-0.3deg);
+  }
+  .summary-mini h3 {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .sum-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+    border-bottom: 1px dashed var(--card-edge);
+  }
+  .sum-row strong { color: var(--ink); font-weight: 900; }
+  .sum-row.discount { color: var(--coral); }
+  .sum-row.total {
+    font-size: 17px;
+    font-weight: 900;
+    color: var(--ink);
+    padding-top: 12px;
+    margin-top: 6px;
+    border-top: 2px solid var(--ink);
+    border-bottom: none;
+  }
+  .sum-row.total .price { font-size: 22px; color: var(--watermelon); direction: ltr; }
+
+  /* Modal */
+  .modal-bg {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(42, 36, 28, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: var(--card);
+    border-radius: 18px;
+    padding: 26px;
+    max-width: 420px;
+    width: 100%;
+    border: 2px solid var(--card-edge);
+    box-shadow: var(--shadow-lg);
+    transform: rotate(-0.5deg);
+  }
+  .modal.warning { border-color: var(--watermelon); }
+  .modal.success-modal { border-color: var(--olive); }
+  .modal h3 {
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .modal.warning h3 { color: var(--watermelon); }
+  .modal.success-modal h3 { color: var(--olive); }
+  .modal p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    line-height: 1.7;
+    font-weight: 700;
+  }
+  .modal-actions { display: flex; gap: 8px; }
+  .modal-actions button { flex: 1; padding: 12px; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--olive);
+    color: #FFF8E7;
+    padding: 14px 24px;
+    border-radius: var(--radius-card);
+    font-weight: 900;
+    z-index: 200;
+    transition: transform 0.3s;
+    box-shadow: var(--shadow-lg);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--watermelon); }
+</style>
 </head>
-<body>
-    <div class="toast" id="toast"></div>
+<body class="grain">
+<div class="container">
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal">
-            <h2>تأكيد خصم وجبة</h2>
-            <p>سيتم خصم وجبة من اشتراك <span class="name-strong" id="modalName">—</span>.</p>
-            <p style="font-size:12px;color:rgba(254,243,199,0.6);">هذه العملية ستُسجَّل في سجل الوجبات ولا يمكن التراجع عنها.</p>
-            <div class="modal-actions">
-                <button type="button" class="btn cancel" id="modalCancel">إلغاء</button>
-                <button type="button" class="btn primary" id="modalConfirm">تأكيد الخصم</button>
-            </div>
-        </div>
+  <div class="header">
+    <div class="brand">
+      <div>
+        <div class="tag">المطبخ</div>
+        <div class="title"><span class="grad">Lite</span> Kitchen</div>
+      </div>
+      <span class="badge">الشيف أحمد</span>
+    </div>
+    <button class="btn" id="logoutBtn">خروج</button>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="customers">العملاء الحاليون</div>
+    <div class="tab" data-tab="register">تسجيل عميل جديد</div>
+    <div class="tab" data-tab="settings">روابطي</div>
+  </div>
+
+  <!-- TAB 1 -->
+  <div class="tab-content active" id="tab-customers">
+    <div class="allergy-banner" id="allergyBanner">
+      <div class="title">⚠ تنبيه: لديك عملاء بحساسيات</div>
+      <div class="text" id="allergyBannerText">—</div>
     </div>
 
-    <div class="container">
-        <div class="header glass">
-            <div class="brand-side">
-                <span class="logo">🌿</span>
-                <div>
-                    <div style="font-weight:800;font-size:15px;">لوحة المطبخ</div>
-                    <div style="font-size:12px;color:rgba(254,243,199,0.6);">إدارة الوجبات وخصمها</div>
-                </div>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-                <span class="chef-badge">👨‍🍳 الشيف أحمد</span>
-                <button type="button" class="btn danger" id="logoutBtn">خروج</button>
-            </div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="glass stat"><div class="icon">✅</div><div class="num" id="statActive">—</div><div class="lbl">اشتراكات نشطة</div></div>
-            <div class="glass stat"><div class="icon">🍽️</div><div class="num" id="statToday">—</div><div class="lbl">وجبات قُدِّمت اليوم</div></div>
-            <div class="glass stat"><div class="icon">📦</div><div class="num red" id="statRemaining">—</div><div class="lbl">إجمالي الوجبات المتبقية</div></div>
-        </div>
-
-        <div class="section glass">
-            <h3>🔐 رابط لوحة المطبخ الخاص</h3>
-            <div class="link-box">
-                <div class="desc">احفظ هذا الرابط للوصول السريع — لا تشاركه</div>
-                <div class="link-value" id="kitchenDashLink">—</div>
-                <button type="button" class="btn primary" id="copyDash">📋 نسخ الرابط</button>
-            </div>
-        </div>
-
-        <div class="section glass">
-            <h3>👥 العملاء النشطون</h3>
-            <div id="customersList">
-                <div class="empty">جاري التحميل...</div>
-            </div>
-        </div>
+    <div class="stats">
+      <div class="stat-card normal-stat"><div class="label">اشتراكات نشطة</div><div class="value" id="statActive">—</div></div>
+      <div class="stat-card normal-stat"><div class="label">وجبات اليوم</div><div class="value" id="statToday">—</div></div>
+      <div class="stat-card normal-stat"><div class="label">وجبات متبقية</div><div class="value" id="statRemaining">—</div></div>
+      <div class="stat-card allergy-stat"><div class="label">حساسيات نشطة</div><div class="value" id="statAllergies">—</div></div>
     </div>
 
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-        const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
-        const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
-        const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    <div class="section">
+      <div class="section-tag olive">العملاء النشطون</div>
+      <h2>قائمة الاشتراكات</h2>
+      <p class="section-sub">⚠ البطاقات الحمراء = عملاء بحساسيات. اقرأها قبل التحضير.</p>
+      <div id="customersList"><div class="empty">جاري التحميل...</div></div>
+    </div>
+  </div>
 
-        const staffId = sessionStorage.getItem('lk_staff_id');
-        const staffRole = sessionStorage.getItem('lk_staff_role');
-        const accessKey = sessionStorage.getItem('lk_access_key') || '';
+  <!-- TAB 2: Register -->
+  <div class="tab-content" id="tab-register">
+    <div class="section">
+      <div class="section-tag">تسجيل في الفرع</div>
+      <h2>عميل جديد</h2>
+      <p class="section-sub">يحصل العميل على خصم <strong style="color:var(--coral)">10%</strong> تلقائياً.</p>
 
-        if (!staffId || (staffRole !== 'kitchen' && staffId !== 'STAFF-002' && staffRole !== 'owner')) {
-            window.location.href = 'partners.html';
-        }
+      <div class="form-group">
+        <label>اسم العميل <span class="req">*</span></label>
+        <input type="text" id="newName" placeholder="الاسم الكامل">
+      </div>
 
-        document.getElementById('kitchenDashLink').textContent = accessKey ? (SITE_BASE + '/kitchen-dashboard.html?key=' + accessKey) : '—';
+      <div class="form-group">
+        <label>رقم الجوال <span class="req">*</span></label>
+        <div class="phone-wrap">
+          <div class="phone-prefix">+966</div>
+          <input type="tel" id="newPhone" placeholder="5XXXXXXXX" maxlength="9">
+        </div>
+      </div>
 
-        function fmt(n) { return Number(n || 0).toLocaleString('en-US'); }
-        function maskPhone(p) { if (!p) return '—'; return '••••' + String(p).slice(-4); }
-        function escapeHtml(s) {
-            if (s === null || s === undefined) return '';
-            return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-        }
-        function toast(msg, kind) {
-            const el = document.getElementById('toast');
-            el.textContent = msg;
-            el.classList.remove('err');
-            if (kind === 'error') el.classList.add('err');
-            el.classList.add('show');
-            setTimeout(() => el.classList.remove('show'), 2500);
-        }
-        function copy(text, label) {
-            if (!text || text === '—') return;
-            try {
-                if (navigator.clipboard) navigator.clipboard.writeText(text).then(() => toast(label || '✅ تم النسخ', 'success'));
-                else {
-                    const ta = document.createElement('textarea'); ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
-                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-                    toast(label || '✅ تم النسخ', 'success');
-                }
-            } catch (e) { toast('فشل النسخ', 'error'); }
-        }
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="form-group">
+          <label>الجنس</label>
+          <select id="newGender">
+            <option value="">—</option>
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>المدينة</label>
+          <select id="newCity">
+            <option value="حائل">حائل</option>
+            <option value="بريدة">بريدة</option>
+            <option value="الرياض">الرياض</option>
+          </select>
+        </div>
+      </div>
 
-        async function loadStats() {
-            try {
-                const todayStart = new Date(); todayStart.setHours(0,0,0,0);
-                const todayIso = todayStart.toISOString();
+      <div class="form-group">
+        <label>الباقة <span class="req">*</span></label>
+        <div id="newPlansList">جاري تحميل الباقات...</div>
+      </div>
 
-                const [activeRes, todayRes, remainingRes] = await Promise.all([
-                    sb.from('subscriptions').select('id', { count: 'exact', head: true }).eq('status', 'active'),
-                    sb.from('meal_logs').select('id', { count: 'exact', head: true }).gte('consumed_at', todayIso),
-                    sb.from('subscriptions').select('remaining_meals').eq('status', 'active')
-                ]);
+      <div class="allergies-mini">
+        <label class="allergies-toggle">
+          <input type="checkbox" id="newHasAllergies">
+          <span style="font-weight:900;color:var(--ink);">⚠ لدى العميل حساسية</span>
+        </label>
+        <div class="allergies-detail-mini" id="newAllergiesDetail">
+          <label style="margin-top:10px;">شدة الحساسية</label>
+          <div class="sev-options-mini" id="newSevOptions">
+            <div class="sev-option-mini" data-sev="mild">خفيفة</div>
+            <div class="sev-option-mini" data-sev="moderate">متوسطة</div>
+            <div class="sev-option-mini" data-sev="severe">شديدة</div>
+          </div>
+          <label>نوع الحساسية</label>
+          <div class="chips-mini" id="newChips">
+            <div class="chip-mini" data-a="nuts">مكسرات</div>
+            <div class="chip-mini" data-a="dairy">ألبان</div>
+            <div class="chip-mini" data-a="gluten">جلوتين</div>
+            <div class="chip-mini" data-a="eggs">بيض</div>
+            <div class="chip-mini" data-a="seafood">بحريات</div>
+            <div class="chip-mini" data-a="soy">صويا</div>
+            <div class="chip-mini" data-a="sesame">سمسم</div>
+            <div class="chip-mini" data-a="peanuts">فول سوداني</div>
+          </div>
+          <div class="form-group">
+            <label>تفاصيل إضافية</label>
+            <textarea id="newCustomAllergy" rows="2" placeholder="اكتب أي تفاصيل مهمة"></textarea>
+          </div>
+        </div>
+      </div>
 
-                document.getElementById('statActive').textContent = fmt(activeRes.count || 0);
-                document.getElementById('statToday').textContent = fmt(todayRes.count || 0);
-                const totalRem = (remainingRes.data || []).reduce((a, r) => a + Number(r.remaining_meals || 0), 0);
-                document.getElementById('statRemaining').textContent = fmt(totalRem);
-            } catch (e) {
-                console.error('[stats]', e);
-            }
-        }
+      <div class="form-group">
+        <label>أطعمة لا يفضّلها (اختياري)</label>
+        <textarea id="newDisliked" rows="2" placeholder="مثال: لا يحب الكوسا"></textarea>
+      </div>
 
-        async function loadCustomers() {
-            try {
-                const { data, error } = await sb
-                    .from('subscriptions')
-                    .select('id, customer_id, total_meals, consumed_meals, remaining_meals, status, end_date, customers!inner(full_name, phone), plans(name_ar, meals_per_day)')
-                    .eq('status', 'active')
-                    .order('created_at', { ascending: false });
-                if (error) throw error;
+      <div class="form-group">
+        <label>طريقة الدفع <span class="req">*</span></label>
+        <div class="pay-methods">
+          <div class="pay-method" data-method="card">
+            <div class="icon">💳</div>
+            <div class="label">شبكة / بطاقة</div>
+          </div>
+          <div class="pay-method" data-method="cash">
+            <div class="icon">💵</div>
+            <div class="label">كاش</div>
+          </div>
+        </div>
+      </div>
 
-                const rows = data || [];
-                const box = document.getElementById('customersList');
-                if (!rows.length) { box.innerHTML = '<div class="empty">لا توجد اشتراكات نشطة</div>'; return; }
+      <div class="summary-mini">
+        <h3>ملخص الاشتراك</h3>
+        <div class="sum-row"><span>الباقة</span><strong id="newSumPlan">—</strong></div>
+        <div class="sum-row"><span>السعر الأصلي</span><strong id="newSumOriginal" style="direction:ltr">—</strong></div>
+        <div class="sum-row discount"><span>خصم الفرع (10%)</span><strong id="newSumDiscount" style="direction:ltr">— 0 ر.س</strong></div>
+        <div class="sum-row total"><span>المبلغ المستحق</span><span class="price" id="newSumFinal">—</span></div>
+      </div>
 
-                box.innerHTML = rows.map(r => {
-                    const cust = r.customers || {};
-                    const plan = r.plans || {};
-                    const remaining = Number(r.remaining_meals || 0);
-                    const low = remaining <= 3;
-                    return '<div class="customer-card' + (low ? ' low' : '') + '" data-sub="' + escapeHtml(r.id) + '" data-name="' + escapeHtml(cust.full_name || '') + '">' +
-                        '<div class="customer-info">' +
-                            '<div class="customer-name">' + escapeHtml(cust.full_name || '—') + '</div>' +
-                            '<div class="customer-meta">' +
-                                escapeHtml(plan.name_ar || '—') + ' · ' +
-                                '<code>' + maskPhone(cust.phone) + '</code> · ' +
-                                escapeHtml(r.id) +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="meals-badge' + (low ? ' low' : '') + '">' + remaining + ' / ' + fmt(r.total_meals) + ' وجبة</div>' +
-                        '<div class="customer-actions">' +
-                            '<button type="button" class="btn primary" data-action="deduct"' + (remaining <= 0 ? ' disabled' : '') + '>−1 وجبة</button>' +
-                        '</div>' +
-                    '</div>';
-                }).join('');
+      <button class="btn success" id="registerBtn" style="width:100%;padding:16px;margin-top:16px;font-size:16px;">
+        تسجيل العميل واستلام الدفعة
+      </button>
+    </div>
+  </div>
 
-                box.querySelectorAll('[data-action="deduct"]').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const card = btn.closest('.customer-card');
-                        openModal(card.getAttribute('data-sub'), card.getAttribute('data-name'));
-                    });
-                });
-            } catch (e) {
-                console.error('[loadCustomers]', e);
-                document.getElementById('customersList').innerHTML = '<div class="empty">⚠️ ' + escapeHtml(e.message || 'تعذّر التحميل') + '</div>';
-            }
-        }
+  <!-- TAB 3: Settings -->
+  <div class="tab-content" id="tab-settings">
+    <div class="section">
+      <div class="section-tag">سري</div>
+      <h2>رابط لوحتك</h2>
+      <p class="section-sub">احفظه في المتصفح، لا تشاركه:</p>
+      <div class="link-box" id="myLink">جاري التحميل...</div>
+      <button class="btn primary" id="copyLink">نسخ الرابط</button>
+    </div>
 
-        let pendingSubId = null;
-        function openModal(subId, name) {
-            pendingSubId = subId;
-            document.getElementById('modalName').textContent = name || subId;
-            document.getElementById('modal').classList.add('show');
-        }
-        function closeModal() {
-            pendingSubId = null;
-            document.getElementById('modal').classList.remove('show');
-        }
+    <div class="section">
+      <div class="section-tag pink">إحالة</div>
+      <h2>رابط الإحالة</h2>
+      <p class="section-sub">للعملاء الذين يريدون التسجيل بأنفسهم بخصم 10%:</p>
+      <div class="link-box" id="chefRefLink">جاري التحميل...</div>
+      <button class="btn primary" id="copyChefRef">نسخ الرابط</button>
+    </div>
+  </div>
+</div>
 
-        async function deductMeal() {
-            const btn = document.getElementById('modalConfirm');
-            const originalLabel = btn.innerHTML;
-            try {
-                if (!pendingSubId) throw new Error('لا يوجد اشتراك محدد');
-                btn.disabled = true;
-                btn.innerHTML = 'جاري الخصم...';
+<!-- Modal -->
+<div class="modal-bg" id="modal">
+  <div class="modal" id="modalContent">
+    <h3 id="modalTitle">تأكيد خصم وجبة</h3>
+    <p id="modalText"></p>
+    <div class="modal-actions">
+      <button class="btn" id="cancelBtn">إلغاء</button>
+      <button class="btn primary" id="confirmBtn">تأكيد</button>
+    </div>
+  </div>
+</div>
 
-                const subId = pendingSubId;
-                const ins = await sb.from('meal_logs').insert({
-                    subscription_id: subId,
-                    meal_type: 'lunch',
-                    logged_by: 'الشيف أحمد',
-                    logged_by_id: 'STAFF-002',
-                    verification_method: 'manual'
-                });
-                if (ins.error) throw ins.error;
+<div class="modal-bg" id="successModal">
+  <div class="modal success-modal">
+    <h3>✓ تم تسجيل العميل بنجاح</h3>
+    <p id="successText">—</p>
+    <div class="modal-actions">
+      <button class="btn success" id="closeSuccessBtn">تمام، شكراً</button>
+    </div>
+  </div>
+</div>
 
-                const cur = await sb.from('subscriptions').select('consumed_meals').eq('id', subId).single();
-                if (cur.error) throw cur.error;
-                const newVal = Number(cur.data?.consumed_meals || 0) + 1;
-                const upd = await sb.from('subscriptions').update({ consumed_meals: newVal }).eq('id', subId);
-                if (upd.error) throw upd.error;
+<div class="toast" id="toast"></div>
 
-                closeModal();
-                toast('✅ تم خصم وجبة بنجاح', 'success');
-                await Promise.all([loadStats(), loadCustomers()]);
-            } catch (e) {
-                console.error('[deduct]', e);
-                toast('❌ فشل: ' + (e.message || e), 'error');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalLabel;
-            }
-        }
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            sessionStorage.clear();
-            window.location.href = 'partners.html';
-        });
-        document.getElementById('copyDash').addEventListener('click', () => copy(document.getElementById('kitchenDashLink').textContent, '✅ تم نسخ رابط اللوحة'));
-        document.getElementById('modalCancel').addEventListener('click', closeModal);
-        document.getElementById('modalConfirm').addEventListener('click', deductMeal);
-        document.getElementById('modal').addEventListener('click', (e) => { if (e.target.id === 'modal') closeModal(); });
+const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = (id) => document.getElementById(id);
+const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
+const CHEF_DISCOUNT_PCT = 10;
 
-        (async () => { await loadStats(); await loadCustomers(); })();
-    </script>
+const staffId = sessionStorage.getItem('lk_staff_id');
+const staffRole = sessionStorage.getItem('lk_staff_role');
+
+if (!staffId || (staffRole !== 'kitchen' && staffId !== 'STAFF-002' && staffRole !== 'owner')) {
+  window.location.href = 'partners.html';
+}
+
+$('logoutBtn').addEventListener('click', () => {
+  sessionStorage.clear();
+  window.location.href = 'partners.html';
+});
+
+function showToast(msg, isError = false) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    $('tab-' + tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'register' && !plansLoaded) loadPlansForRegister();
+  });
+});
+
+const allergyLabels = {
+  nuts: 'المكسرات', dairy: 'الألبان', gluten: 'الجلوتين',
+  eggs: 'البيض', seafood: 'المأكولات البحرية', soy: 'الصويا',
+  sesame: 'السمسم', peanuts: 'الفول السوداني'
+};
+const severityLabels = { mild: 'خفيفة', moderate: 'متوسطة', severe: 'شديدة' };
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function escapeJs(str) { return String(str || '').replace(/'/g, "\\'"); }
+
+async function loadCustomers() {
+  const { data, error } = await sb
+    .from('subscriptions')
+    .select(`
+      id, customer_id, total_meals, consumed_meals, remaining_meals, status, end_date, notes,
+      customers!inner(full_name, phone, has_allergies, allergy_severity, dietary_restrictions, allergies, disliked_ingredients),
+      plans(name_ar, meals_per_day)
+    `)
+    .eq('status', 'active')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    $('customersList').innerHTML = '<div class="empty">خطأ في التحميل</div>';
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    $('customersList').innerHTML = '<div class="empty"><div class="icon">🍽️</div>لا توجد اشتراكات نشطة بعد.<br>سجّل عميل جديد من تاب "تسجيل عميل جديد".</div>';
+    $('statActive').textContent = '0';
+    $('statRemaining').textContent = '0';
+    $('statAllergies').textContent = '0';
+    return;
+  }
+
+  const allergyCount = data.filter(s => s.customers?.has_allergies).length;
+  const severeCount = data.filter(s => s.customers?.allergy_severity === 'severe').length;
+
+  $('statActive').textContent = data.length;
+  $('statRemaining').textContent = data.reduce((sum, s) => sum + (s.remaining_meals || 0), 0);
+  $('statAllergies').textContent = allergyCount;
+
+  if (severeCount > 0) {
+    $('allergyBanner').classList.add('show');
+    $('allergyBannerText').textContent = `يوجد ${severeCount} عميل بحساسية شديدة. اقرأ تفاصيل البطاقات الحمراء.`;
+  } else if (allergyCount > 0) {
+    $('allergyBanner').classList.add('show');
+    $('allergyBannerText').textContent = `${allergyCount} عميل لديه ملاحظات صحية.`;
+  } else {
+    $('allergyBanner').classList.remove('show');
+  }
+
+  data.sort((a, b) => {
+    const sevA = a.customers?.allergy_severity === 'severe' ? 0 : (a.customers?.has_allergies ? 1 : 2);
+    const sevB = b.customers?.allergy_severity === 'severe' ? 0 : (b.customers?.has_allergies ? 1 : 2);
+    return sevA - sevB;
+  });
+
+  let html = '';
+  data.forEach(s => {
+    const c = s.customers || {};
+    const remaining = s.remaining_meals || 0;
+    const lowClass = remaining <= 3 ? 'low' : '';
+    const phone = c.phone ? `••••${c.phone.slice(-4)}` : '';
+    const hasAllergy = c.has_allergies;
+    const severity = c.allergy_severity;
+    const cardClass = hasAllergy ? (severity === 'severe' ? 'has-allergy severe' : 'has-allergy') : '';
+    const allergyIcon = severity === 'severe' ? '⚠⚠' : (hasAllergy ? '⚠' : '');
+    const restrictions = Array.isArray(c.dietary_restrictions) ? c.dietary_restrictions : [];
+
+    html += `
+      <div class="customer-card ${cardClass}">
+        <div class="customer-top">
+          <div class="customer-info">
+            <div class="name">${allergyIcon} ${escapeHtml(c.full_name || 'عميل')}</div>
+            <div class="meta">${escapeHtml(s.plans?.name_ar || '')} · ${phone}</div>
+          </div>
+          <div class="meals-remaining ${lowClass}">${remaining} وجبة متبقية</div>
+        </div>
+    `;
+
+    if (hasAllergy) {
+      html += `<div class="allergy-block ${severity === 'severe' ? 'severe' : ''}">
+        <div class="head">
+          <span>⚠ تنبيه حساسية</span>
+          <span class="severity-pill ${severity}">${severityLabels[severity] || ''}</span>
+        </div>`;
+      if (restrictions.length > 0) {
+        html += `<div class="allergy-tags">`;
+        restrictions.forEach(r => { html += `<span class="allergy-tag">${allergyLabels[r] || r}</span>`; });
+        html += `</div>`;
+      }
+      if (c.allergies) {
+        html += `<div class="allergy-custom"><strong>تفاصيل:</strong> ${escapeHtml(c.allergies)}</div>`;
+      }
+      html += `</div>`;
+    }
+
+    if (c.disliked_ingredients) {
+      html += `<div class="disliked-block"><strong>لا يفضّل:</strong> ${escapeHtml(c.disliked_ingredients)}</div>`;
+    }
+
+    html += `<div class="actions-row">
+      <button class="btn primary" onclick="window.deductMeal('${s.id}', '${escapeJs(c.full_name || '')}', ${remaining}, ${hasAllergy}, '${severity || ''}')" ${remaining <= 0 ? 'disabled' : ''}>
+        خصم وجبة
+      </button>
+    </div></div>`;
+  });
+  $('customersList').innerHTML = html;
+}
+
+async function loadTodayCount() {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const { count } = await sb
+    .from('meal_logs')
+    .select('*', { count: 'exact', head: true })
+    .gte('consumed_at', today.toISOString());
+  $('statToday').textContent = count || 0;
+}
+
+let pendingDeduct = null;
+window.deductMeal = (subId, customerName, remaining, hasAllergy, severity) => {
+  if (remaining <= 0) { showToast('لا توجد وجبات متبقية', true); return; }
+  pendingDeduct = { subId, customerName };
+  $('modalContent').classList.remove('warning');
+
+  if (hasAllergy && severity === 'severe') {
+    $('modalContent').classList.add('warning');
+    $('modalTitle').textContent = '⚠⚠ تنبيه: حساسية شديدة';
+    $('modalText').innerHTML = `العميل <strong>${escapeHtml(customerName)}</strong> لديه حساسية <strong style="color:var(--watermelon)">شديدة</strong>.<br><br>تأكد أن الوجبة <strong>خالية تماماً</strong> من المواد المسبّبة. هل أكدت ذلك؟`;
+  } else if (hasAllergy) {
+    $('modalContent').classList.add('warning');
+    $('modalTitle').textContent = '⚠ تنبيه حساسية';
+    $('modalText').innerHTML = `العميل <strong>${escapeHtml(customerName)}</strong> لديه حساسية. راجع التفاصيل في البطاقة.`;
+  } else {
+    $('modalTitle').textContent = 'تأكيد خصم وجبة';
+    $('modalText').textContent = `خصم وجبة من اشتراك "${customerName}"؟ سيتبقى ${remaining - 1} وجبة.`;
+  }
+  $('modal').classList.add('show');
+};
+
+$('cancelBtn').onclick = () => {
+  $('modal').classList.remove('show');
+  $('modalContent').classList.remove('warning');
+  pendingDeduct = null;
+};
+
+$('confirmBtn').onclick = async () => {
+  if (!pendingDeduct) return;
+  $('confirmBtn').disabled = true;
+  $('confirmBtn').textContent = 'جاري الخصم...';
+  try {
+    const { error: logError } = await sb.from('meal_logs').insert({
+      subscription_id: pendingDeduct.subId,
+      meal_type: 'lunch',
+      logged_by: 'الشيف أحمد',
+      logged_by_id: 'STAFF-002',
+      verification_method: 'manual'
+    });
+    if (logError) throw logError;
+
+    const { data: sub } = await sb.from('subscriptions').select('consumed_meals').eq('id', pendingDeduct.subId).single();
+    const newCount = (sub?.consumed_meals || 0) + 1;
+    await sb.from('subscriptions').update({ consumed_meals: newCount }).eq('id', pendingDeduct.subId);
+
+    showToast(`✓ تم خصم وجبة لـ ${pendingDeduct.customerName}`);
+    $('modal').classList.remove('show');
+    $('modalContent').classList.remove('warning');
+    pendingDeduct = null;
+    loadCustomers();
+    loadTodayCount();
+  } catch (e) {
+    showToast('خطأ: ' + e.message, true);
+  } finally {
+    $('confirmBtn').disabled = false;
+    $('confirmBtn').textContent = 'تأكيد';
+  }
+};
+
+// === REGISTER ===
+let plansLoaded = false;
+let allPlans = [];
+const newCustomerState = {
+  selectedPlan: null, hasAllergies: false, severity: null,
+  allergyList: [], paymentMethod: null
+};
+
+async function loadPlansForRegister() {
+  const { data, error } = await sb.from('plans').select('*').eq('is_active', true).order('sort_order');
+  if (error || !data) {
+    $('newPlansList').innerHTML = '<div style="color:var(--watermelon);font-weight:900;">خطأ تحميل الباقات</div>';
+    return;
+  }
+  allPlans = data;
+  plansLoaded = true;
+
+  let html = '';
+  data.forEach(p => {
+    const original = parseFloat(p.price_sar);
+    const finalP = original * (1 - CHEF_DISCOUNT_PCT / 100);
+    html += `
+      <div class="plan-mini" data-plan-id="${p.id}">
+        <div class="plan-mini-head">
+          <div class="plan-mini-name">${p.name_ar}</div>
+          <div class="plan-mini-price">
+            <span class="original">${original.toFixed(0)}</span>
+            ${finalP.toFixed(0)} ر.س
+          </div>
+        </div>
+        <div class="plan-mini-meta">
+          ${p.meals_per_day} وجبة/يوم · ${p.meal_size_grams}جم · ${p.duration_days} يوم
+        </div>
+      </div>
+    `;
+  });
+  $('newPlansList').innerHTML = html;
+
+  document.querySelectorAll('.plan-mini').forEach(el => {
+    el.addEventListener('click', () => {
+      document.querySelectorAll('.plan-mini').forEach(p => p.classList.remove('selected'));
+      el.classList.add('selected');
+      newCustomerState.selectedPlan = allPlans.find(p => p.id === el.dataset.planId);
+      updateNewSummary();
+    });
+  });
+}
+
+function updateNewSummary() {
+  const p = newCustomerState.selectedPlan;
+  if (!p) return;
+  const original = parseFloat(p.price_sar);
+  const discount = original * (CHEF_DISCOUNT_PCT / 100);
+  const final = original - discount;
+  $('newSumPlan').textContent = p.name_ar;
+  $('newSumOriginal').textContent = original.toFixed(2) + ' ر.س';
+  $('newSumDiscount').textContent = '- ' + discount.toFixed(2) + ' ر.س';
+  $('newSumFinal').textContent = final.toFixed(2) + ' ر.س';
+}
+
+$('newHasAllergies').addEventListener('change', (e) => {
+  newCustomerState.hasAllergies = e.target.checked;
+  $('newAllergiesDetail').classList.toggle('show', e.target.checked);
+  if (!e.target.checked) {
+    newCustomerState.severity = null;
+    newCustomerState.allergyList = [];
+    document.querySelectorAll('#newSevOptions .selected').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('#newChips .selected').forEach(el => el.classList.remove('selected'));
+  }
+});
+
+document.querySelectorAll('#newSevOptions .sev-option-mini').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('#newSevOptions .sev-option-mini').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    newCustomerState.severity = el.dataset.sev;
+  });
+});
+
+document.querySelectorAll('#newChips .chip-mini').forEach(el => {
+  el.addEventListener('click', () => {
+    el.classList.toggle('selected');
+    const a = el.dataset.a;
+    if (el.classList.contains('selected')) {
+      if (!newCustomerState.allergyList.includes(a)) newCustomerState.allergyList.push(a);
+    } else {
+      newCustomerState.allergyList = newCustomerState.allergyList.filter(x => x !== a);
+    }
+  });
+});
+
+document.querySelectorAll('.pay-method').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+    el.classList.add('selected');
+    newCustomerState.paymentMethod = el.dataset.method;
+  });
+});
+
+$('registerBtn').addEventListener('click', async () => {
+  const name = $('newName').value.trim();
+  const phone = $('newPhone').value.trim();
+
+  if (!name || name.length < 3) { showToast('أدخل اسم العميل', true); return; }
+  if (!/^5\d{8}$/.test(phone)) { showToast('رقم جوال غير صحيح', true); return; }
+  if (!newCustomerState.selectedPlan) { showToast('اختر باقة', true); return; }
+  if (!newCustomerState.paymentMethod) { showToast('اختر طريقة الدفع', true); return; }
+  if (newCustomerState.hasAllergies && !newCustomerState.severity) { showToast('حدد شدة الحساسية', true); return; }
+
+  $('registerBtn').disabled = true;
+  $('registerBtn').textContent = 'جاري التسجيل...';
+
+  try {
+    const fullPhone = '0' + phone;
+    const original = parseFloat(newCustomerState.selectedPlan.price_sar);
+    const discount = original * (CHEF_DISCOUNT_PCT / 100);
+    const final = original - discount;
+
+    const customerPayload = {
+      full_name: name, phone: fullPhone,
+      gender: $('newGender').value || null, city: $('newCity').value,
+      has_allergies: newCustomerState.hasAllergies,
+      allergy_severity: newCustomerState.severity,
+      dietary_restrictions: newCustomerState.allergyList,
+      allergies: $('newCustomAllergy').value.trim() || null,
+      disliked_ingredients: $('newDisliked').value.trim() || null,
+      source: 'in_restaurant_chef'
+    };
+
+    let customerId;
+    const { data: existing } = await sb
+      .from('customers').select('id').eq('phone', fullPhone).maybeSingle();
+
+    if (existing) {
+      customerId = existing.id;
+      await sb.from('customers').update(customerPayload).eq('id', customerId);
+    } else {
+      const { data: newC, error: cErr } = await sb
+        .from('customers').insert(customerPayload).select('id').single();
+      if (cErr) throw cErr;
+      customerId = newC.id;
+    }
+
+    const totalMeals = (newCustomerState.selectedPlan.meals_per_day || 1) * (newCustomerState.selectedPlan.duration_days || 26);
+    const today = new Date();
+    const endDate = new Date(today);
+    endDate.setDate(endDate.getDate() + (newCustomerState.selectedPlan.duration_days || 26));
+
+    const { data: sub, error: subErr } = await sb
+      .from('subscriptions').insert({
+        customer_id: customerId,
+        plan_id: newCustomerState.selectedPlan.id,
+        total_meals: totalMeals,
+        total_amount_sar: final,
+        original_price: original,
+        discount_amount: discount,
+        discount_percentage: CHEF_DISCOUNT_PCT,
+        registered_by: 'STAFF-002',
+        status: 'active', payment_status: 'paid',
+        start_date: today.toISOString().split('T')[0],
+        end_date: endDate.toISOString().split('T')[0],
+        activated_at: new Date().toISOString()
+      }).select('id').single();
+    if (subErr) throw subErr;
+
+    await sb.from('payments').insert({
+      subscription_id: sub.id,
+      customer_id: customerId,
+      amount_sar: final,
+      payment_method: newCustomerState.paymentMethod,
+      is_manual: true,
+      received_by: 'STAFF-002',
+      notes: `استلم من المطعم - الشيف أحمد - ${newCustomerState.paymentMethod === 'card' ? 'شبكة' : 'كاش'}`
+    });
+
+    const methodAr = newCustomerState.paymentMethod === 'card' ? 'الشبكة' : 'كاش';
+    $('successText').innerHTML = `
+      العميل: <strong>${escapeHtml(name)}</strong><br>
+      الباقة: <strong>${escapeHtml(newCustomerState.selectedPlan.name_ar)}</strong><br>
+      المبلغ المستلم: <strong style="color:var(--olive)">${final.toFixed(2)} ر.س</strong><br>
+      طريقة الدفع: <strong>${methodAr}</strong><br>
+      رقم العميل: <code style="background:var(--ink);color:var(--coral);padding:2px 8px;border-radius:6px;direction:ltr;font-weight:900;">${customerId}</code>
+    `;
+    $('successModal').classList.add('show');
+
+    resetRegisterForm();
+    loadCustomers();
+    loadTodayCount();
+
+  } catch (e) {
+    console.error(e);
+    showToast('خطأ: ' + e.message, true);
+  } finally {
+    $('registerBtn').disabled = false;
+    $('registerBtn').textContent = 'تسجيل العميل واستلام الدفعة';
+  }
+});
+
+$('closeSuccessBtn').addEventListener('click', () => {
+  $('successModal').classList.remove('show');
+});
+
+function resetRegisterForm() {
+  $('newName').value = '';
+  $('newPhone').value = '';
+  $('newGender').value = '';
+  $('newCustomAllergy').value = '';
+  $('newDisliked').value = '';
+  $('newHasAllergies').checked = false;
+  $('newAllergiesDetail').classList.remove('show');
+  newCustomerState.selectedPlan = null;
+  newCustomerState.hasAllergies = false;
+  newCustomerState.severity = null;
+  newCustomerState.allergyList = [];
+  newCustomerState.paymentMethod = null;
+  document.querySelectorAll('.plan-mini.selected').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.sev-option-mini.selected').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.chip-mini.selected').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.pay-method.selected').forEach(el => el.classList.remove('selected'));
+  $('newSumPlan').textContent = '—';
+  $('newSumOriginal').textContent = '—';
+  $('newSumDiscount').textContent = '— 0 ر.س';
+  $('newSumFinal').textContent = '—';
+}
+
+async function loadLinks() {
+  const { data } = await sb.from('staff').select('access_key, referral_code').eq('id', 'STAFF-002').single();
+  if (!data) return;
+  const dashLink = `${SITE_BASE}/kitchen-dashboard.html?key=${data.access_key}`;
+  const refLink = `${SITE_BASE}/?ref=${data.referral_code}`;
+  $('myLink').textContent = dashLink;
+  $('chefRefLink').textContent = refLink;
+  $('copyLink').onclick = () => {
+    navigator.clipboard.writeText(dashLink).then(() => {
+      $('copyLink').textContent = '✓ تم النسخ';
+      setTimeout(() => $('copyLink').textContent = 'نسخ الرابط', 1500);
+    });
+  };
+  $('copyChefRef').onclick = () => {
+    navigator.clipboard.writeText(refLink).then(() => {
+      $('copyChefRef').textContent = '✓ تم النسخ';
+      setTimeout(() => $('copyChefRef').textContent = 'نسخ الرابط', 1500);
+    });
+  };
+}
+
+loadLinks();
+loadCustomers();
+loadTodayCount();
+setInterval(() => { loadCustomers(); loadTodayCount(); }, 30000);
+</script>
 </body>
 </html>
