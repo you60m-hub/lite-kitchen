@@ -1,334 +1,534 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow">
-    <meta name="theme-color" content="#0a1f15">
-    <title>لوحة الشريك — Lite Kitchen</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: linear-gradient(135deg, #0a1f15 0%, #1a3d2a 100%); min-height: 100vh; color: #e8f5ee; padding: 20px; padding-bottom: 60px; }
-        body::before { content: ''; position: fixed; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(74,222,128,0.15) 0%, transparent 70%); pointer-events: none; z-index: 0; }
-        .container { max-width: 980px; margin: 0 auto; position: relative; z-index: 1; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة الشريك — Lite Kitchen</title>
+<meta name="robots" content="noindex, nofollow">
 
-        .glass { background: rgba(255,255,255,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.25); }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
-        .brand-side { display: flex; align-items: center; gap: 12px; }
-        .logo { font-size: 22px; font-weight: 900; color: #4ade80; }
-        .badge-label { background: rgba(74,222,128,0.2); border: 1px solid rgba(74,222,128,0.4); color: #4ade80; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; font-family: 'Courier New', monospace; letter-spacing: 1px; }
-        .header-actions { display: flex; gap: 8px; }
-        .btn { padding: 10px 14px; border: none; border-radius: 10px; font-family: inherit; font-weight: 700; cursor: pointer; font-size: 13px; transition: all 0.25s; display: inline-flex; align-items: center; gap: 6px; }
-        .btn.ghost { background: rgba(255,255,255,0.1); color: #e8f5ee; border: 1px solid rgba(255,255,255,0.15); }
-        .btn.ghost:hover { background: rgba(255,255,255,0.18); }
-        .btn.danger { background: rgba(239,68,68,0.18); color: #fca5a5; border: 1px solid rgba(239,68,68,0.35); }
-        .btn.primary { background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%); color: #0a1f15; }
-        .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(74,222,128,0.3); }
-        .btn.whatsapp { background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: #fff; }
+<style>
+  :root {
+    --beige-top: #F4ECD8; --beige-mid: #EFE4CE; --beige-bot: #E5D6B6;
+    --watermelon: #E0596C; --coral: #F08A5D; --olive: #6F7C3E; --pink: #E89BA6;
+    --ink: #2A241C; --ink-soft: #5A4F42; --ink-mute: #8A7E6B;
+    --card: #FBF3DD; --card-edge: rgba(42, 36, 28, 0.10);
+    --shadow-sm: 0 4px 12px rgba(42, 36, 28, 0.10);
+    --shadow-md: 0 8px 22px rgba(42, 36, 28, 0.18);
+    --shadow-lg: 0 16px 40px rgba(42, 36, 28, 0.22);
+    --radius-card: 14px; --radius-pill: 9999px;
+    --bg-page: linear-gradient(180deg, var(--beige-top) 0%, var(--beige-mid) 55%, var(--beige-bot) 100%);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg-page); }
+  body {
+    font-family: 'Cairo', system-ui, sans-serif;
+    color: var(--ink); direction: rtl; min-height: 100vh;
+    background: var(--bg-page); padding: 16px; position: relative;
+  }
+  body.ltr { direction: ltr; }
+  body::before, body::after {
+    content: ""; position: fixed; border-radius: 50%; filter: blur(80px);
+    pointer-events: none; z-index: 0;
+  }
+  body::before { top: 10%; right: 12%; width: 340px; height: 340px; background: var(--pink); opacity: 0.32; }
+  body::after { bottom: 10%; left: 14%; width: 320px; height: 320px; background: var(--coral); opacity: 0.28; }
+  .grain::after {
+    content: ""; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.12; mix-blend-mode: multiply; pointer-events: none; z-index: 1;
+  }
+  .container { max-width: 920px; margin: 0 auto; position: relative; z-index: 2; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 18px; }
-        .stat { padding: 18px; text-align: center; }
-        .stat .icon { font-size: 24px; margin-bottom: 4px; }
-        .stat .num { font-size: 26px; font-weight: 900; color: #4ade80; margin: 4px 0; }
-        .stat .num.small { font-size: 18px; }
-        .stat .lbl { font-size: 12px; color: rgba(232,245,238,0.7); font-weight: 500; }
+  .header {
+    background: var(--card); border: 1px solid var(--card-edge);
+    border-right: 6px solid var(--pink);
+    border-radius: var(--radius-card); padding: 20px 24px;
+    margin-bottom: 22px; display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 14px;
+    box-shadow: var(--shadow-md); transform: rotate(-0.3deg);
+  }
+  body.ltr .header { border-right: none; border-left: 6px solid var(--pink); }
+  .header .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .header .tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10px; font-weight: 900; letter-spacing: 1.2px;
+    color: var(--ink); text-transform: uppercase;
+  }
+  .header .tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--pink); }
+  .header .title { font-size: 22px; font-weight: 900; line-height: 1; color: var(--ink); }
+  .header .title .grad {
+    background: linear-gradient(90deg, var(--watermelon), var(--coral));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .header .badge {
+    background: var(--pink); color: var(--ink);
+    padding: 7px 16px; border-radius: var(--radius-pill);
+    font-size: 11px; font-weight: 900; letter-spacing: 0.6px;
+    box-shadow: var(--shadow-sm); transform: rotate(-2deg);
+  }
+  .header-actions { display: flex; gap: 8px; }
+  .btn {
+    background: transparent; border: 1.5px solid var(--card-edge);
+    color: var(--ink-soft); padding: 9px 16px;
+    border-radius: var(--radius-pill); cursor: pointer;
+    font-size: 12px; font-weight: 900; font-family: inherit;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: var(--card); border-color: var(--ink); color: var(--ink); }
+  .btn.primary { background: var(--watermelon); color: #FFF8E7; border-color: var(--watermelon); box-shadow: var(--shadow-sm); }
+  .btn.primary:hover { transform: translateY(-1px) rotate(-0.5deg); }
+  .btn.olive { background: var(--olive); color: #FFF8E7; border-color: var(--olive); box-shadow: var(--shadow-sm); }
+  .lang-btn { background: var(--ink); color: var(--coral); border-color: var(--ink); font-weight: 900; }
 
-        .section { margin-bottom: 18px; }
-        .section h3 { font-size: 16px; margin-bottom: 12px; color: #4ade80; display: flex; align-items: center; gap: 8px; }
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px; margin-bottom: 22px;
+  }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card); padding: 20px 18px;
+    text-align: center; box-shadow: var(--shadow-sm);
+  }
+  .stat-card:nth-child(1) { transform: rotate(-0.6deg); border-right: 4px solid var(--pink); }
+  .stat-card:nth-child(2) { transform: rotate(0.4deg); border-right: 4px solid var(--coral); }
+  .stat-card:nth-child(3) { transform: rotate(-0.3deg); border-right: 4px solid var(--olive); }
+  .stat-card:nth-child(4) { transform: rotate(0.6deg); border-right: 4px solid var(--watermelon); }
+  body.ltr .stat-card { border-right: none; border-left-width: 4px; border-left-style: solid; }
+  body.ltr .stat-card:nth-child(1) { border-left-color: var(--pink); }
+  body.ltr .stat-card:nth-child(2) { border-left-color: var(--coral); }
+  body.ltr .stat-card:nth-child(3) { border-left-color: var(--olive); }
+  body.ltr .stat-card:nth-child(4) { border-left-color: var(--watermelon); }
+  .stat-card .label {
+    font-size: 10px; font-weight: 900; color: var(--ink-mute);
+    margin-bottom: 6px; letter-spacing: 0.6px; text-transform: uppercase;
+  }
+  .stat-card .value { font-size: 32px; font-weight: 900; color: var(--ink); line-height: 1; }
+  .stat-card .sub { font-size: 11px; color: var(--ink-mute); margin-top: 4px; font-weight: 700; }
 
-        .link-box { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
-        .link-box .desc { font-size: 12px; color: rgba(232,245,238,0.65); margin-bottom: 8px; }
-        .link-value { background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px 12px; font-family: 'Courier New', monospace; font-size: 12px; word-break: break-all; direction: ltr; text-align: left; color: #d1fae5; margin-bottom: 10px; }
-        .link-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .section {
+    background: var(--card); border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card); padding: 24px;
+    margin-bottom: 20px; box-shadow: var(--shadow-md);
+    transform: rotate(-0.2deg);
+  }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-weight: 900; font-size: 11px; letter-spacing: 1px;
+    color: var(--ink); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .section-tag::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--pink); }
+  .section-tag.olive::before { background: var(--olive); }
+  .section-tag.coral::before { background: var(--coral); }
+  .section h2 { font-size: 22px; font-weight: 900; margin-bottom: 6px; color: var(--ink); line-height: 1.1; }
+  .section-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 18px; font-weight: 700; line-height: 1.5; }
 
-        table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        thead th { background: rgba(0,0,0,0.3); color: #4ade80; padding: 10px 8px; text-align: right; font-weight: 700; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        tbody td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        tbody tr:hover { background: rgba(255,255,255,0.03); }
-        .tbl-wrap { overflow-x: auto; }
+  /* Link box */
+  .link-box {
+    background: var(--ink); color: var(--coral);
+    border-radius: var(--radius-card); padding: 14px;
+    word-break: break-all; font-family: 'Consolas', monospace;
+    font-size: 12px; direction: ltr;
+    text-align: left;
+    box-shadow: var(--shadow-md); margin-bottom: 12px;
+  }
 
-        .tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; }
-        .tag.green { background: rgba(74,222,128,0.18); color: #4ade80; }
-        .tag.red { background: rgba(239,68,68,0.18); color: #fca5a5; }
-        .tag.amber { background: rgba(251,191,36,0.18); color: #fbbf24; }
-        .tag.gray { background: rgba(148,163,184,0.18); color: #cbd5e1; }
+  .pretty-share {
+    background: linear-gradient(135deg, var(--card), #FFF8E7);
+    border: 2px dashed var(--coral);
+    border-radius: var(--radius-card); padding: 18px;
+    text-align: center; margin-top: 16px;
+  }
+  .pretty-share .title { font-weight: 900; color: var(--coral); margin-bottom: 8px; }
+  .pretty-share .text { font-size: 14px; color: var(--ink-soft); font-weight: 700; line-height: 1.6; }
+  .pretty-share .text strong { color: var(--ink); }
 
-        .empty { text-align: center; padding: 30px 12px; color: rgba(232,245,238,0.5); }
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: separate; border-spacing: 0;
+    background: #FFF8E7; border-radius: var(--radius-card); overflow: hidden;
+    border: 1px solid var(--card-edge); box-shadow: var(--shadow-sm);
+  }
+  th {
+    background: var(--ink); color: var(--beige-top);
+    padding: 12px 14px; text-align: right; font-weight: 900;
+    font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  body.ltr th { text-align: left; }
+  td {
+    padding: 14px; border-bottom: 1px dashed var(--card-edge);
+    font-size: 13px; color: var(--ink); font-weight: 700;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(232, 155, 166, 0.06); }
 
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-30px); background: rgba(74,222,128,0.95); color: #0a1f15; padding: 12px 22px; border-radius: 12px; font-weight: 700; font-size: 14px; opacity: 0; transition: all 0.3s; z-index: 2000; box-shadow: 0 12px 30px rgba(0,0,0,0.3); }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast.err { background: rgba(239,68,68,0.95); color: #fff; }
+  .pill {
+    display: inline-block; padding: 4px 12px;
+    border-radius: var(--radius-pill); font-size: 11px;
+    font-weight: 900; letter-spacing: 0.4px;
+  }
+  .pill.active { background: var(--olive); color: #FFF8E7; }
+  .pill.pending { background: var(--coral); color: #FFF8E7; }
+  .pill.paid { background: var(--olive); color: #FFF8E7; }
+  .pill.unpaid { background: var(--watermelon); color: #FFF8E7; }
 
-        @media (max-width: 480px) {
-            body { padding: 12px; }
-            .glass { padding: 14px; }
-            .stat .num { font-size: 22px; }
-            thead th, tbody td { padding: 8px 6px; font-size: 12px; }
-        }
-    </style>
+  .empty {
+    text-align: center; padding: 40px 20px;
+    color: var(--ink-mute); font-weight: 700;
+  }
+  .empty .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+
+  /* Commission table */
+  .commission-list {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .commission-card {
+    background: #FFF8E7; border: 1.5px solid var(--card-edge);
+    border-radius: var(--radius-card); padding: 16px;
+    text-align: center; box-shadow: var(--shadow-sm);
+  }
+  .commission-card:nth-child(1) { transform: rotate(-0.6deg); }
+  .commission-card:nth-child(2) { transform: rotate(0.4deg); }
+  .commission-card:nth-child(3) { transform: rotate(-0.3deg); }
+  .commission-card .label {
+    font-size: 11px; font-weight: 900; color: var(--ink-mute);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+  }
+  .commission-card .pct {
+    font-size: 26px; font-weight: 900; color: var(--watermelon); line-height: 1;
+  }
+  .commission-card .price-info {
+    font-size: 11px; color: var(--ink-mute); margin-top: 4px; font-weight: 700;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed; top: 20px; left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--olive); color: #FFF8E7;
+    padding: 14px 24px; border-radius: var(--radius-card);
+    font-weight: 900; z-index: 200; transition: transform 0.3s;
+    box-shadow: var(--shadow-lg);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--watermelon); }
+</style>
 </head>
-<body>
-    <div class="toast" id="toast"></div>
-    <div class="container">
-        <div class="header glass">
-            <div class="brand-side">
-                <span class="logo">🌿</span>
-                <div>
-                    <div style="font-weight:800;font-size:15px;" data-ar="لوحة الشريك" data-en="Partner Dashboard">لوحة الشريك</div>
-                    <div class="badge-label" id="badgeLabel">★ —</div>
-                </div>
-            </div>
-            <div class="header-actions">
-                <button type="button" class="btn ghost" id="langBtn">EN</button>
-                <button type="button" class="btn danger" id="logoutBtn" data-ar="خروج" data-en="Logout">خروج</button>
-            </div>
-        </div>
+<body class="grain">
+<div class="container">
 
-        <div class="stats-grid">
-            <div class="glass stat"><div class="icon">👥</div><div class="num" id="statClients">—</div><div class="lbl" data-ar="عملاء هذا الشهر" data-en="Clients this month">عملاء هذا الشهر</div></div>
-            <div class="glass stat"><div class="icon">💰</div><div class="num small" id="statCommission">—</div><div class="lbl" data-ar="عمولة الشهر (ر.س)" data-en="Monthly commission (SAR)">عمولة الشهر (ر.س)</div></div>
-            <div class="glass stat"><div class="icon">📈</div><div class="num small" id="statRevenue">—</div><div class="lbl" data-ar="إيرادات الشهر (ر.س)" data-en="Monthly revenue (SAR)">إيرادات الشهر (ر.س)</div></div>
-            <div class="glass stat"><div class="icon">⭐</div><div class="num small" id="statTier">—</div><div class="lbl" data-ar="مستواك ومعدلات العمولة" data-en="Your tier & rates">مستواك ومعدلات العمولة</div></div>
-        </div>
-
-        <div class="section glass">
-            <h3>🔗 <span data-ar="رابطك للتسويق" data-en="Your marketing link">رابطك للتسويق</span></h3>
-            <div class="link-box">
-                <div class="desc" data-ar="شارك هذا الرابط مع متابعيك. كل عميل يسجل عبره يُحسب لك." data-en="Share this link. Every signup is attributed to you.">شارك هذا الرابط مع متابعيك. كل عميل يسجل عبره يُحسب لك.</div>
-                <div class="link-value" id="refLink">—</div>
-                <div class="link-actions">
-                    <button type="button" class="btn primary" id="copyRef">📋 <span data-ar="نسخ" data-en="Copy">نسخ</span></button>
-                    <button type="button" class="btn whatsapp" id="shareRef">💬 <span data-ar="مشاركة عبر واتساب" data-en="Share on WhatsApp">مشاركة عبر واتساب</span></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="section glass">
-            <h3>🔐 <span data-ar="رابط لوحتك الشخصية" data-en="Your private dashboard link">رابط لوحتك الشخصية</span></h3>
-            <div class="link-box">
-                <div class="desc" data-ar="احفظ هذا الرابط للوصول السريع — لا تشاركه مع أحد." data-en="Save this link for quick access — do NOT share it.">احفظ هذا الرابط للوصول السريع — لا تشاركه مع أحد.</div>
-                <div class="link-value" id="dashLink">—</div>
-                <div class="link-actions">
-                    <button type="button" class="btn primary" id="copyDash">📋 <span data-ar="نسخ" data-en="Copy">نسخ</span></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="section glass">
-            <h3>👥 <span data-ar="عملاؤك" data-en="Your clients">عملاؤك</span></h3>
-            <div class="tbl-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th data-ar="العميل" data-en="Client">العميل</th>
-                            <th data-ar="الجوال" data-en="Phone">الجوال</th>
-                            <th data-ar="الباقة" data-en="Plan">الباقة</th>
-                            <th data-ar="المبلغ" data-en="Amount">المبلغ</th>
-                            <th data-ar="الحالة" data-en="Status">الحالة</th>
-                            <th data-ar="الدفع" data-en="Payment">الدفع</th>
-                            <th data-ar="التاريخ" data-en="Date">التاريخ</th>
-                        </tr>
-                    </thead>
-                    <tbody id="clientsBody">
-                        <tr><td colspan="7" class="empty" data-ar="جاري التحميل..." data-en="Loading...">جاري التحميل...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <div class="header">
+    <div class="brand">
+      <div>
+        <div class="tag" data-ar="منطقة الشريك" data-en="PARTNER ZONE">منطقة الشريك</div>
+        <div class="title"><span class="grad">Lite</span> Kitchen</div>
+      </div>
+      <span class="badge" id="partnerLabel">★ —</span>
     </div>
+    <div class="header-actions">
+      <button class="btn lang-btn" id="langToggle">EN</button>
+      <button class="btn" id="logoutBtn" data-ar="خروج" data-en="Logout">خروج</button>
+    </div>
+  </div>
 
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-        const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
-        const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
-        const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="label" data-ar="عملاء" data-en="Customers">عملاء</div>
+      <div class="value" id="statCustomers">—</div>
+      <div class="sub" data-ar="إجمالي" data-en="Total">إجمالي</div>
+    </div>
+    <div class="stat-card">
+      <div class="label" data-ar="نشطون" data-en="Active">نشطون</div>
+      <div class="value" id="statActive">—</div>
+      <div class="sub" data-ar="مدفوع" data-en="Paid">مدفوع</div>
+    </div>
+    <div class="stat-card">
+      <div class="label" data-ar="إيرادات" data-en="Revenue">إيرادات</div>
+      <div class="value" id="statRevenue">—</div>
+      <div class="sub" data-ar="ر.س مدفوع" data-en="SAR Paid">ر.س مدفوع</div>
+    </div>
+    <div class="stat-card">
+      <div class="label" data-ar="عمولتي" data-en="My Commission">عمولتي</div>
+      <div class="value" id="statCommission">—</div>
+      <div class="sub" data-ar="ر.س تقديري" data-en="SAR Est.">ر.س تقديري</div>
+    </div>
+  </div>
 
-        const staffId = sessionStorage.getItem('lk_staff_id');
-        const staffName = sessionStorage.getItem('lk_staff_name') || '';
-        const staffLabel = sessionStorage.getItem('lk_staff_label') || '';
-        const accessKey = sessionStorage.getItem('lk_access_key') || '';
-        if (!staffId) { window.location.href = 'partners.html'; }
+  <!-- My Referral Link -->
+  <div class="section">
+    <div class="section-tag coral" data-ar="رابطي" data-en="MY LINK">رابطي</div>
+    <h2 data-ar="رابط الإحالة الخاص بك" data-en="Your Referral Link">رابط الإحالة الخاص بك</h2>
+    <p class="section-sub" data-ar="شارك هذا الرابط مع متابعيك. من يضغطه سيحصل على خصم 10% وتُسجَّل العمولة لك تلقائياً." data-en="Share this with your followers. They get 10% off and your commission is logged automatically.">
+      شارك هذا الرابط مع متابعيك. من يضغطه سيحصل على خصم 10% وتُسجَّل العمولة لك تلقائياً.
+    </p>
+    <div class="link-box" id="myRefLink">—</div>
+    <button class="btn primary" id="copyRefBtn" data-ar="نسخ الرابط" data-en="Copy Link">نسخ الرابط</button>
 
-        let lang = sessionStorage.getItem('lk_lang') || 'ar';
-        if (staffId === 'STAFF-009' && !sessionStorage.getItem('lk_lang')) lang = 'en';
+    <div class="pretty-share">
+      <div class="title" data-ar="فكرة للنشر" data-en="Posting Idea">فكرة للنشر</div>
+      <div class="text" data-ar='قولي لمتابعيكِ: <strong>"وجبات صحية بمقادير محسوبة، ٢٦ يوم، خصم خاص ١٠٪ بالرابط 🌿"</strong>' data-en='Tell your followers: <strong>"Healthy portioned meals, 26 days, special 10% off via my link 🌿"</strong>'>
+        قولي لمتابعيكِ: <strong>"وجبات صحية بمقادير محسوبة، ٢٦ يوم، خصم خاص ١٠٪ بالرابط 🌿"</strong>
+      </div>
+    </div>
+  </div>
 
-        function applyLang() {
-            try {
-                document.documentElement.lang = lang;
-                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                document.querySelectorAll('[data-ar][data-en]').forEach(el => {
-                    el.textContent = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
-                });
-                document.getElementById('langBtn').textContent = lang === 'ar' ? 'EN' : 'AR';
-            } catch (e) { console.error('[lang]', e); }
-        }
+  <!-- Commission Schedule -->
+  <div class="section">
+    <div class="section-tag olive" data-ar="عمولتي" data-en="MY RATES">عمولتي</div>
+    <h2 data-ar="جدول العمولات" data-en="Commission Rates">جدول العمولات</h2>
+    <p class="section-sub" data-ar="عمولتك تختلف حسب الباقة المختارة." data-en="Your commission varies based on the selected plan.">
+      عمولتك تختلف حسب الباقة المختارة.
+    </p>
+    <div class="commission-list" id="commissionList">جاري التحميل...</div>
+  </div>
 
-        function toast(msg, kind) {
-            try {
-                const el = document.getElementById('toast');
-                el.textContent = msg;
-                el.classList.remove('err');
-                if (kind === 'error') el.classList.add('err');
-                el.classList.add('show');
-                setTimeout(() => el.classList.remove('show'), 2500);
-            } catch (e) { console.error('[toast]', e); }
-        }
+  <!-- My Customers -->
+  <div class="section">
+    <div class="section-tag" data-ar="عملائي" data-en="MY CUSTOMERS">عملائي</div>
+    <h2 data-ar="قائمة عملائي" data-en="My Customers List">قائمة عملائي</h2>
+    <p class="section-sub" data-ar="جميع من سجّلوا عبر رابطك. الأرقام مخفية لحماية خصوصية العملاء." data-en="Everyone who registered via your link. Phone numbers are masked for privacy.">
+      جميع من سجّلوا عبر رابطك. الأرقام مخفية لحماية خصوصية العملاء.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th data-ar="الرقم" data-en="ID">الرقم</th>
+            <th data-ar="العميل" data-en="Customer">العميل</th>
+            <th data-ar="الجوال" data-en="Phone">الجوال</th>
+            <th data-ar="الباقة" data-en="Plan">الباقة</th>
+            <th data-ar="المبلغ" data-en="Amount">المبلغ</th>
+            <th data-ar="عمولتي" data-en="My Cut">عمولتي</th>
+            <th data-ar="الحالة" data-en="Status">الحالة</th>
+          </tr>
+        </thead>
+        <tbody id="customersBody"><tr><td colspan="7" class="empty" data-ar="جاري التحميل..." data-en="Loading...">جاري التحميل...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
 
-        function fmt(n, d) {
-            return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
-        }
-        function maskPhone(p) {
-            if (!p) return '—';
-            const s = String(p);
-            return '••••' + s.slice(-4);
-        }
-        function fmtDate(d) {
-            if (!d) return '—';
-            try {
-                return new Date(d).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-            } catch (e) { return String(d); }
-        }
-        function planTier(plan) {
-            if (!plan) return 'lite';
-            const id = String(plan.id || '').toUpperCase();
-            if (id.includes('ELITE')) return 'elite';
-            if (id.includes('ATHLETE')) return 'athlete';
-            return 'lite';
-        }
+  <!-- Dashboard Link -->
+  <div class="section">
+    <div class="section-tag" data-ar="سري" data-en="PRIVATE">سري</div>
+    <h2 data-ar="رابط لوحتك الخاص" data-en="Your Dashboard Link">رابط لوحتك الخاص</h2>
+    <p class="section-sub" data-ar="احفظه في متصفّحك. لا تشاركه مع أحد." data-en="Save in your browser. Don't share with anyone.">
+      احفظه في متصفّحك. لا تشاركه مع أحد.
+    </p>
+    <div class="link-box" id="dashLink">—</div>
+    <button class="btn olive" id="copyDashBtn" data-ar="نسخ الرابط" data-en="Copy Link">نسخ الرابط</button>
+  </div>
+</div>
 
-        let staffRow = null;
-        async function loadStaff() {
-            try {
-                const { data, error } = await sb.from('staff').select('id, full_name, referral_code, tier, commission_lite, commission_athlete, commission_elite').eq('id', staffId).maybeSingle();
-                if (error) throw error;
-                staffRow = data;
-                document.getElementById('badgeLabel').textContent = staffLabel || ('★ ' + staffId);
+<div class="toast" id="toast"></div>
 
-                const cL = Number(data?.commission_lite || 0);
-                const cA = Number(data?.commission_athlete || 0);
-                const cE = Number(data?.commission_elite || 0);
-                const tier = data?.tier || '—';
-                document.getElementById('statTier').textContent = tier + ' · ' + cL + '/' + cA + '/' + cE + '%';
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-                const ref = data?.referral_code || '';
-                document.getElementById('refLink').textContent = ref ? (SITE_BASE + '/?ref=' + ref) : '—';
-                document.getElementById('dashLink').textContent = accessKey ? (SITE_BASE + '/partner-dashboard.html?key=' + accessKey) : '—';
-            } catch (e) {
-                console.error('[loadStaff]', e);
-                toast('فشل تحميل بياناتك', 'error');
-            }
-        }
+const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = (id) => document.getElementById(id);
+const SITE_BASE = 'https://you60m-hub.github.io/lite-kitchen';
 
-        async function loadClients() {
-            try {
-                const monthStart = new Date();
-                monthStart.setDate(1);
-                monthStart.setHours(0, 0, 0, 0);
+const staffId = sessionStorage.getItem('lk_staff_id');
+const staffLabel = sessionStorage.getItem('lk_staff_label') || '★ —';
+const staffName = sessionStorage.getItem('lk_staff_name') || '';
+const staffRole = sessionStorage.getItem('lk_staff_role');
+const isHidden = sessionStorage.getItem('lk_is_hidden') === 'true';
 
-                const { data, error } = await sb
-                    .from('subscriptions')
-                    .select('id, created_at, status, total_amount_sar, payment_status, plan_id, customer_id, customers!inner(full_name, phone, city), plans(id, name_ar, name_en, price_sar)')
-                    .eq('registered_by', staffId)
-                    .order('created_at', { ascending: false });
-                if (error) throw error;
+if (!staffId || staffRole === 'owner' || staffRole === 'kitchen') {
+  window.location.href = 'partners.html';
+}
 
-                const rows = data || [];
-                let monthCount = 0, monthRevenue = 0, monthCommission = 0;
-                const cL = Number(staffRow?.commission_lite || 0);
-                const cA = Number(staffRow?.commission_athlete || 0);
-                const cE = Number(staffRow?.commission_elite || 0);
+// Default language: Coach Nouf gets English, others Arabic
+let currentLang = (staffId === 'STAFF-009') ? 'en' : 'ar';
 
-                rows.forEach(r => {
-                    const created = r.created_at ? new Date(r.created_at) : null;
-                    if (created && created >= monthStart) {
-                        monthCount++;
-                        if (r.payment_status === 'paid') {
-                            const amt = Number(r.total_amount_sar || 0);
-                            monthRevenue += amt;
-                            const tier = planTier(r.plans);
-                            const rate = tier === 'elite' ? cE : (tier === 'athlete' ? cA : cL);
-                            monthCommission += amt * (rate / 100);
-                        }
-                    }
-                });
+function applyLang(lang) {
+  currentLang = lang;
+  document.body.classList.toggle('ltr', lang === 'en');
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'en' ? 'ltr' : 'rtl';
+  document.querySelectorAll('[data-ar]').forEach(el => {
+    el.innerHTML = (lang === 'en' ? el.dataset.en : el.dataset.ar) || el.innerHTML;
+  });
+  $('langToggle').textContent = lang === 'ar' ? 'EN' : 'ع';
+}
 
-                document.getElementById('statClients').textContent = fmt(monthCount);
-                document.getElementById('statRevenue').textContent = fmt(monthRevenue, 0);
-                document.getElementById('statCommission').textContent = fmt(monthCommission, 2);
+$('langToggle').addEventListener('click', () => {
+  applyLang(currentLang === 'ar' ? 'en' : 'ar');
+});
 
-                const body = document.getElementById('clientsBody');
-                if (!rows.length) {
-                    body.innerHTML = '<tr><td colspan="7" class="empty">' + (lang === 'ar' ? 'لا عملاء بعد. شارك رابطك!' : 'No clients yet. Share your link!') + '</td></tr>';
-                    return;
-                }
-                body.innerHTML = rows.map(r => {
-                    const cust = r.customers || {};
-                    const plan = r.plans || {};
-                    const status = r.status === 'active' ? '<span class="tag green">' + (lang === 'ar' ? 'فعّال' : 'Active') + '</span>'
-                        : r.status === 'pending' ? '<span class="tag amber">' + (lang === 'ar' ? 'معلّق' : 'Pending') + '</span>'
-                        : r.status === 'cancelled' ? '<span class="tag red">' + (lang === 'ar' ? 'ملغي' : 'Cancelled') + '</span>'
-                        : '<span class="tag gray">' + (r.status || '—') + '</span>';
-                    const pay = r.payment_status === 'paid' ? '<span class="tag green">' + (lang === 'ar' ? 'مدفوع' : 'Paid') + '</span>'
-                        : '<span class="tag red">' + (lang === 'ar' ? 'غير مدفوع' : 'Unpaid') + '</span>';
-                    return '<tr>' +
-                        '<td>' + (cust.full_name || '—') + '</td>' +
-                        '<td style="font-family:Courier New,monospace;direction:ltr;">' + maskPhone(cust.phone) + '</td>' +
-                        '<td>' + (lang === 'ar' ? (plan.name_ar || plan.id || '—') : (plan.name_en || plan.id || '—')) + '</td>' +
-                        '<td>' + fmt(r.total_amount_sar, 2) + ' ر.س</td>' +
-                        '<td>' + status + '</td>' +
-                        '<td>' + pay + '</td>' +
-                        '<td>' + fmtDate(r.created_at) + '</td>' +
-                    '</tr>';
-                }).join('');
-            } catch (e) {
-                console.error('[loadClients]', e);
-                document.getElementById('clientsBody').innerHTML = '<tr><td colspan="7" class="empty">⚠️ ' + (e.message || 'تعذّر التحميل') + '</td></tr>';
-            }
-        }
+$('partnerLabel').textContent = staffLabel;
 
-        function copy(text, label) {
-            if (!text || text === '—') return;
-            try {
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(() => toast(label || '✅ تم النسخ', 'success'));
-                } else {
-                    const ta = document.createElement('textarea');
-                    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-                    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-                    toast(label || '✅ تم النسخ', 'success');
-                }
-            } catch (e) { console.error('[copy]', e); toast('فشل النسخ', 'error'); }
-        }
+$('logoutBtn').addEventListener('click', () => {
+  sessionStorage.clear();
+  window.location.href = 'partners.html';
+});
 
-        document.getElementById('langBtn').addEventListener('click', () => {
-            lang = lang === 'ar' ? 'en' : 'ar';
-            sessionStorage.setItem('lk_lang', lang);
-            applyLang();
-            loadClients();
-        });
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            sessionStorage.clear();
-            window.location.href = 'partners.html';
-        });
-        document.getElementById('copyRef').addEventListener('click', () => copy(document.getElementById('refLink').textContent, lang === 'ar' ? '✅ تم نسخ رابط التسويق' : '✅ Marketing link copied'));
-        document.getElementById('shareRef').addEventListener('click', () => {
-            const url = document.getElementById('refLink').textContent;
-            if (!url || url === '—') return;
-            const msg = lang === 'ar'
-                ? '🥗 اشترك في باقات الوجبات الصحية معنا!\n' + url
-                : '🥗 Subscribe to our healthy meal plans!\n' + url;
-            window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-        });
-        document.getElementById('copyDash').addEventListener('click', () => copy(document.getElementById('dashLink').textContent, lang === 'ar' ? '✅ تم نسخ رابط اللوحة' : '✅ Dashboard link copied'));
+function showToast(msg, isError = false) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
 
-        applyLang();
-        (async () => { await loadStaff(); await loadClients(); })();
-        setInterval(loadClients, 30000);
-    </script>
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function maskPhone(phone) {
+  if (!phone) return '—';
+  return '••••' + phone.slice(-4);
+}
+
+function getPlanTier(planId) {
+  if (!planId) return 'lite';
+  if (planId.includes('LITE')) return 'lite';
+  if (planId.includes('ATHLETE')) return 'athlete';
+  if (planId.includes('ELITE')) return 'elite';
+  return 'lite';
+}
+
+async function loadDashboard() {
+  // Get my staff info (commissions, codes, key)
+  const { data: me, error: meErr } = await sb
+    .from('staff').select('*').eq('id', staffId).single();
+
+  if (meErr || !me) {
+    showToast('خطأ تحميل البيانات', true);
+    return;
+  }
+
+  // Links
+  const refLink = `${SITE_BASE}/?ref=${me.referral_code}`;
+  const dashLink = `${SITE_BASE}/partner-dashboard.html?key=${me.access_key}`;
+  $('myRefLink').textContent = refLink;
+  $('dashLink').textContent = dashLink;
+
+  $('copyRefBtn').onclick = () => {
+    navigator.clipboard.writeText(refLink).then(() => {
+      const t = $('copyRefBtn');
+      const orig = t.textContent;
+      t.textContent = currentLang === 'en' ? '✓ Copied' : '✓ تم النسخ';
+      setTimeout(() => t.textContent = orig, 1500);
+    });
+  };
+  $('copyDashBtn').onclick = () => {
+    navigator.clipboard.writeText(dashLink).then(() => {
+      const t = $('copyDashBtn');
+      const orig = t.textContent;
+      t.textContent = currentLang === 'en' ? '✓ Copied' : '✓ تم النسخ';
+      setTimeout(() => t.textContent = orig, 1500);
+    });
+  };
+
+  // Commission breakdown - show per plan with example earning
+  const { data: plans } = await sb.from('plans').select('*').eq('is_active', true).order('sort_order');
+  const commissionByTier = {
+    lite: parseFloat(me.commission_lite || 0),
+    athlete: parseFloat(me.commission_athlete || 0),
+    elite: parseFloat(me.commission_elite || 0)
+  };
+
+  let cHtml = '';
+  ['lite', 'athlete', 'elite'].forEach(tier => {
+    const tierPlan = (plans || []).find(p => getPlanTier(p.id) === tier);
+    const price = tierPlan ? parseFloat(tierPlan.price_sar) : 0;
+    const discount = price * 0.10;
+    const afterDiscount = price - discount;
+    const myCut = afterDiscount * (commissionByTier[tier] / 100);
+    const tierLabels = {
+      lite: { ar: 'الباقة الأساسية', en: 'Lite Plan' },
+      athlete: { ar: 'الباقة المتوسطة', en: 'Athlete Plan' },
+      elite: { ar: 'الباقة الكاملة', en: 'Elite Plan' }
+    };
+    cHtml += `
+      <div class="commission-card">
+        <div class="label">${tierLabels[tier][currentLang]}</div>
+        <div class="pct">${commissionByTier[tier]}%</div>
+        <div class="price-info">${currentLang === 'en' ? '≈' : '≈'} ${myCut.toFixed(0)} ${currentLang === 'en' ? 'SAR / sub' : 'ر.س / اشتراك'}</div>
+      </div>
+    `;
+  });
+  $('commissionList').innerHTML = cHtml;
+
+  // My customers (registered_by = me)
+  const { data: subs } = await sb.from('subscriptions').select(`
+    id, total_amount_sar, status, payment_status, plan_id,
+    customers!inner(full_name, phone),
+    plans(name_ar)
+  `).eq('registered_by', staffId).order('created_at', { ascending: false });
+
+  const totalCustomers = (subs || []).length;
+  const activeCustomers = (subs || []).filter(s => s.status === 'active' && s.payment_status === 'paid').length;
+  const totalRevenue = (subs || [])
+    .filter(s => s.payment_status === 'paid')
+    .reduce((sum, s) => sum + parseFloat(s.total_amount_sar || 0), 0);
+
+  // My commission earned
+  let myCommissionEarned = 0;
+  (subs || []).filter(s => s.payment_status === 'paid').forEach(s => {
+    const tier = getPlanTier(s.plan_id);
+    const pct = commissionByTier[tier] || 0;
+    myCommissionEarned += parseFloat(s.total_amount_sar) * (pct / 100);
+  });
+
+  $('statCustomers').textContent = totalCustomers;
+  $('statActive').textContent = activeCustomers;
+  $('statRevenue').textContent = totalRevenue.toFixed(0);
+  $('statCommission').textContent = myCommissionEarned.toFixed(0);
+
+  // Customers table
+  if (!subs || subs.length === 0) {
+    const emptyText = currentLang === 'en'
+      ? '<div class="icon">🌱</div>No customers yet. Share your link to start!'
+      : '<div class="icon">🌱</div>لا يوجد عملاء بعد. شارك رابطك للبدء!';
+    $('customersBody').innerHTML = `<tr><td colspan="7" class="empty">${emptyText}</td></tr>`;
+    return;
+  }
+
+  let html = '';
+  subs.forEach(s => {
+    const c = s.customers || {};
+    const tier = getPlanTier(s.plan_id);
+    const pct = commissionByTier[tier] || 0;
+    const myCut = parseFloat(s.total_amount_sar) * (pct / 100);
+    const isPaid = s.payment_status === 'paid';
+    const statusLabel = currentLang === 'en'
+      ? { active: 'Active', pending_payment: 'Pending', cancelled: 'Cancelled' }[s.status] || s.status
+      : { active: 'نشط', pending_payment: 'بانتظار', cancelled: 'ملغي' }[s.status] || s.status;
+    const payLabel = currentLang === 'en'
+      ? { paid: 'Paid', unpaid: 'Unpaid' }[s.payment_status] || s.payment_status
+      : { paid: 'مدفوع', unpaid: 'غير مدفوع' }[s.payment_status] || s.payment_status;
+
+    html += `
+      <tr>
+        <td style="font-family:monospace;font-weight:900;color:var(--coral);">${s.id}</td>
+        <td>${escapeHtml(c.full_name || '—')}</td>
+        <td style="direction:ltr;">${maskPhone(c.phone)}</td>
+        <td>${escapeHtml(s.plans?.name_ar || '—')}</td>
+        <td style="direction:ltr;font-weight:900;color:var(--watermelon);">${parseFloat(s.total_amount_sar).toFixed(0)}</td>
+        <td style="direction:ltr;font-weight:900;color:var(--olive);">${isPaid ? myCut.toFixed(0) : '—'}</td>
+        <td><span class="pill ${s.payment_status}">${payLabel}</span></td>
+      </tr>
+    `;
+  });
+  $('customersBody').innerHTML = html;
+}
+
+applyLang(currentLang);
+loadDashboard();
+setInterval(loadDashboard, 60000);
+</script>
 </body>
 </html>
