@@ -1,950 +1,877 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#00d4aa">
-    <title>8PM Healthy | اشتراك الوجبات الصحية</title>
-    <meta name="description" content="رشاقتك. اختيارك. ثلث لطعامك. 6 باقات صحية بمقادير محسوبة من 8PM Healthy.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: #f8f9fa; min-height: 100vh; color: #1a1a2e; -webkit-font-smoothing: antialiased; padding: 0 0 30px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🌿 Lite Kitchen — اشتراكك يبدأ من هنا</title>
+<meta name="description" content="رشاقتك. اختيارك. ثلث طعامك. اشترك في وجبات صحية محسوبة من 8PM Healthy في حائل.">
+<meta name="theme-color" content="#4ade80">
 
-        #diagBanner { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background: #fff3cd; color: #664d03; border-bottom: 2px solid #ffecb5; padding: 12px 16px; font-size: 14px; line-height: 1.6; text-align: right; direction: rtl; word-break: break-word; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-        #diagBanner.error { background: #fdecea; color: #842029; border-bottom-color: #f5c2c7; }
-        #diagBanner.success { background: #d1e7dd; color: #0a3622; border-bottom-color: #a3cfbb; }
-        #diagBanner code { background: rgba(0,0,0,0.08); padding: 1px 5px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 12px; }
-        #diagClose { float: left; background: transparent; border: none; font-size: 18px; cursor: pointer; color: inherit; padding: 0 8px; }
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', 'Tahoma', system-ui, sans-serif;
+    background: linear-gradient(180deg, #0a1f15 0%, #1a3d2a 100%);
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .container { max-width: 600px; margin: 0 auto; padding: 16px; }
 
-        .container { max-width: 720px; margin: 0 auto; }
+  .hero { text-align: center; padding: 30px 16px 20px; position: relative; }
+  .hero-logo { font-size: 36px; font-weight: 800; color: #4ade80; margin-bottom: 6px; letter-spacing: -1px; }
+  .hero-tagline { font-size: 16px; color: rgba(255,255,255,0.7); margin-bottom: 4px; }
+  .hero-philosophy { font-size: 13px; color: rgba(255,255,255,0.5); font-style: italic; }
 
-        .hero {
-            background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%);
-            color: white;
-            padding: 50px 24px 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -30%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .brand { position: relative; }
-        .logo { font-size: 34px; font-weight: 900; letter-spacing: -0.5px; }
-        .logo .accent { color: #fff; opacity: 0.95; font-weight: 500; }
-        .tagline { font-size: 16px; opacity: 0.95; margin-top: 8px; font-weight: 500; }
-        .sub-brand { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+  .ref-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(251,191,36,0.2), rgba(251,191,36,0.05));
+    border: 1.5px solid rgba(251,191,36,0.4);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    text-align: center;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .ref-banner.show { display: block; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(251,191,36,0.4); }
+    50% { box-shadow: 0 0 0 12px rgba(251,191,36,0); }
+  }
+  .ref-banner .icon { font-size: 28px; margin-bottom: 6px; }
+  .ref-banner .title { font-size: 15px; font-weight: 700; color: #fcd34d; margin-bottom: 4px; }
+  .ref-banner .subtitle { font-size: 13px; color: rgba(255,255,255,0.7); }
 
-        .discount-banner {
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            color: white;
-            padding: 14px 18px;
-            margin: 14px 16px 0;
-            border-radius: 16px;
-            box-shadow: 0 8px 25px rgba(245,158,11,0.35);
-            font-weight: 700;
-            flex-wrap: wrap;
-            text-align: center;
-            animation: pulse 2s infinite;
-        }
-        .discount-banner.show { display: flex; }
-        .discount-banner .discount-icon { font-size: 24px; }
-        .discount-banner strong { font-weight: 700; }
-        .discount-banner .discount-amount {
-            background: rgba(255,255,255,0.25);
-            padding: 4px 12px;
-            border-radius: 10px;
-            font-size: 14px;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); box-shadow: 0 8px 25px rgba(245,158,11,0.35); }
-            50% { transform: scale(1.02); box-shadow: 0 12px 35px rgba(245,158,11,0.5); }
-        }
+  .steps { display: flex; justify-content: space-between; margin: 24px 0; position: relative; }
+  .steps::before {
+    content: ''; position: absolute; top: 16px; right: 16px; left: 16px;
+    height: 2px; background: rgba(255,255,255,0.1); z-index: 0;
+  }
+  .step { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; }
+  .step-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px; transition: all 0.3s;
+  }
+  .step.active .step-circle { background: #4ade80; border-color: #4ade80; color: #0a1f15; transform: scale(1.1); }
+  .step.done .step-circle { background: #4ade80; border-color: #4ade80; color: #0a1f15; }
+  .step-label { font-size: 11px; color: rgba(255,255,255,0.6); }
 
-        .philosophy-banner {
-            background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
-            border: 1px solid #d1f0e6;
-            margin: 14px 16px 0;
-            padding: 14px 16px;
-            border-radius: 14px;
-            font-size: 13px;
-            line-height: 1.7;
-            color: #00755a;
-        }
-        .philosophy-banner strong { color: #00a87a; }
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; padding: 24px 20px; margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+  }
+  .card-title { font-size: 18px; font-weight: 700; color: #4ade80; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
 
-        .form-wrap { padding: 20px 16px 0; }
-        .card { background: #fff; border-radius: 20px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
-        .card h2 { font-size: 17px; margin-bottom: 14px; color: #1a1a2e; display: flex; align-items: center; gap: 8px; }
-        .card h3 { font-size: 15px; margin-bottom: 10px; color: #1a1a2e; }
+  .plans-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .plan-card {
+    background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 18px; cursor: pointer;
+    transition: all 0.25s; position: relative;
+  }
+  .plan-card:hover { border-color: rgba(74,222,128,0.3); transform: translateY(-2px); }
+  .plan-card.selected {
+    border-color: #4ade80; background: rgba(74,222,128,0.1);
+    box-shadow: 0 8px 24px rgba(74,222,128,0.2);
+  }
+  .plan-card.selected::after {
+    content: '✓'; position: absolute; top: 14px; left: 14px;
+    width: 26px; height: 26px; background: #4ade80; color: #0a1f15;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+  }
+  .plan-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .plan-name { font-size: 18px; font-weight: 700; color: #fff; }
+  .plan-desc { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+  .plan-pricing { text-align: left; direction: ltr; }
+  .plan-original { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: line-through; margin-bottom: 2px; }
+  .plan-final { font-size: 22px; font-weight: 800; color: #4ade80; }
+  .plan-final .unit { font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 400; }
+  .plan-savings {
+    display: inline-block; background: rgba(251,191,36,0.2); color: #fcd34d;
+    padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; margin-top: 6px;
+  }
+  .plan-features { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; flex-wrap: wrap; gap: 6px; }
+  .plan-feature { background: rgba(255,255,255,0.06); padding: 4px 10px; border-radius: 999px; font-size: 11px; color: rgba(255,255,255,0.7); }
 
-        .progress { background: #e9ecef; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 18px; }
-        .progress-bar { height: 100%; background: linear-gradient(90deg, #00d4aa, #00a87a); transition: width 0.5s ease; border-radius: 3px; width: 33%; }
+  .form-group { margin-bottom: 16px; }
+  label { display: block; font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 8px; font-weight: 500; }
+  label .required { color: #ef4444; }
+  input, textarea, select {
+    width: 100%; padding: 14px 16px;
+    background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px; color: #fff; font-size: 16px; font-family: inherit;
+    transition: all 0.2s;
+  }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: #4ade80; background: rgba(0,0,0,0.5); }
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.3); }
+  select option { background: #1a3d2a; }
 
-        .step { display: none; animation: fadeIn 0.4s ease-out; }
-        .step.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .phone-wrapper { display: flex; gap: 8px; }
+  .phone-prefix {
+    background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 12px; padding: 14px 16px; color: #4ade80; font-weight: 600;
+    display: flex; align-items: center; direction: ltr;
+  }
 
-        .step-title { font-size: 17px; font-weight: 700; margin-bottom: 16px; color: #1a1a2e; display: flex; align-items: center; gap: 10px; }
-        .step-num { background: #00d4aa; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+  .allergies-card {
+    background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.02));
+    border: 1.5px solid rgba(239,68,68,0.25);
+    border-radius: 16px; padding: 20px;
+  }
+  .allergies-card .card-title { color: #f87171; }
+  .allergies-toggle {
+    display: flex; align-items: center; gap: 12px; padding: 14px;
+    background: rgba(0,0,0,0.3); border-radius: 12px; cursor: pointer; margin-bottom: 14px;
+  }
+  .allergies-toggle input[type="checkbox"] { width: 22px; height: 22px; accent-color: #ef4444; cursor: pointer; }
+  .allergies-toggle-label { flex: 1; font-size: 14px; font-weight: 600; }
+  .allergies-detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(239,68,68,0.2); }
+  .allergies-detail.show { display: block; }
+  .severity-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .severity-option {
+    padding: 10px 8px; background: rgba(0,0,0,0.3);
+    border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px;
+    text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s;
+  }
+  .severity-option:hover { border-color: rgba(239,68,68,0.4); }
+  .severity-option.selected { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #fca5a5; }
 
-        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-        .tab-btn {
-            flex: 1;
-            padding: 14px 10px;
-            border: 2px solid #e0e0e0;
-            background: #fff;
-            color: #555;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: inherit;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-        .tab-btn small { font-size: 11px; font-weight: 500; opacity: 0.85; }
-        .tab-btn.active { background: #00d4aa; border-color: #00d4aa; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,212,170,0.3); }
-        .tab-btn.tier-150.active { background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%); border-color: #b8860b; box-shadow: 0 8px 20px rgba(184,134,11,0.3); }
+  .allergy-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .allergy-chip {
+    background: rgba(0,0,0,0.3); border: 1.5px solid rgba(255,255,255,0.1);
+    padding: 8px 14px; border-radius: 999px; cursor: pointer;
+    font-size: 13px; transition: all 0.2s; user-select: none;
+  }
+  .allergy-chip:hover { border-color: rgba(239,68,68,0.4); }
+  .allergy-chip.selected { background: rgba(239,68,68,0.2); border-color: #ef4444; color: #fca5a5; }
 
-        .plans-list { display: grid; gap: 14px; }
+  .summary-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .summary-row.discount { color: #fcd34d; }
+  .summary-row.total {
+    font-size: 18px; font-weight: 700; color: #4ade80;
+    border-bottom: none; padding-top: 14px; margin-top: 6px;
+    border-top: 2px dashed rgba(74,222,128,0.3);
+  }
 
-        .plan-card {
-            background: #fff;
-            border: 2px solid #d1f0e6;
-            border-radius: 18px;
-            padding: 18px;
-            position: relative;
-            transition: all 0.3s;
-        }
-        .plan-card.tier-150 { border-color: #fde9a8; background: linear-gradient(180deg, #fffdf5 0%, #fff 100%); }
-        .plan-card.featured { border-color: #d4a017; border-width: 3px; box-shadow: 0 8px 25px rgba(212,160,23,0.2); }
-        .plan-card.tier-150.featured { border-color: #b8860b; box-shadow: 0 10px 30px rgba(184,134,11,0.25); }
-        .plan-card.selected { border-color: #00d4aa; border-width: 3px; background: linear-gradient(180deg, #f0fdfa 0%, #fff 100%); box-shadow: 0 12px 30px rgba(0,212,170,0.25); }
+  .btn {
+    width: 100%; padding: 16px; border: none; border-radius: 14px;
+    font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit;
+    transition: all 0.2s; margin-top: 10px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #4ade80, #22c55e); color: #0a1f15;
+    box-shadow: 0 6px 16px rgba(74,222,128,0.3);
+  }
+  .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(74,222,128,0.4); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+  .btn-back { margin-top: 8px; }
 
-        .plan-badge {
-            position: absolute;
-            top: -10px;
-            right: 18px;
-            background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
-            color: white;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(184,134,11,0.4);
-        }
+  .step-section { display: none; }
+  .step-section.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .plan-name { font-size: 19px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
-        .plan-name small { font-weight: 500; color: #888; font-size: 13px; margin-right: 6px; }
-        .plan-desc { color: #666; font-size: 13px; margin-bottom: 12px; line-height: 1.6; }
+  .success-screen { display: none; text-align: center; padding: 40px 20px; }
+  .success-screen.show { display: block; animation: fadeIn 0.6s; }
+  .success-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 40px; animation: bounce 0.6s ease;
+  }
+  .failed-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 40px;
+  }
+  @keyframes bounce { 0% { transform: scale(0); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
+  .success-title { font-size: 24px; font-weight: 800; color: #4ade80; margin-bottom: 8px; }
+  .success-title.failed { color: #ef4444; }
+  .success-text { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 20px; }
+  .customer-number {
+    background: rgba(0,0,0,0.4); border: 1px dashed rgba(74,222,128,0.4);
+    border-radius: 12px; padding: 14px; margin: 16px 0; direction: ltr;
+  }
+  .customer-number .label { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 4px; }
+  .customer-number .value { font-size: 20px; font-weight: 700; color: #4ade80; }
 
-        .plan-stats {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-        .plan-stats span {
-            background: #f5f7fa;
-            border: 1px solid #e9ecef;
-            color: #555;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-        }
+  .toast {
+    position: fixed; top: 20px; left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: #ef4444; color: #fff; padding: 14px 24px;
+    border-radius: 12px; z-index: 1000; transition: transform 0.3s;
+    font-weight: 600; max-width: 90%;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.ok { background: #4ade80; color: #0a1f15; }
 
-        .plan-price-row { display: flex; align-items: baseline; gap: 6px; margin-bottom: 12px; }
-        .plan-price-row .original-price { color: #aaa; text-decoration: line-through; font-size: 14px; }
-        .plan-price-row .final-price { font-size: 28px; font-weight: 900; color: #00a87a; }
-        .plan-price-row .currency { font-size: 14px; color: #666; }
-        .plan-price-row .save-tag {
-            background: #fff3cd;
-            color: #b45309;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 6px;
-            margin-right: 6px;
-        }
+  .skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+    background-size: 200% 100%; animation: shimmer 1.5s infinite;
+    border-radius: 12px; height: 100px; margin-bottom: 10px;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-        .free-items {
-            background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
-            border: 1px dashed #f59e0b;
-            border-radius: 10px;
-            padding: 10px 12px;
-            font-size: 13px;
-            margin-bottom: 12px;
-            color: #92400e;
-        }
-        .free-items strong { color: #b45309; }
+  .loading-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(10,31,21,0.92);
+    z-index: 999; align-items: center; justify-content: center; flex-direction: column;
+  }
+  .loading-overlay.show { display: flex; }
+  .spinner {
+    width: 60px; height: 60px; border: 4px solid rgba(74,222,128,0.2);
+    border-top-color: #4ade80; border-radius: 50%; animation: spin 0.8s linear infinite;
+    margin-bottom: 20px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { color: #4ade80; font-size: 16px; font-weight: 600; }
 
-        .btn { padding: 14px 18px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-        .btn-primary { background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%); color: white; width: 100%; }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,212,170,0.4); }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        .btn-secondary { background: #f0f0f0; color: #333; }
-        .btn-secondary:hover { background: #e8e8e8; }
-        .btn-outline { background: #fff; color: #00a87a; border: 2px solid #00d4aa; }
-        .btn-outline:hover { background: #f0fdfa; }
-        .btn-select { width: 100%; background: #fff; color: #00a87a; border: 2px solid #00d4aa; padding: 12px; }
-        .btn-select:hover { background: #f0fdfa; }
-        .plan-card.selected .btn-select { background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%); color: white; border-color: transparent; }
-
-        .field-group { margin-bottom: 16px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; color: #2a2a3e; font-size: 14px; }
-        .required { color: #e74c3c; margin-right: 3px; }
-        input, select, textarea { width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; font-family: inherit; background: #fff; color: #1a1a2e; transition: all 0.3s; }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: #00d4aa; box-shadow: 0 0 0 4px rgba(0,212,170,0.1); }
-        .phone-input-wrapper { display: flex; gap: 8px; direction: ltr; }
-        .phone-prefix { background: #f5f5f5; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-weight: 600; color: #555; display: flex; align-items: center; }
-        .phone-input-wrapper input { flex: 1; direction: ltr; text-align: left; }
-
-        .addon-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .addon-row:hover { border-color: #00d4aa; }
-        .addon-row.selected { border-color: #00d4aa; background: #f0fdfa; }
-        .addon-row.disabled { opacity: 0.55; cursor: not-allowed; background: #f0f0f0; }
-        .addon-info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-        .addon-icon { font-size: 28px; }
-        .addon-name { font-weight: 700; font-size: 14px; color: #1a1a2e; }
-        .addon-desc { font-size: 12px; color: #777; margin-top: 2px; }
-        .addon-price { font-weight: 700; color: #00a87a; font-size: 15px; white-space: nowrap; }
-        .addon-price.free { color: #b45309; }
-        .addon-check { width: 24px; height: 24px; flex-shrink: 0; margin-right: 8px; }
-
-        .invoice-box { background: #fafafa; border: 1px dashed #ccc; border-radius: 14px; padding: 16px; }
-        .invoice-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
-        .invoice-row .label { color: #555; }
-        .invoice-row .val { color: #1a1a2e; font-weight: 600; }
-        .invoice-row.discount .val { color: #b45309; }
-        .invoice-divider { border: none; border-top: 1px dashed #ccc; margin: 8px 0; }
-        .invoice-total { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 12px; border-top: 2px solid #00d4aa; }
-        .invoice-total .lbl { font-size: 15px; font-weight: 700; color: #1a1a2e; }
-        .invoice-total .amt { font-size: 26px; font-weight: 900; color: #00a87a; }
-        .invoice-total .amt small { font-size: 13px; color: #666; font-weight: 500; margin-right: 4px; }
-
-        .buttons { display: flex; gap: 10px; margin-top: 18px; }
-        .buttons .btn { flex: 1; }
-
-        .error-msg { background: #fee; color: #c33; padding: 12px 16px; border-radius: 10px; margin-top: 12px; font-size: 14px; display: none; border: 1px solid #fcc; }
-        .error-msg.show { display: block; }
-
-        .success-screen { text-align: center; padding: 30px 20px; }
-        .success-icon { width: 90px; height: 90px; background: linear-gradient(135deg, #00d4aa 0%, #00a87a 100%); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 45px; color: white; box-shadow: 0 15px 40px rgba(0,212,170,0.3); animation: bounce 1s ease-out; }
-        @keyframes bounce { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
-        .success-screen h2 { font-size: 22px; color: #1a1a2e; margin-bottom: 8px; }
-        .success-screen p { color: #666; font-size: 14px; line-height: 1.7; }
-        .customer-id-box { background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%); border: 2px dashed #00d4aa; padding: 18px; border-radius: 16px; margin: 20px 0; }
-        .customer-id-label { font-size: 11px; color: #00a87a; margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .customer-id-value { font-family: 'Courier New', monospace; font-size: 22px; color: #00a87a; font-weight: 700; letter-spacing: 2px; }
-        .whatsapp-btn { display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: white; padding: 12px 22px; border-radius: 12px; text-decoration: none; font-weight: 600; margin-top: 12px; }
-
-        .loading-spinner { width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
-        .loading-spinner.dark { border-color: #ccc; border-top-color: #00d4aa; width: 36px; height: 36px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-block { text-align: center; padding: 30px 10px; color: #888; }
-
-        .footer-note { text-align: center; color: #999; font-size: 11px; margin-top: 20px; padding: 14px; }
-
-        @media (max-width: 480px) {
-            .hero { padding: 38px 18px 30px; }
-            .logo { font-size: 28px; }
-            .tagline { font-size: 14px; }
-            .form-wrap { padding: 14px 12px 0; }
-            .plan-price-row .final-price { font-size: 24px; }
-        }
-    </style>
+  .footer-info { text-align: center; padding: 20px 0; font-size: 12px; color: rgba(255,255,255,0.4); }
+  .footer-info a { color: #4ade80; text-decoration: none; }
+  .pay-badges { display: flex; justify-content: center; gap: 12px; margin: 14px 0; flex-wrap: wrap; }
+  .pay-badge {
+    background: rgba(255,255,255,0.08); padding: 6px 12px; border-radius: 8px;
+    font-size: 11px; color: rgba(255,255,255,0.7);
+  }
+</style>
 </head>
 <body>
-    <div id="diagBanner"><button type="button" id="diagClose">×</button><span id="diagText"></span></div>
 
-    <div class="container">
-        <header class="hero">
-            <div class="brand">
-                <div class="logo">🥗 8PM <span class="accent">Healthy</span></div>
-                <div class="tagline">رشاقتك. اختيارك. ثلث لطعامك.</div>
-                <div class="sub-brand">من فريق 8PM Pizza · حائل</div>
-            </div>
-        </header>
+<div class="container">
 
-        <div id="discountBanner" class="discount-banner">
-            <span class="discount-icon">🎁</span>
-            <strong>عرض خاص لمتابعي <span id="influencerName"></span></strong>
-            <span class="discount-amount">خصم <span id="discountPercent"></span>%</span>
+  <div class="hero">
+    <div class="hero-logo">🌿 Lite Kitchen</div>
+    <div class="hero-tagline">رشاقتك. اختيارك. ثلث طعامك.</div>
+    <div class="hero-philosophy">«كلوا واشربوا ولا تسرفوا»</div>
+  </div>
+
+  <div class="ref-banner" id="refBanner">
+    <div class="icon">🎁</div>
+    <div class="title">رائع! حصلت على خصم خاص</div>
+    <div class="subtitle">خصم <strong id="refDiscount">10%</strong> على جميع الباقات من <strong id="refName">شريكنا</strong></div>
+  </div>
+
+  <div class="steps" id="stepsBar">
+    <div class="step active" data-step="1"><div class="step-circle">1</div><div class="step-label">الباقة</div></div>
+    <div class="step" data-step="2"><div class="step-circle">2</div><div class="step-label">بياناتك</div></div>
+    <div class="step" data-step="3"><div class="step-circle">3</div><div class="step-label">الصحة</div></div>
+    <div class="step" data-step="4"><div class="step-circle">4</div><div class="step-label">الدفع</div></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-section active" id="step1">
+    <div class="card">
+      <div class="card-title">🥗 اختر باقتك الصحية</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;">26 يوم من الوجبات المحسوبة بدقة. اختر ما يناسب هدفك.</p>
+      <div class="plans-grid" id="plansGrid">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="next1" disabled>التالي ←</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-section" id="step2">
+    <div class="card">
+      <div class="card-title">👤 بياناتك الشخصية</div>
+      <div class="form-group">
+        <label>الاسم الكامل <span class="required">*</span></label>
+        <input type="text" id="fullName" placeholder="مثال: محمد العتيبي" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label>رقم الجوال <span class="required">*</span></label>
+        <div class="phone-wrapper">
+          <div class="phone-prefix">+966</div>
+          <input type="tel" id="phone" placeholder="5XXXXXXXX" autocomplete="tel" maxlength="9">
         </div>
-
-        <div class="philosophy-banner">
-            🌱 <strong>فلسفتنا:</strong> «كلوا واشربوا ولا تسرفوا» — نقدّم نظام رشاقة ذكي بمقادير محسوبة. لا للإفراط، نعم للتوازن.
+      </div>
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="email" placeholder="email@example.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>المدينة</label>
+        <select id="city">
+          <option value="حائل">حائل</option>
+          <option value="بريدة">بريدة</option>
+          <option value="الرياض">الرياض</option>
+          <option value="other">مدينة أخرى</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label>الجنس</label>
+          <select id="gender">
+            <option value="">اختر</option>
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+          </select>
         </div>
-
-        <div class="form-wrap">
-            <div class="card">
-                <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-
-                <div class="step active" id="step1">
-                    <div class="step-title"><span class="step-num">1</span>اختر باقتك</div>
-
-                    <div class="tabs" id="tierTabs">
-                        <button type="button" class="tab-btn active" data-tier="tier_100">
-                            100ج
-                            <small>للحفاظ على الرشاقة</small>
-                        </button>
-                        <button type="button" class="tab-btn tier-150" data-tier="tier_150">
-                            150ج
-                            <small>حصص أكبر</small>
-                        </button>
-                    </div>
-
-                    <div class="plans-list" id="plansList">
-                        <div class="loading-block"><div class="loading-spinner dark"></div><br>جاري تحميل الباقات...</div>
-                    </div>
-
-                    <div class="error-msg" id="error1"></div>
-
-                    <div class="buttons">
-                        <button type="button" class="btn btn-primary" id="btnNext1">التالي ←</button>
-                    </div>
-                </div>
-
-                <div class="step" id="step2">
-                    <div class="step-title"><span class="step-num">2</span>بياناتك الشخصية</div>
-                    <div class="field-group">
-                        <label>الاسم الكامل <span class="required">*</span></label>
-                        <input type="text" id="fullName" placeholder="مثال: محمد العتيبي" autocomplete="name">
-                    </div>
-                    <div class="field-group">
-                        <label>رقم الجوال <span class="required">*</span></label>
-                        <div class="phone-input-wrapper">
-                            <div class="phone-prefix">+966</div>
-                            <input type="tel" id="phone" placeholder="5xxxxxxxx" maxlength="9" autocomplete="tel" inputmode="numeric">
-                        </div>
-                    </div>
-                    <div class="field-group">
-                        <label>البريد الإلكتروني</label>
-                        <input type="email" id="email" placeholder="example@email.com (اختياري)" autocomplete="email">
-                    </div>
-                    <div class="field-group">
-                        <label>الجنس</label>
-                        <select id="gender">
-                            <option value="">اختر</option>
-                            <option value="male">ذكر</option>
-                            <option value="female">أنثى</option>
-                        </select>
-                    </div>
-                    <div class="field-group">
-                        <label>المدينة</label>
-                        <input type="text" id="city" value="حائل" autocomplete="address-level2">
-                    </div>
-                    <div class="error-msg" id="error2"></div>
-                    <div class="buttons">
-                        <button type="button" class="btn btn-secondary" id="btnPrev2">→ السابق</button>
-                        <button type="button" class="btn btn-primary" id="btnNext2">التالي ←</button>
-                    </div>
-                </div>
-
-                <div class="step" id="step3">
-                    <div class="step-title"><span class="step-num">3</span>الإضافات والتأكيد</div>
-
-                    <h3>🎁 إضافات اختيارية</h3>
-                    <div id="addonsList">
-                        <div class="loading-block"><div class="loading-spinner dark"></div></div>
-                    </div>
-
-                    <h3 style="margin-top:18px;">📋 ملخص الاشتراك</h3>
-                    <div class="invoice-box" id="invoiceBox"></div>
-
-                    <div class="field-group" style="margin-top:16px;">
-                        <label>تاريخ بدء الاشتراك</label>
-                        <input type="date" id="startDate">
-                    </div>
-                    <div class="field-group">
-                        <label>ملاحظات / حساسيات (اختياري)</label>
-                        <textarea id="notes" rows="3" placeholder="أخبرنا إذا كان لديك أي حساسيات أو طلبات خاصة"></textarea>
-                    </div>
-
-                    <div class="error-msg" id="error3"></div>
-                    <div class="buttons">
-                        <button type="button" class="btn btn-secondary" id="btnPrev3">→ السابق</button>
-                        <button type="button" class="btn btn-primary" id="btnSubmit">تأكيد الاشتراك ✓</button>
-                    </div>
-                </div>
-
-                <div class="step" id="stepSuccess">
-                    <div class="success-screen">
-                        <div class="success-icon">✓</div>
-                        <h2>تم تسجيل اشتراكك بنجاح!</h2>
-                        <p>سنتواصل معك عبر الواتساب لإكمال إجراءات الدفع وتأكيد بدء الاشتراك</p>
-                        <div class="customer-id-box">
-                            <div class="customer-id-label">رقم العميل</div>
-                            <div class="customer-id-value" id="newCustomerId">CUS-00000</div>
-                        </div>
-                        <p style="font-size: 13px; color: #888;">احفظ هذا الرقم — ستحتاجه عند الاستلام</p>
-                        <a href="https://wa.me/966558612908" class="whatsapp-btn" id="whatsappBtn" target="_blank" rel="noopener">💬 تواصل عبر الواتساب</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="footer-note">🔒 بياناتك محمية ولن تُشارك مع أي طرف ثالث · 8PM Healthy © 2026</div>
+        <div class="form-group">
+          <label>تاريخ الميلاد</label>
+          <input type="date" id="birthDate">
         </div>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="next2">التالي ←</button>
+    <button class="btn btn-secondary btn-back" id="back2">→ السابق</button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-section" id="step3">
+    <div class="card">
+      <div class="card-title">💪 صحتك أولاً</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;">معلوماتك تساعدنا في تخصيص وجباتك. كلها اختيارية ما عدا تنبيهات الحساسية.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label>الوزن (كجم)</label>
+          <input type="number" id="weight" placeholder="70" step="0.1" min="30" max="250">
+        </div>
+        <div class="form-group">
+          <label>الطول (سم)</label>
+          <input type="number" id="height" placeholder="170" min="100" max="220">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>هدفك من الاشتراك</label>
+        <select id="goal">
+          <option value="">اختر هدفك</option>
+          <option value="weight_loss">خسارة الوزن</option>
+          <option value="muscle_gain">بناء العضلات</option>
+          <option value="maintenance">المحافظة على الوزن</option>
+          <option value="marathon_prep">الاستعداد لماراثون / تحدي رياضي</option>
+          <option value="health">تحسين صحة عامة</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>مستوى النشاط البدني</label>
+        <select id="activity">
+          <option value="">اختر</option>
+          <option value="sedentary">قليل (مكتبي)</option>
+          <option value="light">خفيف (1-2 يوم رياضة)</option>
+          <option value="moderate">متوسط (3-5 يوم)</option>
+          <option value="active">عالي (6-7 يوم)</option>
+          <option value="very_active">رياضي محترف</option>
+        </select>
+      </div>
     </div>
 
-    <script>
-    (function () {
-        'use strict';
+    <div class="card allergies-card">
+      <div class="card-title">⚠️ تنبيهات صحية مهمة</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:14px;line-height:1.6;">
+        إذا كان لديك أي حساسية، أخبرنا الآن. سنُعلِم الشيف بشكل واضح ومباشر ليتجنبها في وجباتك.
+      </p>
+      <label class="allergies-toggle">
+        <input type="checkbox" id="hasAllergies">
+        <span class="allergies-toggle-label">نعم، لدي حساسية أو ممنوعات غذائية</span>
+      </label>
+      <div class="allergies-detail" id="allergiesDetail">
+        <label style="margin-top:6px;">حدّد شدة الحساسية:</label>
+        <div class="severity-options" id="severityOptions">
+          <div class="severity-option" data-severity="mild">خفيفة</div>
+          <div class="severity-option" data-severity="moderate">متوسطة</div>
+          <div class="severity-option" data-severity="severe">شديدة ⚠️</div>
+        </div>
+        <label>اختر ما لا يناسبك (يمكنك اختيار أكثر من نوع):</label>
+        <div class="allergy-chips" id="allergyChips">
+          <div class="allergy-chip" data-allergen="nuts">🥜 المكسرات</div>
+          <div class="allergy-chip" data-allergen="dairy">🥛 الألبان</div>
+          <div class="allergy-chip" data-allergen="gluten">🌾 الجلوتين</div>
+          <div class="allergy-chip" data-allergen="eggs">🥚 البيض</div>
+          <div class="allergy-chip" data-allergen="seafood">🦐 المأكولات البحرية</div>
+          <div class="allergy-chip" data-allergen="soy">🫘 الصويا</div>
+          <div class="allergy-chip" data-allergen="sesame">🌱 السمسم</div>
+          <div class="allergy-chip" data-allergen="peanuts">🥜 الفول السوداني</div>
+        </div>
+        <div class="form-group">
+          <label>حساسيات أخرى أو تفاصيل (اكتب بوضوح):</label>
+          <textarea id="customAllergies" rows="3" placeholder="مثال: حساسية شديدة من الفراولة. حساسية من بعض البهارات الحارة."></textarea>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:14px;">
+        <label>أطعمة لا تفضّلها (ليست حساسية، فقط لا تحبها):</label>
+        <textarea id="disliked" rows="2" placeholder="مثال: لا أحب الكوسا، أو أفضل البروتين مشوياً وليس مقلياً"></textarea>
+      </div>
+    </div>
 
-        var SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
-        var SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+    <button class="btn btn-primary" id="next3">التالي ←</button>
+    <button class="btn btn-secondary btn-back" id="back3">→ السابق</button>
+  </div>
 
-        var urlParams = new URLSearchParams(window.location.search);
-        var refCode = (urlParams.get('ref') || '').trim().toUpperCase();
-        var staffIdParam = (urlParams.get('staff') || '').trim();
+  <!-- STEP 4 -->
+  <div class="step-section" id="step4">
+    <div class="card">
+      <div class="card-title">💳 ملخص الاشتراك والدفع</div>
+      <div id="orderSummary">
+        <div class="summary-row"><span>الباقة المختارة:</span><strong id="sumPlanName">—</strong></div>
+        <div class="summary-row"><span>المدة:</span><strong id="sumDuration">26 يوم</strong></div>
+        <div class="summary-row"><span>سعر الباقة:</span><span id="sumOriginal" style="direction:ltr">—</span></div>
+        <div class="summary-row discount" id="sumDiscountRow" style="display:none;">
+          <span>🎁 خصم الشريك (10%):</span>
+          <span id="sumDiscount" style="direction:ltr">—</span>
+        </div>
+        <div class="summary-row total">
+          <span>الإجمالي المستحق:</span>
+          <span id="sumFinal" style="direction:ltr">—</span>
+        </div>
+      </div>
+      <div style="background:rgba(74,222,128,0.08);border-radius:12px;padding:14px;margin-top:14px;font-size:13px;color:rgba(255,255,255,0.8);line-height:1.6;">
+        ✅ يبدأ اشتراكك فور تأكيد الدفع<br>
+        🍽️ وجبات طازجة من مطبخنا<br>
+        📍 الاستلام من فرع حائل أو توصيل
+      </div>
+    </div>
 
-        var PROGRESS = { step1: 33, step2: 66, step3: 90, stepSuccess: 100 };
+    <div class="card">
+      <div class="card-title">🔒 طريقة الدفع</div>
+      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:10px;">
+        دفع آمن عبر <strong>Moyasar</strong> — يدعم جميع البطاقات
+      </p>
+      <div class="pay-badges">
+        <span class="pay-badge">💳 مدى</span>
+        <span class="pay-badge">💳 Visa</span>
+        <span class="pay-badge">💳 Mastercard</span>
+        <span class="pay-badge">🍎 Apple Pay</span>
+        <span class="pay-badge">📱 STC Pay</span>
+      </div>
+      <p style="font-size:11px;color:rgba(255,255,255,0.4);text-align:center;margin-top:10px;">
+        سيتم تحويلك لصفحة دفع آمنة، ثم العودة هنا تلقائياً
+      </p>
+    </div>
 
-        var state = {
-            plans: [],
-            addons: [],
-            currentTier: 'tier_100',
-            selectedPlan: null,
-            selectedAddons: [],
-            customer: {},
-            referrer: null,
-            discountPct: 0
-        };
+    <button class="btn btn-primary" id="payBtn">🔐 المتابعة للدفع الآمن</button>
+    <button class="btn btn-secondary btn-back" id="back4">→ السابق</button>
+  </div>
 
-        var supabase = null;
+  <!-- Success Screen -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon" id="successIcon">🎉</div>
+    <div class="success-title" id="successTitle">مبروك! اشتراكك جاهز</div>
+    <div class="success-text" id="successText">
+      أنت الآن جزء من عائلة Lite Kitchen 🌿<br>
+      سنتواصل معك خلال 24 ساعة لتأكيد بدء اشتراكك.
+    </div>
+    <div class="customer-number" id="customerNumberBox">
+      <div class="label">رقم العميل الخاص بك</div>
+      <div class="value" id="finalCustomerId">—</div>
+    </div>
+    <button class="btn btn-primary" id="shareBtn">📱 شاركها مع أصدقائك</button>
+    <a href="https://wa.me/966558612908" style="display:block;margin-top:14px;color:#4ade80;text-decoration:none;font-weight:600;">
+      💬 تواصل معنا على واتساب
+    </a>
+  </div>
 
-        function showDiag(msg, isError) {
-            try {
-                var banner = document.getElementById('diagBanner');
-                var text = document.getElementById('diagText');
-                if (!banner || !text) return;
-                text.innerHTML = msg;
-                banner.classList.remove('error', 'success');
-                if (isError === true) banner.classList.add('error');
-                if (isError === false) banner.classList.add('success');
-                banner.style.display = 'block';
-                console.log('[diag]', msg);
-            } catch (e) { console.error('[diag]', e); }
-        }
-        function hideDiag() {
-            try { var b = document.getElementById('diagBanner'); if (b) b.style.display = 'none'; } catch (e) {}
-        }
+  <div class="footer-info">
+    🔒 بياناتك محمية · 8PM Healthy © 2026 · حائل، المملكة العربية السعودية<br>
+    استفسار: <a href="https://wa.me/966558612908">+966 55 861 2908</a>
+  </div>
+</div>
 
-        window.addEventListener('error', function (e) {
-            showDiag('⚠️ خطأ JS: <code>' + (e.message || e.error) + '</code>', true);
-            console.error('[window.error]', e);
-        });
-        window.addEventListener('unhandledrejection', function (e) {
-            var reason = e.reason && e.reason.message ? e.reason.message : String(e.reason);
-            showDiag('⚠️ Promise مرفوض: <code>' + reason + '</code>', true);
-            console.error('[unhandledrejection]', e);
-        });
+<div class="toast" id="toast"></div>
 
-        function initSupabase() {
-            try {
-                if (!window.supabase || typeof window.supabase.createClient !== 'function') {
-                    throw new Error('مكتبة Supabase JS لم تُحمَّل من CDN');
-                }
-                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                console.log('[init] ✅');
-                return true;
-            } catch (e) {
-                console.error('[init] ❌', e);
-                showDiag('⚠️ فشل تهيئة Supabase: <code>' + e.message + '</code>', true);
-                return false;
-            }
-        }
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loadingText">جاري إنشاء الفاتورة...</div>
+</div>
 
-        function fmtMoney(n) { return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 }); }
-        function fmtMoney2(n) { return Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
-        function escapeHtml(s) {
-            if (s === null || s === undefined) return '';
-            return String(s).replace(/[&<>"']/g, function (c) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-            });
-        }
-        function showError(stepNum, msg) {
-            try {
-                var el = document.getElementById('error' + stepNum);
-                if (!el) return;
-                el.textContent = msg;
-                el.classList.add('show');
-                setTimeout(function () { el.classList.remove('show'); }, 6000);
-            } catch (e) { console.error('[showError]', e); }
-        }
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-        async function resolveReferral() {
-            try {
-                if (!refCode && !staffIdParam) return;
-                var q = supabase.from('staff').select('id, full_name, referral_code, discount_percentage, discount_active').eq('is_active', true);
-                if (refCode) q = q.eq('referral_code', refCode);
-                else q = q.eq('id', staffIdParam);
-                var res = await q.maybeSingle();
-                if (res.error) { console.warn('[ref]', res.error); return; }
-                if (!res.data) { console.warn('[ref] not found'); return; }
-                state.referrer = res.data;
-                console.log('[ref] ✅', res.data.id, res.data.full_name);
+const SUPABASE_URL = 'https://bmtlorchhzzbbrmlmmpf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_ImtLuEDFKMHiQpoDaJCkSg_ghKxOFUA';
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = (id) => document.getElementById(id);
 
-                if (res.data.discount_active && Number(res.data.discount_percentage) > 0) {
-                    state.discountPct = Number(res.data.discount_percentage);
-                    document.getElementById('influencerName').textContent = res.data.full_name;
-                    document.getElementById('discountPercent').textContent = state.discountPct;
-                    document.getElementById('discountBanner').classList.add('show');
-                    console.log('[ref] discount active', state.discountPct);
-                }
-            } catch (e) {
-                console.warn('[ref] فشل', e);
-            }
-        }
+const state = {
+  step: 1,
+  plans: [],
+  selectedPlan: null,
+  referralStaff: null,
+  customer: {},
+  allergies: { has: false, severity: null, list: [], custom: '', disliked: '' },
+  pricing: { original: 0, discount: 0, final: 0, discountPercent: 0 }
+};
 
-        function priceAfterDiscount(originalPrice) {
-            if (!state.discountPct) return Number(originalPrice);
-            return Number(originalPrice) * (1 - state.discountPct / 100);
-        }
+function toast(msg, isError = false) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? '' : ' ok');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
 
-        async function loadPlans() {
-            try {
-                console.log('[loadPlans] ▶️');
-                var res = await supabase.from('plans').select('*').eq('is_active', true).order('sort_order');
-                if (res.error) throw res.error;
-                if (!res.data || !res.data.length) throw new Error('لا توجد باقات فعّالة');
-                state.plans = res.data;
-                renderPlans();
-                console.log('[loadPlans] ✅ ' + res.data.length);
-            } catch (e) {
-                console.error('[loadPlans] ❌', e);
-                document.getElementById('plansList').innerHTML =
-                    '<div style="color:#c33;text-align:center;padding:20px;">⚠️ تعذّر تحميل الباقات: <code>' + escapeHtml(e.message || '') + '</code></div>';
-                showDiag('⚠️ فشل تحميل الباقات: <code>' + escapeHtml(e.message || '') + '</code>', true);
-            }
-        }
+function showLoading(text) {
+  $('loadingText').textContent = text || 'جاري المعالجة...';
+  $('loadingOverlay').classList.add('show');
+}
+function hideLoading() {
+  $('loadingOverlay').classList.remove('show');
+}
 
-        async function loadAddons() {
-            try {
-                console.log('[loadAddons] ▶️');
-                var res = await supabase.from('addons').select('*').eq('is_active', true).order('display_order');
-                if (res.error) throw res.error;
-                state.addons = res.data || [];
-                console.log('[loadAddons] ✅ ' + state.addons.length);
-            } catch (e) {
-                console.error('[loadAddons] ❌', e);
-                state.addons = [];
-            }
-        }
+// === CHECK IF RETURNING FROM PAYMENT ===
+async function checkPaymentReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const subId = params.get('subscription_id') || params.get('payment_callback');
+  const paymentId = params.get('id') || params.get('payment_id');
+  const moyasarStatus = params.get('status');
 
-        function renderPlans() {
-            try {
-                var list = document.getElementById('plansList');
-                list.innerHTML = '';
-                var filtered = state.plans.filter(function (p) { return (p.tier_group || 'tier_100') === state.currentTier; });
-                if (!filtered.length) {
-                    list.innerHTML = '<div style="color:#888;text-align:center;padding:20px;">لا توجد باقات في هذا التصنيف</div>';
-                    return;
-                }
-                filtered.forEach(function (plan) {
-                    var card = document.createElement('div');
-                    card.className = 'plan-card';
-                    if (plan.tier_group === 'tier_150') card.classList.add('tier-150');
-                    var isAthlete = plan.meals_per_day === 2;
-                    if (isAthlete) card.classList.add('featured');
-                    if (state.selectedPlan && state.selectedPlan.id === plan.id) card.classList.add('selected');
-                    card.setAttribute('data-plan-id', plan.id);
+  if (!subId && !paymentId) return false;
 
-                    var original = Number(plan.price_sar);
-                    var final = priceAfterDiscount(original);
-                    var hasDiscount = state.discountPct > 0;
-                    var savedAmount = original - final;
+  // Hide normal flow
+  document.querySelectorAll('.step-section, .steps, .ref-banner, .hero').forEach(el => el.style.display = 'none');
 
-                    var totalMeals = plan.meals_per_day * plan.duration_days;
-                    var freeItemsLine = plan.free_items ? plan.free_items : '';
-                    if (plan.free_delivery) freeItemsLine = (freeItemsLine ? freeItemsLine + ' · ' : '') + 'توصيل مجاني 🚚';
+  showLoading('جاري التحقق من حالة الدفع...');
 
-                    var html =
-                        (isAthlete ? '<div class="plan-badge">⭐ الأكثر طلباً</div>' : '') +
-                        '<div class="plan-name">' + escapeHtml(plan.name_ar) +
-                            '<small>' + plan.meal_size_grams + 'ج · ' + plan.meals_per_day + ' وجبة/يوم</small>' +
-                        '</div>' +
-                        '<div class="plan-desc">' + escapeHtml(plan.description_ar || '') + '</div>' +
-                        '<div class="plan-stats">' +
-                            (plan.calories_range ? '<span>🔥 ' + escapeHtml(plan.calories_range) + '</span>' : '') +
-                            '<span>📦 ' + totalMeals + ' وجبة شهرياً</span>' +
-                            '<span>📅 ' + plan.duration_days + ' يوم</span>' +
-                        '</div>' +
-                        (freeItemsLine ? '<div class="free-items"><strong>🎁 مجاني:</strong> ' + escapeHtml(freeItemsLine) + '</div>' : '') +
-                        '<div class="plan-price-row">' +
-                            (hasDiscount ? '<span class="original-price">' + fmtMoney(original) + ' ر.س</span>' : '') +
-                            '<span class="final-price">' + fmtMoney(final) + '</span>' +
-                            '<span class="currency">ر.س</span>' +
-                            (hasDiscount ? '<span class="save-tag">وفّر ' + fmtMoney(savedAmount) + '</span>' : '') +
-                        '</div>' +
-                        '<button type="button" class="btn btn-select" data-action="select">' +
-                            (state.selectedPlan && state.selectedPlan.id === plan.id ? '✓ مختارة' : 'اختيار هذه الباقة') +
-                        '</button>';
+  // Wait briefly for webhook to potentially process
+  await new Promise(r => setTimeout(r, 2000));
 
-                    card.innerHTML = html;
-                    card.querySelector('[data-action="select"]').addEventListener('click', function () { selectPlan(plan.id); });
-                    list.appendChild(card);
-                });
-            } catch (e) {
-                console.error('[renderPlans]', e);
-                showDiag('فشل عرض الباقات: <code>' + e.message + '</code>', true);
-            }
-        }
+  // Check subscription status from DB
+  let subscription = null;
+  if (subId) {
+    const { data } = await sb
+      .from('subscriptions')
+      .select('id, customer_id, status, payment_status, total_amount_sar, plans(name_ar)')
+      .eq('id', subId)
+      .single();
+    subscription = data;
+  }
 
-        function selectPlan(planId) {
-            try {
-                var p = null;
-                for (var i = 0; i < state.plans.length; i++) {
-                    if (state.plans[i].id === planId) { p = state.plans[i]; break; }
-                }
-                if (!p) throw new Error('الباقة غير موجودة');
-                state.selectedPlan = p;
-                renderPlans();
-                console.log('[selectPlan] ✅', planId);
-            } catch (e) {
-                console.error('[selectPlan]', e);
-                showDiag('فشل اختيار الباقة: ' + e.message, true);
-            }
-        }
+  hideLoading();
 
-        function switchTier(tier) {
-            try {
-                state.currentTier = tier;
-                document.querySelectorAll('.tab-btn').forEach(function (b) {
-                    b.classList.toggle('active', b.getAttribute('data-tier') === tier);
-                });
-                renderPlans();
-                console.log('[tier]', tier);
-            } catch (e) {
-                console.error('[switchTier]', e);
-            }
-        }
+  $('successScreen').classList.add('show');
 
-        function isDeliveryFreeForPlan() {
-            return !!(state.selectedPlan && state.selectedPlan.free_delivery);
-        }
+  if (subscription && subscription.payment_status === 'paid') {
+    // SUCCESS
+    $('successIcon').textContent = '🎉';
+    $('successIcon').className = 'success-icon';
+    $('successTitle').textContent = 'مبروك! اشتراكك جاهز';
+    $('successTitle').className = 'success-title';
+    $('successText').innerHTML = `
+      تم استلام الدفعة بنجاح ✅<br>
+      الباقة: <strong style="color:#4ade80">${subscription.plans?.name_ar || ''}</strong><br>
+      المبلغ: <strong>${parseFloat(subscription.total_amount_sar).toFixed(2)} ر.س</strong><br>
+      أنت الآن جزء من عائلة Lite Kitchen 🌿
+    `;
+    $('finalCustomerId').textContent = subscription.customer_id;
+  } else if (moyasarStatus === 'failed' || (subscription && subscription.payment_status === 'failed')) {
+    // FAILED
+    $('successIcon').textContent = '❌';
+    $('successIcon').className = 'failed-icon';
+    $('successTitle').textContent = 'لم يكتمل الدفع';
+    $('successTitle').className = 'success-title failed';
+    $('successText').innerHTML = `
+      عذراً، لم تكتمل عملية الدفع.<br>
+      يمكنك المحاولة مرة أخرى أو التواصل معنا على واتساب.
+    `;
+    $('customerNumberBox').style.display = 'none';
+    $('shareBtn').textContent = 'العودة للصفحة الرئيسية';
+    $('shareBtn').onclick = () => window.location.href = window.location.origin + window.location.pathname;
+  } else {
+    // PENDING (webhook may not have processed yet)
+    $('successIcon').textContent = '⏳';
+    $('successTitle').textContent = 'جاري معالجة الدفع';
+    $('successText').innerHTML = `
+      نتلقى تأكيد البنك خلال لحظات. سنتواصل معك على واتساب فور التأكيد.<br>
+      رقم اشتراكك: <code style="background:rgba(0,0,0,0.4);padding:4px 10px;border-radius:6px;direction:ltr;">${subId}</code>
+    `;
+    $('customerNumberBox').style.display = 'none';
+  }
 
-        function renderAddons() {
-            try {
-                var box = document.getElementById('addonsList');
-                if (!state.addons.length) {
-                    box.innerHTML = '<div style="color:#888;text-align:center;padding:14px;font-size:13px;">لا توجد إضافات متاحة</div>';
-                    return;
-                }
-                box.innerHTML = '';
-                state.addons.forEach(function (a) {
-                    var isDelivery = /delivery|توصيل/i.test(a.id + ' ' + (a.name_ar || ''));
-                    var freeByPlan = isDelivery && isDeliveryFreeForPlan();
-                    var selected = !!state.selectedAddons[a.id] && !freeByPlan;
+  return true;
+}
 
-                    var row = document.createElement('div');
-                    row.className = 'addon-row' + (selected ? ' selected' : '') + (freeByPlan ? ' disabled' : '');
-                    row.innerHTML =
-                        '<div class="addon-info">' +
-                            '<input type="checkbox" class="addon-check" ' + (selected ? 'checked' : '') + (freeByPlan ? ' disabled' : '') + '>' +
-                            '<span class="addon-icon">' + escapeHtml(a.icon || '🎁') + '</span>' +
-                            '<div>' +
-                                '<div class="addon-name">' + escapeHtml(a.name_ar || a.id) + '</div>' +
-                                '<div class="addon-desc">' + escapeHtml(a.description || '') + (freeByPlan ? ' · ضمن الباقة' : '') + '</div>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="addon-price ' + (freeByPlan ? 'free' : '') + '">' +
-                            (freeByPlan ? 'مجاني' : '+ ' + fmtMoney(a.price_sar) + ' ر.س') +
-                        '</div>';
+function getReferral() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('ref');
+}
 
-                    if (!freeByPlan) {
-                        row.addEventListener('click', function () { toggleAddon(a.id); });
-                    }
-                    box.appendChild(row);
-                });
-            } catch (e) {
-                console.error('[renderAddons]', e);
-            }
-        }
+async function loadReferrer() {
+  const ref = getReferral();
+  if (!ref) return;
+  const { data } = await sb
+    .from('staff')
+    .select('id, full_name, display_label, discount_percentage, discount_active, is_hidden, partner_type')
+    .eq('referral_code', ref).eq('is_active', true).single();
 
-        function toggleAddon(addonId) {
-            try {
-                if (state.selectedAddons[addonId]) {
-                    delete state.selectedAddons[addonId];
-                } else {
-                    var addon = null;
-                    for (var i = 0; i < state.addons.length; i++) if (state.addons[i].id === addonId) { addon = state.addons[i]; break; }
-                    if (!addon) return;
-                    state.selectedAddons[addonId] = addon;
-                }
-                renderAddons();
-                renderInvoice();
-                console.log('[toggleAddon]', addonId, !!state.selectedAddons[addonId]);
-            } catch (e) {
-                console.error('[toggleAddon]', e);
-            }
-        }
+  if (data) {
+    state.referralStaff = data;
+    state.pricing.discountPercent = (data.discount_active && data.discount_percentage > 0)
+      ? parseFloat(data.discount_percentage) : 0;
 
-        function computeTotals() {
-            var plan = state.selectedPlan;
-            if (!plan) return null;
-            var original = Number(plan.price_sar);
-            var discountAmount = original * (state.discountPct / 100);
-            var planAfter = original - discountAmount;
-            var addonsTotal = 0;
-            var addonsList = [];
-            Object.keys(state.selectedAddons).forEach(function (k) {
-                var a = state.selectedAddons[k];
-                var isDelivery = /delivery|توصيل/i.test(a.id + ' ' + (a.name_ar || ''));
-                if (isDelivery && isDeliveryFreeForPlan()) return;
-                addonsTotal += Number(a.price_sar);
-                addonsList.push({ id: a.id, name: a.name_ar, price: Number(a.price_sar) });
-            });
-            return {
-                original: original,
-                discountPct: state.discountPct,
-                discountAmount: discountAmount,
-                planAfter: planAfter,
-                addonsTotal: addonsTotal,
-                addonsList: addonsList,
-                total: planAfter + addonsTotal
-            };
-        }
+    if (state.pricing.discountPercent > 0) {
+      const refName = data.is_hidden ? 'شريك معتمد' : data.full_name;
+      $('refName').textContent = refName;
+      $('refDiscount').textContent = state.pricing.discountPercent + '%';
+      $('refBanner').classList.add('show');
+    }
+  }
+}
 
-        function renderInvoice() {
-            try {
-                var box = document.getElementById('invoiceBox');
-                var t = computeTotals();
-                if (!t) { box.innerHTML = '<div style="color:#888;text-align:center;">اختر باقة أولاً</div>'; return; }
-                var plan = state.selectedPlan;
-                var html =
-                    '<div class="invoice-row"><span class="label">الباقة</span><span class="val">' + escapeHtml(plan.name_ar) + '</span></div>' +
-                    '<div class="invoice-row"><span class="label">عدد الوجبات</span><span class="val">' + (plan.meals_per_day * plan.duration_days) + ' وجبة</span></div>' +
-                    '<div class="invoice-row"><span class="label">سعر الباقة</span><span class="val">' + fmtMoney2(t.original) + ' ر.س</span></div>';
-                if (t.discountPct > 0) {
-                    html += '<div class="invoice-row discount"><span class="label">خصم ' + t.discountPct + '%</span><span class="val">− ' + fmtMoney2(t.discountAmount) + ' ر.س</span></div>';
-                }
-                if (t.addonsList.length) {
-                    html += '<hr class="invoice-divider">';
-                    t.addonsList.forEach(function (a) {
-                        html += '<div class="invoice-row"><span class="label">+ ' + escapeHtml(a.name) + '</span><span class="val">' + fmtMoney2(a.price) + ' ر.س</span></div>';
-                    });
-                }
-                html +=
-                    '<div class="invoice-total">' +
-                        '<span class="lbl">الإجمالي</span>' +
-                        '<span class="amt">' + fmtMoney2(t.total) + '<small>ر.س</small></span>' +
-                    '</div>';
-                box.innerHTML = html;
-            } catch (e) {
-                console.error('[renderInvoice]', e);
-            }
-        }
+async function loadPlans() {
+  const { data, error } = await sb
+    .from('plans').select('*').eq('is_active', true).order('sort_order');
 
-        function goToStep(stepId) {
-            try {
-                document.querySelectorAll('.step').forEach(function (s) { s.classList.remove('active'); });
-                var el = document.getElementById(stepId);
-                if (!el) throw new Error('Step not found: ' + stepId);
-                el.classList.add('active');
-                var bar = document.getElementById('progressBar');
-                if (bar) bar.style.width = (PROGRESS[stepId] || 0) + '%';
-                window.scrollTo(0, 0);
-                console.log('[nav]', stepId);
-            } catch (e) {
-                console.error('[nav]', e);
-                showDiag('فشل الانتقال: ' + e.message, true);
-            }
-        }
+  if (error || !data) {
+    toast('تعذّر تحميل الباقات', true);
+    return;
+  }
+  state.plans = data;
+  renderPlans();
+}
 
-        function nextStep(current) {
-            try {
-                if (current === 1) {
-                    if (!state.selectedPlan) { showError(1, 'الرجاء اختيار باقة'); return; }
-                    goToStep('step2');
-                    return;
-                }
-                if (current === 2) {
-                    var fullName = (document.getElementById('fullName').value || '').trim();
-                    var phone = (document.getElementById('phone').value || '').trim();
-                    if (!fullName || fullName.length < 3) { showError(2, 'الرجاء إدخال الاسم الكامل (3 أحرف على الأقل)'); return; }
-                    if (!/^5[0-9]{8}$/.test(phone)) { showError(2, 'رقم الجوال يجب أن يبدأ بـ 5 ويتكون من 9 أرقام'); return; }
-                    state.customer = {
-                        full_name: fullName,
-                        phone: '+966' + phone,
-                        email: (document.getElementById('email').value || '').trim() || null,
-                        gender: document.getElementById('gender').value || null,
-                        city: (document.getElementById('city').value || '').trim() || 'حائل'
-                    };
-                    renderAddons();
-                    renderInvoice();
-                    goToStep('step3');
-                    return;
-                }
-            } catch (e) {
-                console.error('[nextStep]', e);
-                showDiag('فشل التنقل: ' + e.message, true);
-            }
-        }
+function renderPlans() {
+  const grid = $('plansGrid');
+  grid.innerHTML = '';
+  state.plans.forEach(plan => {
+    const original = parseFloat(plan.price_sar);
+    const discountPct = state.pricing.discountPercent;
+    const finalPrice = original * (1 - discountPct / 100);
+    const savings = original - finalPrice;
 
-        async function submitForm() {
-            var btn = document.getElementById('btnSubmit');
-            try {
-                btn.disabled = true;
-                btn.innerHTML = '<div class="loading-spinner"></div> جاري الإرسال...';
+    const features = [];
+    if (plan.meals_per_day) features.push(`${plan.meals_per_day} وجبة/يوم`);
+    if (plan.meal_size_grams) features.push(`${plan.meal_size_grams}ج/وجبة`);
+    if (plan.calories_range) features.push(`🔥 ${plan.calories_range}`);
+    if (plan.includes_carbs) features.push('🌾 كارب');
+    if (plan.includes_snacks) features.push('🍎 سناك');
+    if (plan.free_delivery) features.push('🚗 توصيل مجاني');
 
-                var plan = state.selectedPlan;
-                if (!plan) throw new Error('الباقة غير محددة');
-                var totals = computeTotals();
-                if (!totals) throw new Error('فشل حساب الفاتورة');
+    const card = document.createElement('div');
+    card.className = 'plan-card';
+    card.dataset.planId = plan.id;
+    card.innerHTML = `
+      <div class="plan-header">
+        <div>
+          <div class="plan-name">${plan.name_ar}</div>
+          <div class="plan-desc">${plan.description_ar || ''}</div>
+        </div>
+        <div class="plan-pricing">
+          ${discountPct > 0 ? `<div class="plan-original">${original.toFixed(0)} ر.س</div>` : ''}
+          <div class="plan-final">${finalPrice.toFixed(0)}<span class="unit"> ر.س</span></div>
+          ${discountPct > 0 ? `<div class="plan-savings">وفرت ${savings.toFixed(0)} ر.س</div>` : ''}
+        </div>
+      </div>
+      <div class="plan-features">
+        ${features.map(f => `<span class="plan-feature">${f}</span>`).join('')}
+      </div>
+    `;
+    card.addEventListener('click', () => selectPlan(plan));
+    grid.appendChild(card);
+  });
+}
 
-                var startInput = document.getElementById('startDate').value;
-                var startDate = startInput || new Date(Date.now() + 86400000).toISOString().split('T')[0];
-                var endObj = new Date(startDate);
-                endObj.setDate(endObj.getDate() + plan.duration_days);
-                var endDate = endObj.toISOString().split('T')[0];
+function selectPlan(plan) {
+  state.selectedPlan = plan;
+  state.pricing.original = parseFloat(plan.price_sar);
+  state.pricing.discount = state.pricing.original * (state.pricing.discountPercent / 100);
+  state.pricing.final = state.pricing.original - state.pricing.discount;
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector(`[data-plan-id="${plan.id}"]`).classList.add('selected');
+  $('next1').disabled = false;
+}
 
-                var customerPayload = {
-                    full_name: state.customer.full_name,
-                    phone: state.customer.phone,
-                    email: state.customer.email,
-                    gender: state.customer.gender,
-                    city: state.customer.city,
-                    notes: (document.getElementById('notes').value || '').trim() || null,
-                    source: 'web_form'
-                };
-                console.log('[submit] ▶️ customer', customerPayload);
-                var custRes = await supabase.from('customers').insert([customerPayload]).select().single();
-                if (custRes.error) {
-                    if (custRes.error.code === '23505') throw new Error('رقم الجوال مسجل مسبقاً — تواصل معنا عبر الواتساب');
-                    throw custRes.error;
-                }
-                var customer = custRes.data;
-                console.log('[submit] ✅ customer', customer.id);
+function goToStep(n) {
+  state.step = n;
+  document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+  $('step' + n).classList.add('active');
+  document.querySelectorAll('.steps .step').forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if (i + 1 < n) s.classList.add('done');
+    if (i + 1 === n) s.classList.add('active');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-                var subPayload = {
-                    customer_id: customer.id,
-                    plan_id: plan.id,
-                    start_date: startDate,
-                    end_date: endDate,
-                    total_meals: plan.meals_per_day * plan.duration_days,
-                    total_amount_sar: totals.total,
-                    original_price: totals.original,
-                    discount_percentage: totals.discountPct,
-                    discount_amount: totals.discountAmount,
-                    addons_total: totals.addonsTotal,
-                    status: 'pending',
-                    payment_status: 'unpaid',
-                    registered_by: state.referrer ? state.referrer.id : null
-                };
-                console.log('[submit] ▶️ subscription', subPayload);
-                var subRes = await supabase.from('subscriptions').insert([subPayload]).select().single();
-                if (subRes.error) throw subRes.error;
-                var sub = subRes.data;
-                console.log('[submit] ✅ subscription', sub.id);
+$('next1').onclick = () => {
+  if (!state.selectedPlan) { toast('اختر باقة أولاً', true); return; }
+  goToStep(2);
+};
+$('back2').onclick = () => goToStep(1);
+$('next2').onclick = () => {
+  const name = $('fullName').value.trim();
+  const phone = $('phone').value.trim();
+  if (!name || name.length < 3) { toast('أدخل اسمك الكامل', true); $('fullName').focus(); return; }
+  if (!phone || !/^5\d{8}$/.test(phone)) { toast('رقم الجوال غير صحيح (يبدأ بـ 5)', true); $('phone').focus(); return; }
+  state.customer.full_name = name;
+  state.customer.phone = '0' + phone;
+  state.customer.email = $('email').value.trim() || null;
+  state.customer.city = $('city').value;
+  state.customer.gender = $('gender').value || null;
+  state.customer.birth_date = $('birthDate').value || null;
+  goToStep(3);
+};
+$('back3').onclick = () => goToStep(2);
+$('next3').onclick = () => {
+  state.customer.weight_kg = parseFloat($('weight').value) || null;
+  state.customer.height_cm = parseFloat($('height').value) || null;
+  state.customer.fitness_goal = $('goal').value || null;
+  state.customer.activity_level = $('activity').value || null;
+  state.allergies.custom = $('customAllergies').value.trim();
+  state.allergies.disliked = $('disliked').value.trim();
+  if (state.allergies.has && !state.allergies.severity) {
+    toast('حدد شدة الحساسية', true);
+    return;
+  }
+  updateSummary();
+  goToStep(4);
+};
+$('back4').onclick = () => goToStep(3);
 
-                if (totals.addonsList.length) {
-                    var addonRows = totals.addonsList.map(function (a) {
-                        return { subscription_id: sub.id, addon_id: a.id, price_paid: a.price };
-                    });
-                    console.log('[submit] ▶️ addons', addonRows);
-                    var addRes = await supabase.from('subscription_addons').insert(addonRows);
-                    if (addRes.error) {
-                        console.warn('[submit] addons error (continuing):', addRes.error);
-                        showDiag('⚠️ تم تسجيل الاشتراك لكن فشل حفظ الإضافات: <code>' + escapeHtml(addRes.error.message) + '</code>', true);
-                    }
-                }
+$('hasAllergies').addEventListener('change', (e) => {
+  state.allergies.has = e.target.checked;
+  $('allergiesDetail').classList.toggle('show', e.target.checked);
+  if (!e.target.checked) {
+    state.allergies.severity = null;
+    state.allergies.list = [];
+    document.querySelectorAll('.severity-option.selected').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('.allergy-chip.selected').forEach(el => el.classList.remove('selected'));
+  }
+});
 
-                document.getElementById('newCustomerId').textContent = customer.id;
-                var waMsg = encodeURIComponent('السلام عليكم، تم تسجيلي في 8PM Healthy باقة ' + plan.name_ar + '. رقم العميل: ' + customer.id + '. الإجمالي: ' + fmtMoney2(totals.total) + ' ر.س');
-                document.getElementById('whatsappBtn').href = 'https://wa.me/966558612908?text=' + waMsg;
-                goToStep('stepSuccess');
-                console.log('[submit] ✅ done');
-            } catch (e) {
-                console.error('[submit] ❌', e);
-                showError(3, e.message || 'حدث خطأ غير متوقع');
-                showDiag('فشل التسجيل: <code>' + (e.message || e) + '</code>', true);
-                btn.disabled = false;
-                btn.innerHTML = 'تأكيد الاشتراك ✓';
-            }
-        }
+document.querySelectorAll('.severity-option').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.severity-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    state.allergies.severity = el.dataset.severity;
+  });
+});
 
-        function bindUI() {
-            try {
-                document.getElementById('btnNext1').addEventListener('click', function () { nextStep(1); });
-                document.getElementById('btnPrev2').addEventListener('click', function () { goToStep('step1'); });
-                document.getElementById('btnNext2').addEventListener('click', function () { nextStep(2); });
-                document.getElementById('btnPrev3').addEventListener('click', function () { goToStep('step2'); });
-                document.getElementById('btnSubmit').addEventListener('click', submitForm);
-                document.getElementById('diagClose').addEventListener('click', hideDiag);
+document.querySelectorAll('.allergy-chip').forEach(el => {
+  el.addEventListener('click', () => {
+    el.classList.toggle('selected');
+    const allergen = el.dataset.allergen;
+    if (el.classList.contains('selected')) {
+      if (!state.allergies.list.includes(allergen)) state.allergies.list.push(allergen);
+    } else {
+      state.allergies.list = state.allergies.list.filter(a => a !== allergen);
+    }
+  });
+});
 
-                document.querySelectorAll('#tierTabs .tab-btn').forEach(function (b) {
-                    b.addEventListener('click', function () { switchTier(b.getAttribute('data-tier')); });
-                });
+function updateSummary() {
+  $('sumPlanName').textContent = state.selectedPlan.name_ar;
+  $('sumDuration').textContent = (state.selectedPlan.duration_days || 26) + ' يوم';
+  $('sumOriginal').textContent = state.pricing.original.toFixed(2) + ' ر.س';
+  if (state.pricing.discount > 0) {
+    $('sumDiscountRow').style.display = 'flex';
+    $('sumDiscount').textContent = '- ' + state.pricing.discount.toFixed(2) + ' ر.س';
+  }
+  $('sumFinal').textContent = state.pricing.final.toFixed(2) + ' ر.س';
+}
 
-                document.getElementById('phone').addEventListener('input', function (e) {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-                });
+// === SUBMIT & CREATE PAYMENT VIA EDGE FUNCTION ===
+$('payBtn').onclick = async () => {
+  $('payBtn').disabled = true;
+  showLoading('جاري إنشاء فاتورتك...');
 
-                var tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                var ts = tomorrow.toISOString().split('T')[0];
-                var sd = document.getElementById('startDate');
-                if (sd) { sd.value = ts; sd.min = ts; }
+  try {
+    // 1. Create or find customer
+    const customerPayload = {
+      ...state.customer,
+      has_allergies: state.allergies.has,
+      allergy_severity: state.allergies.severity,
+      dietary_restrictions: state.allergies.list,
+      allergies: state.allergies.custom || null,
+      disliked_ingredients: state.allergies.disliked || null,
+      source: state.referralStaff ? state.referralStaff.display_label : 'direct'
+    };
 
-                console.log('[bind] ✅');
-            } catch (e) {
-                console.error('[bind]', e);
-                showDiag('فشل ربط الأحداث: ' + e.message, true);
-            }
-        }
+    let customerId;
+    const { data: existing } = await sb
+      .from('customers').select('id').eq('phone', state.customer.phone).maybeSingle();
 
-        async function boot() {
-            try {
-                console.log('[boot] ▶️');
-                bindUI();
-                if (!initSupabase()) return;
-                await resolveReferral();
-                await Promise.all([loadPlans(), loadAddons()]);
-                console.log('[boot] ✅');
-            } catch (e) {
-                console.error('[boot]', e);
-                showDiag('فشل بدء التشغيل: <code>' + e.message + '</code>', true);
-            }
-        }
+    if (existing) {
+      customerId = existing.id;
+      await sb.from('customers').update(customerPayload).eq('id', customerId);
+    } else {
+      const { data: newCust, error: custErr } = await sb
+        .from('customers').insert(customerPayload).select('id').single();
+      if (custErr) throw custErr;
+      customerId = newCust.id;
+    }
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', boot);
-        } else {
-            boot();
-        }
-    })();
-    </script>
+    // 2. Create subscription (pending)
+    const totalMeals = (state.selectedPlan.meals_per_day || 1) * (state.selectedPlan.duration_days || 26);
+    const { data: sub, error: subErr } = await sb
+      .from('subscriptions')
+      .insert({
+        customer_id: customerId,
+        plan_id: state.selectedPlan.id,
+        total_meals: totalMeals,
+        total_amount_sar: state.pricing.final,
+        original_price: state.pricing.original,
+        discount_amount: state.pricing.discount,
+        discount_percentage: state.pricing.discountPercent,
+        registered_by: state.referralStaff?.id || null,
+        status: 'pending_payment',
+        payment_status: 'unpaid'
+      })
+      .select('id').single();
+    if (subErr) throw subErr;
+
+    // 3. Call Edge Function to create Moyasar invoice
+    showLoading('جاري التحويل لصفحة الدفع الآمنة...');
+
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/create-payment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      },
+      body: JSON.stringify({
+        subscription_id: sub.id,
+        customer_id: customerId,
+        amount: state.pricing.final,
+        description: `${state.selectedPlan.name_ar} - 8PM Healthy`,
+        customer_name: state.customer.full_name,
+        customer_phone: state.customer.phone,
+        customer_email: state.customer.email,
+        callback_url: window.location.origin + window.location.pathname
+      })
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.error || 'فشل في إنشاء الفاتورة');
+    }
+
+    // 4. Redirect to Moyasar hosted payment page
+    window.location.href = result.payment_url;
+
+  } catch (e) {
+    console.error(e);
+    hideLoading();
+    toast('خطأ: ' + e.message, true);
+    $('payBtn').disabled = false;
+  }
+};
+
+$('shareBtn').addEventListener('click', () => {
+  const text = `🌿 انضممت لعائلة Lite Kitchen!\nوجبات صحية محسوبة من 8PM Healthy في حائل\n${window.location.origin}/lite-kitchen/`;
+  if (navigator.share) {
+    navigator.share({ title: 'Lite Kitchen', text });
+  } else {
+    navigator.clipboard.writeText(text);
+    toast('تم نسخ الرسالة');
+  }
+});
+
+// === Init ===
+(async () => {
+  // Check if returning from payment first
+  const handled = await checkPaymentReturn();
+  if (handled) return;
+
+  // Normal flow
+  await loadReferrer();
+  await loadPlans();
+})();
+</script>
 </body>
 </html>
