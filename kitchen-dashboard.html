@@ -696,8 +696,8 @@
 
     <div class="stats">
       <div class="stat-card normal-stat"><div class="label">اشتراكات نشطة</div><div class="value" id="statActive">—</div></div>
-      <div class="stat-card normal-stat"><div class="label">وجبات اليوم</div><div class="value" id="statToday">—</div></div>
-      <div class="stat-card normal-stat"><div class="label">وجبات متبقية</div><div class="value" id="statRemaining">—</div></div>
+      <div class="stat-card normal-stat"><div class="label">عملاء اليوم</div><div class="value" id="statToday">—</div></div>
+      <div class="stat-card normal-stat"><div class="label">أيام متبقية</div><div class="value" id="statRemaining">—</div></div>
       <div class="stat-card allergy-stat"><div class="label">حساسيات نشطة</div><div class="value" id="statAllergies">—</div></div>
     </div>
 
@@ -819,6 +819,28 @@
   <!-- TAB 3: Settings -->
   <div class="tab-content" id="tab-settings">
     <div class="section">
+      <div class="section-tag olive">عمولتي</div>
+      <h2>إحصائيات العمولة</h2>
+      <p class="section-sub">عمولتك <strong style="color:var(--olive);">1%</strong> على كل عميل سجّلته (في الفرع أو عبر رابطك).</p>
+      <div class="stats" style="margin-bottom:0;">
+        <div class="stat-card normal-stat">
+          <div class="label">عملائي</div>
+          <div class="value" id="chefMyCustomers">—</div>
+        </div>
+        <div class="stat-card normal-stat">
+          <div class="label">إجمالي مبيعاتي</div>
+          <div class="value" id="chefRevenue" style="color:var(--coral);">—</div>
+          <div style="font-size:11px;color:var(--ink-mute);margin-top:4px;font-weight:700;">ر.س</div>
+        </div>
+        <div class="stat-card normal-stat">
+          <div class="label">عمولتي المستحقة</div>
+          <div class="value" id="chefCommission" style="color:var(--olive);">—</div>
+          <div style="font-size:11px;color:var(--ink-mute);margin-top:4px;font-weight:700;">ر.س</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
       <div class="section-tag">سري</div>
       <h2>رابط لوحتك</h2>
       <p class="section-sub">احفظه في المتصفح، لا تشاركه:</p>
@@ -829,7 +851,7 @@
     <div class="section">
       <div class="section-tag pink">إحالة</div>
       <h2>رابط الإحالة</h2>
-      <p class="section-sub">للعملاء الذين يريدون التسجيل بأنفسهم بخصم 10%:</p>
+      <p class="section-sub">للعملاء الذين يريدون التسجيل بأنفسهم بخصم 10%. كل عميل يسجّل عبر هذا الرابط = 1% عمولة لك:</p>
       <div class="link-box" id="chefRefLink">جاري التحميل...</div>
       <button class="btn primary" id="copyChefRef">نسخ الرابط</button>
     </div>
@@ -940,7 +962,13 @@ async function loadCustomers() {
   const severeCount = data.filter(s => s.customers?.allergy_severity === 'severe').length;
 
   $('statActive').textContent = data.length;
-  $('statRemaining').textContent = data.reduce((sum, s) => sum + (s.remaining_meals || 0), 0);
+  // Calculate days remaining across all subscriptions
+  const totalDaysRemaining = data.reduce((sum, s) => {
+    const meals = s.remaining_meals || 0;
+    const perDay = s.plans?.meals_per_day || 1;
+    return sum + Math.ceil(meals / perDay);
+  }, 0);
+  $('statRemaining').textContent = totalDaysRemaining;
   $('statAllergies').textContent = allergyCount;
 
   if (severeCount > 0) {
@@ -963,22 +991,26 @@ async function loadCustomers() {
   data.forEach(s => {
     const c = s.customers || {};
     const remaining = s.remaining_meals || 0;
-    const lowClass = remaining <= 3 ? 'low' : '';
+    const mealsPerDay = s.plans?.meals_per_day || 1;
+    // Convert meals to days (each "day" delivery = mealsPerDay meals)
+    const daysRemaining = Math.ceil(remaining / mealsPerDay);
+    const lowClass = daysRemaining <= 3 ? 'low' : '';
     const phone = c.phone ? `••••${c.phone.slice(-4)}` : '';
     const hasAllergy = c.has_allergies;
     const severity = c.allergy_severity;
     const cardClass = hasAllergy ? (severity === 'severe' ? 'has-allergy severe' : 'has-allergy') : '';
     const allergyIcon = severity === 'severe' ? '⚠⚠' : (hasAllergy ? '⚠' : '');
     const restrictions = Array.isArray(c.dietary_restrictions) ? c.dietary_restrictions : [];
+    const mealsLabel = mealsPerDay === 1 ? '' : ` (${mealsPerDay} وجبات/يوم)`;
 
     html += `
       <div class="customer-card ${cardClass}">
         <div class="customer-top">
           <div class="customer-info">
             <div class="name">${allergyIcon} ${escapeHtml(c.full_name || 'عميل')}</div>
-            <div class="meta">${escapeHtml(s.plans?.name_ar || '')} · ${phone}</div>
+            <div class="meta">${escapeHtml(s.plans?.name_ar || '')}${mealsLabel} · ${phone}</div>
           </div>
-          <div class="meals-remaining ${lowClass}">${remaining} وجبة متبقية</div>
+          <div class="meals-remaining ${lowClass}">${daysRemaining} يوم متبقي</div>
         </div>
     `;
 
@@ -1004,8 +1036,8 @@ async function loadCustomers() {
     }
 
     html += `<div class="actions-row">
-      <button class="btn primary" onclick="window.deductMeal('${s.id}', '${escapeJs(c.full_name || '')}', ${remaining}, ${hasAllergy}, '${severity || ''}')" ${remaining <= 0 ? 'disabled' : ''}>
-        خصم وجبة
+      <button class="btn primary" onclick="window.deductDay('${s.id}', '${escapeJs(c.full_name || '')}', ${remaining}, ${mealsPerDay}, ${hasAllergy}, '${severity || ''}')" ${remaining <= 0 ? 'disabled' : ''}>
+        تسليم وجبات اليوم
       </button>
     </div></div>`;
   });
@@ -1015,30 +1047,36 @@ async function loadCustomers() {
 async function loadTodayCount() {
   const today = new Date();
   today.setHours(0,0,0,0);
-  const { count } = await sb
+  // Count distinct subscriptions that received meals today (= unique customers today)
+  const { data: todayLogs } = await sb
     .from('meal_logs')
-    .select('*', { count: 'exact', head: true })
+    .select('subscription_id')
     .gte('consumed_at', today.toISOString());
-  $('statToday').textContent = count || 0;
+  const uniqueCustomersToday = new Set((todayLogs || []).map(l => l.subscription_id)).size;
+  $('statToday').textContent = uniqueCustomersToday || 0;
 }
 
 let pendingDeduct = null;
-window.deductMeal = (subId, customerName, remaining, hasAllergy, severity) => {
-  if (remaining <= 0) { showToast('لا توجد وجبات متبقية', true); return; }
-  pendingDeduct = { subId, customerName };
+window.deductDay = (subId, customerName, remaining, mealsPerDay, hasAllergy, severity) => {
+  if (remaining <= 0) { showToast('لا توجد أيام متبقية', true); return; }
+  pendingDeduct = { subId, customerName, mealsPerDay };
   $('modalContent').classList.remove('warning');
+
+  const daysRemaining = Math.ceil(remaining / mealsPerDay);
+  const mealsToDeduct = Math.min(mealsPerDay, remaining);
+  const mealsText = mealsPerDay === 1 ? 'وجبة' : `${mealsPerDay} وجبات`;
 
   if (hasAllergy && severity === 'severe') {
     $('modalContent').classList.add('warning');
     $('modalTitle').textContent = '⚠⚠ تنبيه: حساسية شديدة';
-    $('modalText').innerHTML = `العميل <strong>${escapeHtml(customerName)}</strong> لديه حساسية <strong style="color:var(--watermelon)">شديدة</strong>.<br><br>تأكد أن الوجبة <strong>خالية تماماً</strong> من المواد المسبّبة. هل أكدت ذلك؟`;
+    $('modalText').innerHTML = `العميل <strong>${escapeHtml(customerName)}</strong> لديه حساسية <strong style="color:var(--watermelon)">شديدة</strong>.<br><br>سيتم تسليم <strong>${mealsText} اليوم</strong>. تأكد أن جميع الوجبات <strong>خالية تماماً</strong> من المواد المسبّبة.`;
   } else if (hasAllergy) {
     $('modalContent').classList.add('warning');
     $('modalTitle').textContent = '⚠ تنبيه حساسية';
-    $('modalText').innerHTML = `العميل <strong>${escapeHtml(customerName)}</strong> لديه حساسية. راجع التفاصيل في البطاقة.`;
+    $('modalText').innerHTML = `العميل <strong>${escapeHtml(customerName)}</strong> لديه حساسية. سيتم تسليم <strong>${mealsText} اليوم</strong>. راجع التفاصيل في البطاقة.`;
   } else {
-    $('modalTitle').textContent = 'تأكيد خصم وجبة';
-    $('modalText').textContent = `خصم وجبة من اشتراك "${customerName}"؟ سيتبقى ${remaining - 1} وجبة.`;
+    $('modalTitle').textContent = 'تأكيد تسليم وجبات اليوم';
+    $('modalText').innerHTML = `سيتم تسليم <strong>${mealsText}</strong> للعميل <strong>${escapeHtml(customerName)}</strong>.<br><br>سيتبقى <strong>${daysRemaining - 1} يوم</strong> بعد التسليم.`;
   }
   $('modal').classList.add('show');
 };
@@ -1052,22 +1090,38 @@ $('cancelBtn').onclick = () => {
 $('confirmBtn').onclick = async () => {
   if (!pendingDeduct) return;
   $('confirmBtn').disabled = true;
-  $('confirmBtn').textContent = 'جاري الخصم...';
+  $('confirmBtn').textContent = 'جاري التسليم...';
   try {
-    const { error: logError } = await sb.from('meal_logs').insert({
-      subscription_id: pendingDeduct.subId,
-      meal_type: 'lunch',
-      logged_by: 'الشيف أحمد',
-      logged_by_id: 'STAFF-002',
-      verification_method: 'manual'
-    });
+    // Get current consumed_meals and remaining
+    const { data: sub } = await sb.from('subscriptions')
+      .select('consumed_meals, remaining_meals')
+      .eq('id', pendingDeduct.subId).single();
+
+    const mealsPerDay = pendingDeduct.mealsPerDay || 1;
+    const remaining = sub?.remaining_meals || 0;
+    const mealsToDeduct = Math.min(mealsPerDay, remaining);
+
+    // Insert one log entry per meal in the day
+    const logs = [];
+    const mealTypes = ['lunch', 'dinner', 'breakfast'];
+    for (let i = 0; i < mealsToDeduct; i++) {
+      logs.push({
+        subscription_id: pendingDeduct.subId,
+        meal_type: mealTypes[i] || 'lunch',
+        logged_by: 'الشيف أحمد',
+        logged_by_id: 'STAFF-002',
+        verification_method: 'manual'
+      });
+    }
+
+    const { error: logError } = await sb.from('meal_logs').insert(logs);
     if (logError) throw logError;
 
-    const { data: sub } = await sb.from('subscriptions').select('consumed_meals').eq('id', pendingDeduct.subId).single();
-    const newCount = (sub?.consumed_meals || 0) + 1;
+    const newCount = (sub?.consumed_meals || 0) + mealsToDeduct;
     await sb.from('subscriptions').update({ consumed_meals: newCount }).eq('id', pendingDeduct.subId);
 
-    showToast(`✓ تم خصم وجبة لـ ${pendingDeduct.customerName}`);
+    const mealsText = mealsPerDay === 1 ? 'وجبة' : `${mealsToDeduct} وجبات`;
+    showToast(`✓ تم تسليم ${mealsText} لـ ${pendingDeduct.customerName}`);
     $('modal').classList.remove('show');
     $('modalContent').classList.remove('warning');
     pendingDeduct = null;
@@ -1307,7 +1361,7 @@ function resetRegisterForm() {
 }
 
 async function loadLinks() {
-  const { data } = await sb.from('staff').select('access_key, referral_code').eq('id', 'STAFF-002').single();
+  const { data } = await sb.from('staff').select('access_key, referral_code, commission_lite').eq('id', 'STAFF-002').single();
   if (!data) return;
   const dashLink = `${SITE_BASE}/kitchen-dashboard.html?key=${data.access_key}`;
   const refLink = `${SITE_BASE}/?ref=${data.referral_code}`;
@@ -1325,6 +1379,21 @@ async function loadLinks() {
       setTimeout(() => $('copyChefRef').textContent = 'نسخ الرابط', 1500);
     });
   };
+
+  // Load chef commission stats
+  const chefCommissionPct = parseFloat(data.commission_lite || 1);
+
+  const { data: chefSubs } = await sb.from('subscriptions')
+    .select('total_amount_sar, payment_status')
+    .eq('registered_by', 'STAFF-002');
+
+  const paidChefSubs = (chefSubs || []).filter(s => s.payment_status === 'paid');
+  const chefRevenue = paidChefSubs.reduce((sum, s) => sum + parseFloat(s.total_amount_sar || 0), 0);
+  const chefCommission = chefRevenue * (chefCommissionPct / 100);
+
+  $('chefMyCustomers').textContent = paidChefSubs.length;
+  $('chefRevenue').textContent = chefRevenue.toFixed(0);
+  $('chefCommission').textContent = chefCommission.toFixed(2);
 }
 
 loadLinks();
