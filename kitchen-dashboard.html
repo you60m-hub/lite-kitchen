@@ -10,6 +10,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
 <style>
   :root {
     --beige-top: #F4ECD8; --beige-mid: #EFE4CE; --beige-bot: #E5D6B6;
@@ -665,6 +667,186 @@
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast.error { background: var(--watermelon); }
+
+  /* === QR Scanner === */
+  .scanner-section {
+    background: var(--card);
+    border: 1px solid var(--card-edge);
+    border-radius: var(--radius-card);
+    padding: 22px;
+    box-shadow: var(--shadow-md);
+    transform: rotate(-0.2deg);
+    margin-bottom: 20px;
+  }
+  .scanner-wrapper {
+    background: var(--ink);
+    border-radius: var(--radius-card);
+    padding: 16px;
+    margin: 16px 0;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #000;
+  }
+  .scanner-overlay {
+    position: absolute;
+    inset: 16px;
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .scanner-corners {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-color: var(--coral);
+    border-style: solid;
+    border-width: 0;
+  }
+  .scanner-corners.tl { top: 12px; left: 12px; border-top-width: 4px; border-left-width: 4px; border-top-left-radius: 8px; }
+  .scanner-corners.tr { top: 12px; right: 12px; border-top-width: 4px; border-right-width: 4px; border-top-right-radius: 8px; }
+  .scanner-corners.bl { bottom: 12px; left: 12px; border-bottom-width: 4px; border-left-width: 4px; border-bottom-left-radius: 8px; }
+  .scanner-corners.br { bottom: 12px; right: 12px; border-bottom-width: 4px; border-right-width: 4px; border-bottom-right-radius: 8px; }
+  .scanner-status {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .scanner-status .pulse-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--coral);
+    border-radius: 50%;
+    margin-left: 6px;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.1); }
+  }
+
+  /* Result card */
+  .scan-result-card {
+    background: var(--card);
+    border-radius: var(--radius-card);
+    padding: 22px;
+    margin-top: 16px;
+    box-shadow: var(--shadow-lg);
+    display: none;
+  }
+  .scan-result-card.show {
+    display: block;
+    animation: fadeInUp 0.4s ease;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .scan-result-card.success { border: 2px solid var(--olive); }
+  .scan-result-card.warning { border: 2px solid var(--watermelon); border-right: 6px solid var(--watermelon); }
+  .scan-result-card.error { border: 2px solid var(--watermelon); }
+  .scan-result-card.info { border: 2px solid var(--coral); }
+  .scan-result-card .result-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 32px;
+    box-shadow: var(--shadow-md);
+  }
+  .scan-result-card.success .result-icon { background: var(--olive); color: #FFF8E7; }
+  .scan-result-card.warning .result-icon { background: var(--watermelon); color: #FFF8E7; }
+  .scan-result-card.error .result-icon { background: var(--watermelon); color: #FFF8E7; }
+  .scan-result-card.info .result-icon { background: var(--coral); color: #FFF8E7; }
+  .scan-result-card .result-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .scan-result-card .result-subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .scan-result-card .customer-block {
+    background: #FFF8E7;
+    border-radius: var(--radius-card);
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .scan-result-card .customer-block .label {
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .scan-result-card .customer-block .value {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--ink);
+  }
+  .scan-result-card .info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .scan-result-card .info-box {
+    background: #FFF8E7;
+    border-radius: var(--radius-card);
+    padding: 12px;
+    text-align: center;
+    border: 1px solid var(--card-edge);
+  }
+  .scan-result-card .info-box .label {
+    font-size: 10px;
+    font-weight: 900;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .scan-result-card .info-box .value {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--olive);
+  }
+  .scan-result-card .info-box.warning-box .value { color: var(--watermelon); }
+
+  .torch-btn {
+    background: var(--ink);
+    color: var(--coral);
+    border: 0;
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    font-weight: 900;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .torch-btn.on { background: var(--coral); color: var(--ink); }
 </style>
 </head>
 <body class="grain">
@@ -683,6 +865,7 @@
 
   <div class="tabs">
     <div class="tab active" data-tab="customers">العملاء الحاليون</div>
+    <div class="tab" data-tab="scanner">ماسح QR</div>
     <div class="tab" data-tab="register">تسجيل عميل جديد</div>
     <div class="tab" data-tab="settings">روابطي</div>
   </div>
@@ -709,7 +892,43 @@
     </div>
   </div>
 
-  <!-- TAB 2: Register -->
+  <!-- TAB 2: QR Scanner -->
+  <div class="tab-content" id="tab-scanner">
+    <div class="scanner-section">
+      <div class="section-tag coral">ماسح ضوئي</div>
+      <h2>امسح رمز العميل</h2>
+      <p class="section-sub">وجّه الكاميرا لرمز QR على جوال العميل لاستلامه وجبات اليوم تلقائياً.</p>
+
+      <div class="scanner-wrapper" id="scannerWrapper">
+        <video id="video" playsinline muted></video>
+        <div class="scanner-overlay">
+          <div class="scanner-corners tl"></div>
+          <div class="scanner-corners tr"></div>
+          <div class="scanner-corners bl"></div>
+          <div class="scanner-corners br"></div>
+        </div>
+      </div>
+
+      <div class="scanner-status" id="scannerStatus">
+        <span id="scannerStatusText">اضغط لبدء المسح</span>
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap;">
+        <button class="btn primary" id="startScanBtn">▶ بدء المسح</button>
+        <button class="btn" id="stopScanBtn" style="display:none;">⏸ إيقاف</button>
+        <button class="torch-btn" id="torchBtn" style="display:none;">💡 الفلاش</button>
+      </div>
+
+      <canvas id="scanCanvas" style="display:none;"></canvas>
+    </div>
+
+    <!-- Scan Result -->
+    <div class="scan-result-card" id="scanResultCard">
+      <!-- Filled dynamically -->
+    </div>
+  </div>
+
+  <!-- TAB 3: Register -->
   <div class="tab-content" id="tab-register">
     <div class="section">
       <div class="section-tag">تسجيل في الفرع</div>
@@ -1400,6 +1619,379 @@ loadLinks();
 loadCustomers();
 loadTodayCount();
 setInterval(() => { loadCustomers(); loadTodayCount(); }, 30000);
+
+// ==================== QR SCANNER ====================
+let scannerStream = null;
+let scannerActive = false;
+let scannerVideo = $('video');
+let scannerCanvas = $('scanCanvas');
+let scannerCtx = scannerCanvas.getContext('2d', { willReadFrequently: true });
+let torchTrack = null;
+let torchSupported = false;
+let lastScanned = null;
+let lastScanTime = 0;
+
+function makeChecksum(subId) {
+  let hash = 0;
+  const str = subId + 'LITE-KITCHEN-2026';
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash).toString(36).slice(0, 6).toUpperCase();
+}
+
+function playBeep() {
+  try {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.frequency.value = 800;
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    oscillator.start(audioCtx.currentTime);
+    oscillator.stop(audioCtx.currentTime + 0.2);
+  } catch (e) { /* silent */ }
+}
+
+function vibrate(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+async function startScanner() {
+  try {
+    scannerStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: { ideal: 'environment' },
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      }
+    });
+    scannerVideo.srcObject = scannerStream;
+    await scannerVideo.play();
+    scannerActive = true;
+    $('startScanBtn').style.display = 'none';
+    $('stopScanBtn').style.display = 'inline-block';
+    $('scannerStatusText').innerHTML = 'جاري البحث عن رمز <span class="pulse-dot"></span>';
+    $('scanResultCard').classList.remove('show');
+
+    // Check torch support
+    const track = scannerStream.getVideoTracks()[0];
+    torchTrack = track;
+    const capabilities = track.getCapabilities ? track.getCapabilities() : {};
+    if (capabilities.torch) {
+      torchSupported = true;
+      $('torchBtn').style.display = 'inline-block';
+    }
+
+    requestAnimationFrame(scanLoop);
+  } catch (e) {
+    console.error('Camera error:', e);
+    showToast('تعذّر الوصول للكاميرا. تأكد من السماح بالوصول.', true);
+  }
+}
+
+function stopScanner() {
+  scannerActive = false;
+  if (scannerStream) {
+    scannerStream.getTracks().forEach(t => t.stop());
+    scannerStream = null;
+  }
+  scannerVideo.srcObject = null;
+  torchTrack = null;
+  $('startScanBtn').style.display = 'inline-block';
+  $('stopScanBtn').style.display = 'none';
+  $('torchBtn').style.display = 'none';
+  $('torchBtn').classList.remove('on');
+  $('scannerStatusText').textContent = 'تم إيقاف المسح';
+}
+
+async function toggleTorch() {
+  if (!torchTrack || !torchSupported) return;
+  const isOn = $('torchBtn').classList.contains('on');
+  try {
+    await torchTrack.applyConstraints({ advanced: [{ torch: !isOn }] });
+    $('torchBtn').classList.toggle('on');
+  } catch (e) {
+    showToast('تعذّر تشغيل الفلاش', true);
+  }
+}
+
+function scanLoop() {
+  if (!scannerActive) return;
+  if (scannerVideo.readyState === scannerVideo.HAVE_ENOUGH_DATA) {
+    scannerCanvas.height = scannerVideo.videoHeight;
+    scannerCanvas.width = scannerVideo.videoWidth;
+    scannerCtx.drawImage(scannerVideo, 0, 0, scannerCanvas.width, scannerCanvas.height);
+    try {
+      const imageData = scannerCtx.getImageData(0, 0, scannerCanvas.width, scannerCanvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+      if (code && code.data) {
+        // Debounce: same code within 3 seconds = skip
+        const now = Date.now();
+        if (code.data === lastScanned && now - lastScanTime < 3000) {
+          requestAnimationFrame(scanLoop);
+          return;
+        }
+        lastScanned = code.data;
+        lastScanTime = now;
+        handleScannedCode(code.data);
+      }
+    } catch (e) { /* silent */ }
+  }
+  requestAnimationFrame(scanLoop);
+}
+
+async function handleScannedCode(data) {
+  console.log('Scanned:', data);
+
+  // Validate format: LK:SUB-XXXXX:CHECKSUM
+  const match = data.match(/^LK:(SUB-\d+):([A-Z0-9]+)$/);
+  if (!match) {
+    showScanResult('error', '✗', 'رمز غير صالح', 'هذا الرمز لا ينتمي لـ Lite Kitchen', null);
+    vibrate(200);
+    return;
+  }
+
+  const subId = match[1];
+  const checksum = match[2];
+  const expectedChecksum = makeChecksum(subId);
+
+  if (checksum !== expectedChecksum) {
+    showScanResult('error', '✗', 'رمز معدّل', 'الرمز غير أصلي أو معدّل', null);
+    vibrate(200);
+    return;
+  }
+
+  $('scannerStatusText').innerHTML = 'جاري التحقق من العميل <span class="pulse-dot"></span>';
+
+  // Fetch subscription
+  const { data: sub, error } = await sb
+    .from('subscriptions')
+    .select(`
+      id, total_meals, consumed_meals, remaining_meals, status, payment_status,
+      customers!inner(id, full_name, has_allergies, allergy_severity, dietary_restrictions, allergies, disliked_ingredients),
+      plans(name_ar, meals_per_day)
+    `)
+    .eq('id', subId)
+    .single();
+
+  if (error || !sub) {
+    showScanResult('error', '✗', 'الاشتراك غير موجود', `${subId} غير موجود في النظام`, null);
+    vibrate([100, 100, 100]);
+    await logScan(subId, null, 'invalid');
+    return;
+  }
+
+  // Check status
+  if (sub.payment_status !== 'paid' || sub.status !== 'active') {
+    showScanResult('error', '✗', 'اشتراك غير مفعّل', 'هذا الاشتراك ليس نشطاً حالياً', sub);
+    vibrate([100, 100, 100]);
+    await logScan(subId, sub.customers.id, 'invalid');
+    return;
+  }
+
+  // Check if already received today
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const { count: todayCount } = await sb
+    .from('meal_logs')
+    .select('*', { count: 'exact', head: true })
+    .eq('subscription_id', sub.id)
+    .gte('consumed_at', today.toISOString());
+
+  if (todayCount && todayCount > 0) {
+    showScanResult('info', '✓', 'استلم اليوم بالفعل', `${sub.customers.full_name} استلم وجباته اليوم`, sub);
+    vibrate(150);
+    playBeep();
+    await logScan(subId, sub.customers.id, 'already_today');
+    return;
+  }
+
+  // Check remaining meals
+  if (sub.remaining_meals <= 0) {
+    showScanResult('error', '✗', 'انتهى الاشتراك', `لا توجد وجبات متبقية لـ ${sub.customers.full_name}`, sub);
+    vibrate([100, 100, 100]);
+    await logScan(subId, sub.customers.id, 'no_meals');
+    return;
+  }
+
+  // VALID SCAN - Show confirmation
+  showScanResult('success', '✓', 'عميل صالح', 'اضغط أدناه لتسليم وجبات اليوم', sub, true);
+  playBeep();
+  vibrate(100);
+}
+
+function showScanResult(type, icon, title, subtitle, sub, showConfirm = false) {
+  const card = $('scanResultCard');
+  card.className = `scan-result-card show ${type}`;
+
+  let html = `
+    <div class="result-icon">${icon}</div>
+    <div class="result-title">${title}</div>
+    <div class="result-subtitle">${subtitle}</div>
+  `;
+
+  if (sub) {
+    const c = sub.customers || {};
+    const mealsPerDay = sub.plans?.meals_per_day || 1;
+    const daysRemaining = Math.ceil((sub.remaining_meals || 0) / mealsPerDay);
+    const phone = c.phone ? `••••${c.phone.slice(-4)}` : '—';
+
+    html += `
+      <div class="customer-block">
+        <div class="label">العميل</div>
+        <div class="value">${c.has_allergies ? '⚠ ' : ''}${escapeHtml(c.full_name)}</div>
+      </div>
+    `;
+
+    if (c.has_allergies) {
+      card.classList.add('warning');
+      const severity = c.allergy_severity;
+      const sevLabels = { mild: 'خفيفة', moderate: 'متوسطة', severe: 'شديدة' };
+      const restrictions = Array.isArray(c.dietary_restrictions) ? c.dietary_restrictions : [];
+      const allergyLabels = {
+        nuts: 'مكسرات', dairy: 'ألبان', gluten: 'جلوتين', eggs: 'بيض',
+        seafood: 'بحريات', soy: 'صويا', sesame: 'سمسم', peanuts: 'فول سوداني'
+      };
+      let allergyHTML = `<div style="background:rgba(224,89,108,0.1);border:2px solid var(--watermelon);border-radius:var(--radius-card);padding:12px;margin-bottom:12px;">
+        <div style="font-weight:900;color:var(--watermelon);font-size:13px;margin-bottom:6px;">⚠ تنبيه حساسية ${sevLabels[severity] || ''}</div>`;
+      if (restrictions.length) {
+        allergyHTML += `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">`;
+        restrictions.forEach(r => {
+          allergyHTML += `<span style="background:var(--watermelon);color:#FFF8E7;padding:3px 9px;border-radius:9999px;font-size:11px;font-weight:900;">${allergyLabels[r] || r}</span>`;
+        });
+        allergyHTML += `</div>`;
+      }
+      if (c.allergies) {
+        allergyHTML += `<div style="font-size:12px;color:var(--ink);background:#FFF8E7;padding:8px 10px;border-radius:8px;font-weight:700;">${escapeHtml(c.allergies)}</div>`;
+      }
+      allergyHTML += `</div>`;
+      html += allergyHTML;
+    }
+
+    html += `
+      <div class="info-row">
+        <div class="info-box">
+          <div class="label">الباقة</div>
+          <div class="value" style="font-size:14px;color:var(--ink);">${escapeHtml(sub.plans?.name_ar || '—')}</div>
+        </div>
+        <div class="info-box ${daysRemaining <= 3 ? 'warning-box' : ''}">
+          <div class="label">أيام متبقية</div>
+          <div class="value">${daysRemaining}</div>
+        </div>
+      </div>
+    `;
+
+    if (showConfirm) {
+      const mealsText = mealsPerDay === 1 ? 'وجبة' : `${mealsPerDay} وجبات`;
+      html += `
+        <button class="btn success" id="confirmScanBtn" style="width:100%;padding:16px;font-size:15px;">
+          ✓ تسليم ${mealsText} اليوم
+        </button>
+        <button class="btn" id="dismissScanBtn" style="width:100%;margin-top:8px;">إلغاء</button>
+      `;
+    } else {
+      html += `<button class="btn" id="dismissScanBtn" style="width:100%;">حسناً</button>`;
+    }
+  } else {
+    html += `<button class="btn" id="dismissScanBtn" style="width:100%;">حسناً</button>`;
+  }
+
+  card.innerHTML = html;
+
+  // Attach handlers
+  const confirmBtn = $('confirmScanBtn');
+  if (confirmBtn && sub) {
+    confirmBtn.onclick = async () => {
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = 'جاري التسليم...';
+      await deliverMealsViaScan(sub);
+    };
+  }
+  const dismissBtn = $('dismissScanBtn');
+  if (dismissBtn) {
+    dismissBtn.onclick = () => {
+      card.classList.remove('show');
+      lastScanned = null;
+      $('scannerStatusText').innerHTML = scannerActive
+        ? 'جاري البحث عن رمز <span class="pulse-dot"></span>'
+        : 'اضغط لبدء المسح';
+    };
+  }
+}
+
+async function deliverMealsViaScan(sub) {
+  try {
+    const mealsPerDay = sub.plans?.meals_per_day || 1;
+    const remaining = sub.remaining_meals || 0;
+    const mealsToDeduct = Math.min(mealsPerDay, remaining);
+
+    const mealTypes = ['lunch', 'dinner', 'breakfast'];
+    const logs = [];
+    for (let i = 0; i < mealsToDeduct; i++) {
+      logs.push({
+        subscription_id: sub.id,
+        meal_type: mealTypes[i] || 'lunch',
+        logged_by: 'الشيف أحمد',
+        logged_by_id: 'STAFF-002',
+        verification_method: 'qr_scan'
+      });
+    }
+
+    const { error: logErr } = await sb.from('meal_logs').insert(logs);
+    if (logErr) throw logErr;
+
+    const newCount = (sub.consumed_meals || 0) + mealsToDeduct;
+    await sb.from('subscriptions').update({ consumed_meals: newCount }).eq('id', sub.id);
+
+    // Log scan success
+    await logScan(sub.id, sub.customers.id, 'success', mealsToDeduct);
+
+    playBeep();
+    setTimeout(playBeep, 200);
+    vibrate([100, 50, 100, 50, 200]);
+
+    showScanResult('success', '✓', 'تم التسليم بنجاح', `${sub.customers.full_name} - ${mealsToDeduct} ${mealsToDeduct === 1 ? 'وجبة' : 'وجبات'}`, {
+      ...sub,
+      remaining_meals: sub.remaining_meals - mealsToDeduct,
+      consumed_meals: newCount
+    });
+
+    loadCustomers();
+    loadTodayCount();
+  } catch (e) {
+    showToast('خطأ: ' + e.message, true);
+  }
+}
+
+async function logScan(subId, customerId, result, mealsDeducted = 0) {
+  try {
+    await sb.from('qr_scan_logs').insert({
+      subscription_id: subId,
+      customer_id: customerId,
+      scanned_by_id: 'STAFF-002',
+      scanned_by_name: 'الشيف أحمد',
+      meals_deducted: mealsDeducted,
+      scan_result: result
+    });
+  } catch (e) { /* silent */ }
+}
+
+$('startScanBtn').addEventListener('click', startScanner);
+$('stopScanBtn').addEventListener('click', stopScanner);
+$('torchBtn').addEventListener('click', toggleTorch);
+
+// Auto-stop scanner when leaving tab
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    if (tab.dataset.tab !== 'scanner' && scannerActive) {
+      stopScanner();
+    }
+  });
+});
 </script>
 </body>
 </html>
