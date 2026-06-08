@@ -1383,6 +1383,41 @@ async function checkPaymentReturn() {
       $('dAmount').textContent = parseFloat(subscription.total_amount_sar).toFixed(2) + ' ر.س';
       $('dDate').textContent = subscription.start_date ? new Date(subscription.start_date).toLocaleDateString('ar-SA') : 'سيتم التحديد';
       $('finalCustomerId').textContent = subscription.customer_id || '—';
+
+      // Add QR button
+      const qrUrl = `${window.location.origin}${window.location.pathname.replace('index.html', '').replace(/\/$/, '')}/qr.html?sub=${subId}`;
+      const qrBtnContainer = document.createElement('div');
+      qrBtnContainer.style.cssText = 'margin-top: 24px; padding: 0 20px;';
+      qrBtnContainer.innerHTML = `
+        <a href="${qrUrl}" style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          background: var(--watermelon);
+          color: #FFF8E7;
+          padding: 16px 24px;
+          border-radius: var(--radius-pill);
+          font-weight: 900;
+          font-size: 15px;
+          text-decoration: none;
+          box-shadow: var(--shadow-md);
+          transform: rotate(-0.6deg);
+          letter-spacing: 0.3px;
+          font-family: inherit;
+        ">
+          📱 احصل على رمز الدخول (QR)
+        </a>
+        <p style="
+          font-size: 12px;
+          color: var(--ink-mute);
+          font-weight: 700;
+          margin-top: 10px;
+          line-height: 1.6;
+          text-align: center;
+        ">احفظه في جوالك واعرضه في المطعم لاستلام وجباتك بسرعة</p>
+      `;
+      $('customerNumberBox').parentNode.insertBefore(qrBtnContainer, $('customerNumberBox').nextSibling);
     }
   } else if (isFailed) {
     $('successIcon').classList.add('failed-icon');
